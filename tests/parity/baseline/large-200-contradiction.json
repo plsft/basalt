@@ -1,0 +1,105 @@
+{
+  "schema": 1,
+  "section": "contradiction",
+  "track_record": {
+    "schema": 1,
+    "window_days": 90,
+    "confirmed": 0,
+    "pending": 3,
+    "falsified": 0,
+    "total": 3,
+    "confirmed_pct": 0.0,
+    "falsified_pct": 0.0
+  },
+  "findings": {
+    "contradiction": [
+      {
+        "verb": "contradiction",
+        "schema": 1,
+        "version": "v0-heuristic",
+        "topical_similarity": 0.882920503616333,
+        "contradiction_score": 2.2,
+        "score": 1.9424251079559327,
+        "signals": [
+          "asymmetric negation",
+          "asymmetric reversal marker"
+        ],
+        "note_a": {
+          "rel_path": "01-Daily\\2026-03-04.md",
+          "title": "2026-03-04",
+          "quote": "When the tooling stops getting in the way, trust is not a metric.",
+          "quote_provenance": "first prose sentence"
+        },
+        "note_b": {
+          "rel_path": "07-Insights\\Insight-011.md",
+          "title": "Insight 011",
+          "quote": "What you publicize is what you actually value.",
+          "quote_provenance": "callout body"
+        },
+        "falsification": [
+          {
+            "kind": "neither_edited",
+            "params": {
+              "a": "01-Daily\\2026-03-04.md",
+              "b": "07-Insights\\Insight-011.md",
+              "grace_days": 60
+            },
+            "text": "wrong if neither note is edited within 60 days (you don't think it's a real conflict — heuristic was a false positive)"
+          },
+          {
+            "kind": "still_in_conflict",
+            "params": {
+              "a": "01-Daily\\2026-03-04.md",
+              "b": "07-Insights\\Insight-011.md",
+              "grace_days": 90
+            },
+            "text": "confirmed if both notes still exist with the contradiction signal intact after 90 days (the conflict is real and unresolved)"
+          }
+        ]
+      },
+      {
+        "verb": "contradiction",
+        "schema": 1,
+        "version": "v0-heuristic",
+        "topical_similarity": 0.8883109092712402,
+        "contradiction_score": 1.2,
+        "score": 1.0659730911254883,
+        "signals": [
+          "asymmetric reversal marker"
+        ],
+        "note_a": {
+          "rel_path": "01-Daily\\2026-03-03.md",
+          "title": "2026-03-03",
+          "quote": "It's a side effect of doing the boring thing for years.",
+          "quote_provenance": "callout body"
+        },
+        "note_b": {
+          "rel_path": "01-Daily\\2026-04-21.md",
+          "title": "2026-04-21",
+          "quote": "What you publicize is what you actually value.",
+          "quote_provenance": "callout body"
+        },
+        "falsification": [
+          {
+            "kind": "neither_edited",
+            "params": {
+              "a": "01-Daily\\2026-03-03.md",
+              "b": "01-Daily\\2026-04-21.md",
+              "grace_days": 60
+            },
+            "text": "wrong if neither note is edited within 60 days (you don't think it's a real conflict — heuristic was a false positive)"
+          },
+          {
+            "kind": "still_in_conflict",
+            "params": {
+              "a": "01-Daily\\2026-03-03.md",
+              "b": "01-Daily\\2026-04-21.md",
+              "grace_days": 90
+            },
+            "text": "confirmed if both notes still exist with the contradiction signal intact after 90 days (the conflict is real and unresolved)"
+          }
+        ]
+      }
+    ]
+  }
+}

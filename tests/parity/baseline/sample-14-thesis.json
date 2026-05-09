@@ -1,0 +1,90 @@
+{
+  "schema": 1,
+  "section": "implicit-thesis",
+  "track_record": {
+    "schema": 1,
+    "window_days": 90,
+    "confirmed": 0,
+    "pending": 5,
+    "falsified": 0,
+    "total": 5,
+    "confirmed_pct": 0.0,
+    "falsified_pct": 0.0
+  },
+  "findings": {
+    "implicit_thesis": [
+      {
+        "verb": "implicit-thesis",
+        "schema": 1,
+        "version": "v0-cluster",
+        "score": 7.993122976131254,
+        "cluster_size": 3,
+        "folder_diversity": 0,
+        "span_days": 208,
+        "mean_similarity": 0.7847841382026672,
+        "centroid": {
+          "rel_path": "04-Trading\\Signals\\OFI-Validation.md",
+          "title": "OFI Walk-Forward Validation",
+          "quote": "Independent validation of order-flow imbalance as a directional signal.",
+          "quote_provenance": "blockquote summary"
+        },
+        "members": [
+          {
+            "rel_path": "07-Reference\\Microstructure-Primer.md",
+            "title": "Microstructure Primer",
+            "folder": "",
+            "quote": "Working notes on the microstructure literature relevant to HYPOTHESIS.",
+            "quote_provenance": "blockquote summary"
+          },
+          {
+            "rel_path": "04-Trading\\Signals\\OFI-Validation.md",
+            "title": "OFI Walk-Forward Validation",
+            "folder": "",
+            "quote": "Independent validation of order-flow imbalance as a directional signal.",
+            "quote_provenance": "blockquote summary"
+          },
+          {
+            "rel_path": "02-Projects\\SignalBot\\HYPOTHESIS.md",
+            "title": "SignalBot — Original Hypothesis",
+            "folder": "",
+            "quote": "The sustainable edge isn't speed alone — it's speed + intelligence.",
+            "quote_provenance": "callout body"
+          }
+        ],
+        "falsification": [
+          {
+            "kind": "centroid_deleted",
+            "params": {
+              "rel_path": "04-Trading\\Signals\\OFI-Validation.md"
+            },
+            "text": "wrong if 04-Trading\\Signals\\OFI-Validation.md is deleted (the proxy thesis statement is gone — the cluster needs a new centroid)"
+          },
+          {
+            "kind": "cluster_dispersed",
+            "params": {
+              "member_paths": [
+                "07-Reference\\Microstructure-Primer.md",
+                "04-Trading\\Signals\\OFI-Validation.md",
+                "02-Projects\\SignalBot\\HYPOTHESIS.md"
+              ],
+              "min_remaining": 2
+            },
+            "text": "wrong if more than 2 of the 3 cluster members are deleted within 90 days (the through-line dissolves)"
+          },
+          {
+            "kind": "no_new_rephrasing",
+            "params": {
+              "member_paths": [
+                "07-Reference\\Microstructure-Primer.md",
+                "04-Trading\\Signals\\OFI-Validation.md",
+                "02-Projects\\SignalBot\\HYPOTHESIS.md"
+              ],
+              "grace_days": 90
+            },
+            "text": "wrong if no new note expresses a similar claim within 90 days (the convergence was a snapshot, not a recurring theme)"
+          }
+        ]
+      }
+    ]
+  }
+}

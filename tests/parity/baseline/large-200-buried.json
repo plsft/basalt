@@ -1,0 +1,270 @@
+{
+  "schema": 1,
+  "section": "buried-insight",
+  "track_record": {
+    "schema": 1,
+    "window_days": 90,
+    "confirmed": 0,
+    "pending": 0,
+    "falsified": 0,
+    "total": 0,
+    "confirmed_pct": 0.0,
+    "falsified_pct": 0.0
+  },
+  "findings": {
+    "buried_insight": [
+      {
+        "verb": "buried-insight",
+        "schema": 1,
+        "rel_path": "04-Reading\\Brooks-1975.md",
+        "title": "Brooks-1975",
+        "stem": "Brooks-1975",
+        "created": "2024-11-29",
+        "updated": "2024-12-15",
+        "word_count": 135,
+        "score": 13.282765901088714,
+        "hub_density": 0.0,
+        "hub_penalty": 1.0,
+        "inbound_recent_count": 4,
+        "quote": "compounding only happens to people who don't optimize for the next quarter.",
+        "quote_provenance": "callout body",
+        "vault_age_days": 719,
+        "thresholds": {
+          "min_age_days": 359,
+          "min_dormant_days": 119,
+          "recent_window_days": 359
+        },
+        "validators": [
+          {
+            "rel_path": "05-References\\Failure-Modes.md",
+            "title": "Failure Modes",
+            "updated": "2025-06-19",
+            "explicit_link": true,
+            "similarity": 1.0
+          },
+          {
+            "rel_path": "05-References\\OFI-Validation.md",
+            "title": "OFI Validation",
+            "updated": "2025-09-09",
+            "explicit_link": true,
+            "similarity": 1.0
+          },
+          {
+            "rel_path": "06-MOCs\\MOC-Inbox.md",
+            "title": "MOC Inbox",
+            "updated": "2025-10-10",
+            "explicit_link": true,
+            "similarity": 1.0
+          },
+          {
+            "rel_path": "05-References\\Embedding-Stability.md",
+            "title": "Embedding Stability",
+            "updated": "2025-11-27",
+            "explicit_link": true,
+            "similarity": 1.0
+          },
+          {
+            "rel_path": "02-Projects\\Atlas\\HYPOTHESIS.md",
+            "title": "HYPOTHESIS",
+            "updated": "2026-02-02",
+            "explicit_link": false,
+            "similarity": 0.9151391386985779
+          }
+        ],
+        "falsification": [
+          {
+            "kind": "no_new_validators",
+            "params": {
+              "rel_path": "04-Reading\\Brooks-1975.md",
+              "grace_days": 60
+            },
+            "text": "wrong if no new note links to or semantically validates 04-Reading\\Brooks-1975.md within 60 days"
+          },
+          {
+            "kind": "candidate_shrinks",
+            "params": {
+              "rel_path": "04-Reading\\Brooks-1975.md",
+              "drop_pct": 30
+            },
+            "text": "wrong if 04-Reading\\Brooks-1975.md loses more than 30% of its content (you actively dismantled the claim)"
+          },
+          {
+            "kind": "candidate_deleted",
+            "params": {
+              "rel_path": "04-Reading\\Brooks-1975.md"
+            },
+            "text": "wrong if 04-Reading\\Brooks-1975.md is deleted (you've moved on from this claim)"
+          }
+        ]
+      },
+      {
+        "verb": "buried-insight",
+        "schema": 1,
+        "rel_path": "04-Reading\\Sapolsky-2004.md",
+        "title": "Sapolsky-2004",
+        "stem": "Sapolsky-2004",
+        "created": "2024-07-13",
+        "updated": "2024-07-13",
+        "word_count": 102,
+        "score": 9.664825960000357,
+        "hub_density": 0.0,
+        "hub_penalty": 1.0,
+        "inbound_recent_count": 2,
+        "quote": "I keep being wrong about how long the patient version takes — usually longer than I think, and worth it.",
+        "quote_provenance": "callout body",
+        "vault_age_days": 719,
+        "thresholds": {
+          "min_age_days": 359,
+          "min_dormant_days": 119,
+          "recent_window_days": 359
+        },
+        "validators": [
+          {
+            "rel_path": "05-References\\Compounding-Patterns.md",
+            "title": "Compounding Patterns",
+            "updated": "2025-05-27",
+            "explicit_link": true,
+            "similarity": 1.0
+          },
+          {
+            "rel_path": "06-MOCs\\MOC-Inbox.md",
+            "title": "MOC Inbox",
+            "updated": "2025-10-10",
+            "explicit_link": true,
+            "similarity": 1.0
+          },
+          {
+            "rel_path": "04-Reading\\Knuth-1973.md",
+            "title": "Knuth-1973",
+            "updated": "2026-01-08",
+            "explicit_link": false,
+            "similarity": 0.9410793781280518
+          },
+          {
+            "rel_path": "01-Daily\\2026-03-14.md",
+            "title": "2026-03-14",
+            "updated": "2026-03-14",
+            "explicit_link": false,
+            "similarity": 0.9174181818962097
+          },
+          {
+            "rel_path": "02-Projects\\Beacon\\Beacon-Note-03.md",
+            "title": "Beacon Note 03",
+            "updated": "2025-11-28",
+            "explicit_link": false,
+            "similarity": 0.9093208312988281
+          }
+        ],
+        "falsification": [
+          {
+            "kind": "no_new_validators",
+            "params": {
+              "rel_path": "04-Reading\\Sapolsky-2004.md",
+              "grace_days": 60
+            },
+            "text": "wrong if no new note links to or semantically validates 04-Reading\\Sapolsky-2004.md within 60 days"
+          },
+          {
+            "kind": "candidate_shrinks",
+            "params": {
+              "rel_path": "04-Reading\\Sapolsky-2004.md",
+              "drop_pct": 30
+            },
+            "text": "wrong if 04-Reading\\Sapolsky-2004.md loses more than 30% of its content (you actively dismantled the claim)"
+          },
+          {
+            "kind": "candidate_deleted",
+            "params": {
+              "rel_path": "04-Reading\\Sapolsky-2004.md"
+            },
+            "text": "wrong if 04-Reading\\Sapolsky-2004.md is deleted (you've moved on from this claim)"
+          }
+        ]
+      },
+      {
+        "verb": "buried-insight",
+        "schema": 1,
+        "rel_path": "04-Reading\\Feynman-1965.md",
+        "title": "Feynman-1965",
+        "stem": "Feynman-1965",
+        "created": "2025-03-15",
+        "updated": "2025-04-28",
+        "word_count": 80,
+        "score": 9.040104808012645,
+        "hub_density": 0.0,
+        "hub_penalty": 1.0,
+        "inbound_recent_count": 2,
+        "quote": "you can't fix a culture problem with tooling, but the wrong tooling rots a healthy one.",
+        "quote_provenance": "callout body",
+        "vault_age_days": 719,
+        "thresholds": {
+          "min_age_days": 359,
+          "min_dormant_days": 119,
+          "recent_window_days": 359
+        },
+        "validators": [
+          {
+            "rel_path": "06-MOCs\\MOC-Reading.md",
+            "title": "MOC Reading",
+            "updated": "2025-08-13",
+            "explicit_link": true,
+            "similarity": 1.0
+          },
+          {
+            "rel_path": "06-MOCs\\MOC-Inbox.md",
+            "title": "MOC Inbox",
+            "updated": "2025-10-10",
+            "explicit_link": true,
+            "similarity": 1.0
+          },
+          {
+            "rel_path": "07-Insights\\Insight-001.md",
+            "title": "Insight 001",
+            "updated": "2025-09-29",
+            "explicit_link": false,
+            "similarity": 0.9071717858314514
+          },
+          {
+            "rel_path": "02-Projects\\Beacon\\Beacon-Note-02.md",
+            "title": "Beacon Note 02",
+            "updated": "2026-04-12",
+            "explicit_link": false,
+            "similarity": 0.8885388374328613
+          },
+          {
+            "rel_path": "05-References\\Backpressure-Notes.md",
+            "title": "Backpressure Notes",
+            "updated": "2025-09-26",
+            "explicit_link": false,
+            "similarity": 0.8801324963569641
+          }
+        ],
+        "falsification": [
+          {
+            "kind": "no_new_validators",
+            "params": {
+              "rel_path": "04-Reading\\Feynman-1965.md",
+              "grace_days": 60
+            },
+            "text": "wrong if no new note links to or semantically validates 04-Reading\\Feynman-1965.md within 60 days"
+          },
+          {
+            "kind": "candidate_shrinks",
+            "params": {
+              "rel_path": "04-Reading\\Feynman-1965.md",
+              "drop_pct": 30
+            },
+            "text": "wrong if 04-Reading\\Feynman-1965.md loses more than 30% of its content (you actively dismantled the claim)"
+          },
+          {
+            "kind": "candidate_deleted",
+            "params": {
+              "rel_path": "04-Reading\\Feynman-1965.md"
+            },
+            "text": "wrong if 04-Reading\\Feynman-1965.md is deleted (you've moved on from this claim)"
+          }
+        ]
+      }
+    ]
+  }
+}

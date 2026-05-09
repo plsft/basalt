@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "section": "drift",
+  "track_record": {
+    "schema": 1,
+    "window_days": 90,
+    "confirmed": 0,
+    "pending": 6,
+    "falsified": 0,
+    "total": 6,
+    "confirmed_pct": 0.0,
+    "falsified_pct": 0.0
+  },
+  "findings": {
+    "drift": []
+  }
+}

@@ -1,0 +1,434 @@
+{
+  "schema": 1,
+  "section": "all",
+  "track_record": {
+    "schema": 1,
+    "window_days": 90,
+    "confirmed": 0,
+    "pending": 6,
+    "falsified": 0,
+    "total": 6,
+    "confirmed_pct": 0.0,
+    "falsified_pct": 0.0
+  },
+  "findings": {
+    "buried_insight": [
+      {
+        "verb": "buried-insight",
+        "schema": 1,
+        "rel_path": "02-Projects\\SignalBot\\HYPOTHESIS.md",
+        "title": "SignalBot — Original Hypothesis",
+        "stem": "HYPOTHESIS",
+        "created": "2025-09-12",
+        "updated": "2025-09-12",
+        "word_count": 177,
+        "score": 14.781425230140652,
+        "hub_density": 1.1299435028248588,
+        "hub_penalty": 0.38650102395815344,
+        "inbound_recent_count": 17,
+        "quote": "The sustainable edge isn't speed alone — it's speed + intelligence.",
+        "quote_provenance": "callout body",
+        "vault_age_days": 246,
+        "thresholds": {
+          "min_age_days": 123,
+          "min_dormant_days": 41,
+          "recent_window_days": 123
+        },
+        "validators": [
+          {
+            "rel_path": "02-Projects\\SignalBot\\PHASE2.md",
+            "title": "SignalBot Phase 2 — Multi-signal stack",
+            "updated": "2026-03-14",
+            "explicit_link": true,
+            "similarity": 1.0
+          },
+          {
+            "rel_path": "02-Projects\\SignalBot\\BACKTEST.md",
+            "title": "SignalBot Backtest — Q1 2026",
+            "updated": "2026-04-05",
+            "explicit_link": true,
+            "similarity": 1.0
+          },
+          {
+            "rel_path": "06-Meetings\\Strategy-Review.md",
+            "title": "Strategy Review — 2026-04-10",
+            "updated": "2026-04-10",
+            "explicit_link": true,
+            "similarity": 1.0
+          },
+          {
+            "rel_path": "02-Projects\\SignalBot\\CALIBRATION.md",
+            "title": "SignalBot Calibration System",
+            "updated": "2026-04-15",
+            "explicit_link": true,
+            "similarity": 1.0
+          },
+          {
+            "rel_path": "02-Projects\\Atlas\\Atlas.md",
+            "title": "Atlas",
+            "updated": "2026-04-30",
+            "explicit_link": true,
+            "similarity": 1.0
+          }
+        ],
+        "falsification": [
+          {
+            "kind": "no_new_validators",
+            "params": {
+              "rel_path": "02-Projects\\SignalBot\\HYPOTHESIS.md",
+              "grace_days": 60
+            },
+            "text": "wrong if no new note links to or semantically validates 02-Projects\\SignalBot\\HYPOTHESIS.md within 60 days"
+          },
+          {
+            "kind": "candidate_shrinks",
+            "params": {
+              "rel_path": "02-Projects\\SignalBot\\HYPOTHESIS.md",
+              "drop_pct": 30
+            },
+            "text": "wrong if 02-Projects\\SignalBot\\HYPOTHESIS.md loses more than 30% of its content (you actively dismantled the claim)"
+          },
+          {
+            "kind": "candidate_deleted",
+            "params": {
+              "rel_path": "02-Projects\\SignalBot\\HYPOTHESIS.md"
+            },
+            "text": "wrong if 02-Projects\\SignalBot\\HYPOTHESIS.md is deleted (you've moved on from this claim)"
+          }
+        ]
+      },
+      {
+        "verb": "buried-insight",
+        "schema": 1,
+        "rel_path": "07-Reference\\Microstructure-Primer.md",
+        "title": "Microstructure Primer",
+        "stem": "Microstructure-Primer",
+        "created": "2025-09-20",
+        "updated": "2025-09-20",
+        "word_count": 102,
+        "score": 6.215155166384698,
+        "hub_density": 0.9803921568627451,
+        "hub_penalty": 0.5199920031987205,
+        "inbound_recent_count": 4,
+        "quote": "Working notes on the microstructure literature relevant to HYPOTHESIS.",
+        "quote_provenance": "blockquote summary",
+        "vault_age_days": 246,
+        "thresholds": {
+          "min_age_days": 123,
+          "min_dormant_days": 41,
+          "recent_window_days": 123
+        },
+        "validators": [
+          {
+            "rel_path": "02-Projects\\SignalBot\\PHASE2.md",
+            "title": "SignalBot Phase 2 — Multi-signal stack",
+            "updated": "2026-03-14",
+            "explicit_link": true,
+            "similarity": 1.0
+          },
+          {
+            "rel_path": "01-Daily\\2026-03-20.md",
+            "title": "2026-03-20",
+            "updated": "2026-03-20",
+            "explicit_link": true,
+            "similarity": 1.0
+          },
+          {
+            "rel_path": "01-Daily\\2026-04-15.md",
+            "title": "2026-04-15",
+            "updated": "2026-04-15",
+            "explicit_link": true,
+            "similarity": 1.0
+          },
+          {
+            "rel_path": "02-Projects\\SignalBot\\PRODUCTION-NOTES.md",
+            "title": "SignalBot Production Notes",
+            "updated": "2026-05-02",
+            "explicit_link": true,
+            "similarity": 1.0
+          },
+          {
+            "rel_path": "04-Trading\\Signals\\OFI-Validation.md",
+            "title": "OFI Walk-Forward Validation",
+            "updated": "2026-04-08",
+            "explicit_link": false,
+            "similarity": 0.810024082660675
+          }
+        ],
+        "falsification": [
+          {
+            "kind": "no_new_validators",
+            "params": {
+              "rel_path": "07-Reference\\Microstructure-Primer.md",
+              "grace_days": 60
+            },
+            "text": "wrong if no new note links to or semantically validates 07-Reference\\Microstructure-Primer.md within 60 days"
+          },
+          {
+            "kind": "candidate_shrinks",
+            "params": {
+              "rel_path": "07-Reference\\Microstructure-Primer.md",
+              "drop_pct": 30
+            },
+            "text": "wrong if 07-Reference\\Microstructure-Primer.md loses more than 30% of its content (you actively dismantled the claim)"
+          },
+          {
+            "kind": "candidate_deleted",
+            "params": {
+              "rel_path": "07-Reference\\Microstructure-Primer.md"
+            },
+            "text": "wrong if 07-Reference\\Microstructure-Primer.md is deleted (you've moved on from this claim)"
+          }
+        ]
+      },
+      {
+        "verb": "buried-insight",
+        "schema": 1,
+        "rel_path": "03-People\\Mentor.md",
+        "title": "Mentor",
+        "stem": "Mentor",
+        "created": "2025-09-05",
+        "updated": "2025-09-05",
+        "word_count": 33,
+        "score": 4.920723514556885,
+        "hub_density": 1.0,
+        "hub_penalty": 0.5,
+        "inbound_recent_count": 3,
+        "quote": "Pushed me toward microstructure when I was chasing trend-following dead ends.",
+        "quote_provenance": "first prose sentence",
+        "vault_age_days": 246,
+        "thresholds": {
+          "min_age_days": 123,
+          "min_dormant_days": 41,
+          "recent_window_days": 123
+        },
+        "validators": [
+          {
+            "rel_path": "02-Projects\\Atlas\\HYPOTHESIS.md",
+            "title": "Atlas — Original Hypothesis",
+            "updated": "2026-02-04",
+            "explicit_link": true,
+            "similarity": 1.0
+          },
+          {
+            "rel_path": "06-Meetings\\Strategy-Review.md",
+            "title": "Strategy Review — 2026-04-10",
+            "updated": "2026-04-10",
+            "explicit_link": true,
+            "similarity": 1.0
+          },
+          {
+            "rel_path": "02-Projects\\Atlas\\Strategy\\Mon.md",
+            "title": "Atlas — Launch Sequencing (Monday)",
+            "updated": "2026-04-13",
+            "explicit_link": true,
+            "similarity": 1.0
+          },
+          {
+            "rel_path": "01-Daily\\2026-04-25.md",
+            "title": "2026-04-25",
+            "updated": "2026-04-25",
+            "explicit_link": false,
+            "similarity": 0.7205418348312378
+          },
+          {
+            "rel_path": "01-Daily\\2026-05-03.md",
+            "title": "2026-05-03",
+            "updated": "2026-05-03",
+            "explicit_link": false,
+            "similarity": 0.6933714151382446
+          }
+        ],
+        "falsification": [
+          {
+            "kind": "no_new_validators",
+            "params": {
+              "rel_path": "03-People\\Mentor.md",
+              "grace_days": 60
+            },
+            "text": "wrong if no new note links to or semantically validates 03-People\\Mentor.md within 60 days"
+          },
+          {
+            "kind": "candidate_shrinks",
+            "params": {
+              "rel_path": "03-People\\Mentor.md",
+              "drop_pct": 30
+            },
+            "text": "wrong if 03-People\\Mentor.md loses more than 30% of its content (you actively dismantled the claim)"
+          },
+          {
+            "kind": "candidate_deleted",
+            "params": {
+              "rel_path": "03-People\\Mentor.md"
+            },
+            "text": "wrong if 03-People\\Mentor.md is deleted (you've moved on from this claim)"
+          }
+        ]
+      }
+    ],
+    "connection": [],
+    "contradiction": [
+      {
+        "verb": "contradiction",
+        "schema": 1,
+        "version": "v0-heuristic",
+        "topical_similarity": 0.819583535194397,
+        "contradiction_score": 1.2,
+        "score": 0.6952999071326511,
+        "signals": [
+          "asymmetric reversal marker"
+        ],
+        "note_a": {
+          "rel_path": "01-Daily\\2026-04-28.md",
+          "title": "2026-04-28",
+          "quote": "# 2026-04-28 ## Today - Atlas Atlas Atlas. Whole day on Atlas. The launch-sequencing thing is now resolved per Wed — docs first, product second. Reversing felt expensive at first; turns out it's just honest. - Atlas: drafted the first three docs. Already exposed two API design mistakes.",
+          "quote_provenance": "opening passage"
+        },
+        "note_b": {
+          "rel_path": "02-Projects\\Atlas\\Strategy\\Wed.md",
+          "title": "Atlas — Launch Sequencing (Wednesday, reversed)",
+          "quote": "The right order is: docs → product → external launch.",
+          "quote_provenance": "first prose sentence"
+        },
+        "falsification": [
+          {
+            "kind": "neither_edited",
+            "params": {
+              "a": "01-Daily\\2026-04-28.md",
+              "b": "02-Projects\\Atlas\\Strategy\\Wed.md",
+              "grace_days": 60
+            },
+            "text": "wrong if neither note is edited within 60 days (you don't think it's a real conflict — heuristic was a false positive)"
+          },
+          {
+            "kind": "still_in_conflict",
+            "params": {
+              "a": "01-Daily\\2026-04-28.md",
+              "b": "02-Projects\\Atlas\\Strategy\\Wed.md",
+              "grace_days": 90
+            },
+            "text": "confirmed if both notes still exist with the contradiction signal intact after 90 days (the conflict is real and unresolved)"
+          }
+        ]
+      },
+      {
+        "verb": "contradiction",
+        "schema": 1,
+        "version": "v0-heuristic",
+        "topical_similarity": 0.7983609437942505,
+        "contradiction_score": 1.0,
+        "score": 0.49633466393884995,
+        "signals": [
+          "asymmetric negation"
+        ],
+        "note_a": {
+          "rel_path": "04-Trading\\Signals\\OFI-Validation.md",
+          "title": "OFI Walk-Forward Validation",
+          "quote": "Independent validation of order-flow imbalance as a directional signal.",
+          "quote_provenance": "blockquote summary"
+        },
+        "note_b": {
+          "rel_path": "02-Projects\\SignalBot\\HYPOTHESIS.md",
+          "title": "SignalBot — Original Hypothesis",
+          "quote": "The sustainable edge isn't speed alone — it's speed + intelligence.",
+          "quote_provenance": "callout body"
+        },
+        "falsification": [
+          {
+            "kind": "neither_edited",
+            "params": {
+              "a": "04-Trading\\Signals\\OFI-Validation.md",
+              "b": "02-Projects\\SignalBot\\HYPOTHESIS.md",
+              "grace_days": 60
+            },
+            "text": "wrong if neither note is edited within 60 days (you don't think it's a real conflict — heuristic was a false positive)"
+          },
+          {
+            "kind": "still_in_conflict",
+            "params": {
+              "a": "04-Trading\\Signals\\OFI-Validation.md",
+              "b": "02-Projects\\SignalBot\\HYPOTHESIS.md",
+              "grace_days": 90
+            },
+            "text": "confirmed if both notes still exist with the contradiction signal intact after 90 days (the conflict is real and unresolved)"
+          }
+        ]
+      }
+    ],
+    "implicit_thesis": [
+      {
+        "verb": "implicit-thesis",
+        "schema": 1,
+        "version": "v0-cluster",
+        "score": 7.993122976131254,
+        "cluster_size": 3,
+        "folder_diversity": 0,
+        "span_days": 208,
+        "mean_similarity": 0.7847841382026672,
+        "centroid": {
+          "rel_path": "04-Trading\\Signals\\OFI-Validation.md",
+          "title": "OFI Walk-Forward Validation",
+          "quote": "Independent validation of order-flow imbalance as a directional signal.",
+          "quote_provenance": "blockquote summary"
+        },
+        "members": [
+          {
+            "rel_path": "07-Reference\\Microstructure-Primer.md",
+            "title": "Microstructure Primer",
+            "folder": "",
+            "quote": "Working notes on the microstructure literature relevant to HYPOTHESIS.",
+            "quote_provenance": "blockquote summary"
+          },
+          {
+            "rel_path": "04-Trading\\Signals\\OFI-Validation.md",
+            "title": "OFI Walk-Forward Validation",
+            "folder": "",
+            "quote": "Independent validation of order-flow imbalance as a directional signal.",
+            "quote_provenance": "blockquote summary"
+          },
+          {
+            "rel_path": "02-Projects\\SignalBot\\HYPOTHESIS.md",
+            "title": "SignalBot — Original Hypothesis",
+            "folder": "",
+            "quote": "The sustainable edge isn't speed alone — it's speed + intelligence.",
+            "quote_provenance": "callout body"
+          }
+        ],
+        "falsification": [
+          {
+            "kind": "centroid_deleted",
+            "params": {
+              "rel_path": "04-Trading\\Signals\\OFI-Validation.md"
+            },
+            "text": "wrong if 04-Trading\\Signals\\OFI-Validation.md is deleted (the proxy thesis statement is gone — the cluster needs a new centroid)"
+          },
+          {
+            "kind": "cluster_dispersed",
+            "params": {
+              "member_paths": [
+                "07-Reference\\Microstructure-Primer.md",
+                "04-Trading\\Signals\\OFI-Validation.md",
+                "02-Projects\\SignalBot\\HYPOTHESIS.md"
+              ],
+              "min_remaining": 2
+            },
+            "text": "wrong if more than 2 of the 3 cluster members are deleted within 90 days (the through-line dissolves)"
+          },
+          {
+            "kind": "no_new_rephrasing",
+            "params": {
+              "member_paths": [
+                "07-Reference\\Microstructure-Primer.md",
+                "04-Trading\\Signals\\OFI-Validation.md",
+                "02-Projects\\SignalBot\\HYPOTHESIS.md"
+              ],
+              "grace_days": 90
+            },
+            "text": "wrong if no new note expresses a similar claim within 90 days (the convergence was a snapshot, not a recurring theme)"
+          }
+        ]
+      }
+    ],
+    "drift": []
+  }
+}
