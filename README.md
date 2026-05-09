@@ -63,6 +63,33 @@ basalt/
 └── scripts/               # build + release automation
 ```
 
+## Releasing
+
+Phase boundaries get an annotated tag (`v0.<phase>.0`); the public launch tags `v1.0.0`. Releases are driven by [`scripts/release.sh`](./scripts/release.sh).
+
+```sh
+# Preview every step; no writes, no pushes. Run from any branch.
+bash scripts/release.sh --dry-run v0.0.1
+
+# Cut the real release. Must be on `main`, clean, in sync with `origin/main`.
+bash scripts/release.sh v0.0.1
+```
+
+The script:
+
+1. Pre-flights: clean tree, on `main`, in sync with `origin`, tag doesn't already exist.
+2. Runs the full local gauntlet — `bun run ci` (Biome lint+format), `bun run typecheck` (`tsc --noEmit -p tsconfig.base.json`), `bun run test` (Vitest), parity-baseline JSON sanity check.
+3. Bumps `package.json` to the unprefixed version (e.g. `0.0.1`).
+4. Promotes `## Unreleased` in `CHANGELOG.md` under `## v0.0.1 — YYYY-MM-DD`, then re-adds an empty `## Unreleased`.
+5. Commits `chore(release): v0.0.1`.
+6. Creates an annotated git tag with the changelog excerpt as message.
+7. Pushes `main` + the new tag.
+8. Prints a link to draft the GitHub Release page.
+
+Phase exit checklist (per `PHASE-N.md`'s *Phase Exit Criteria* section) must be ticked before tagging. Don't skip it — the release script does not enforce phase-exit completeness, only repo-level sanity.
+
+Per CLAUDE.md §5, never force-push to `main` and never tag a release with red CI on `main`.
+
 ## Credits
 
 - **Engine reference:** the [Python implementation](https://github.com/virtexvirtuoso/basalt) by **Fernando Villar** (MIT). The TypeScript rewrite ports its algorithms; the Python repo is frozen and reference-only during the rewrite.
