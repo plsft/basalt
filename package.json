@@ -1,6 +1,6 @@
 {
   "name": "basalt",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "description": "Basalt — a second-brain compiler that reads your Markdown vault and surfaces what you believe but never wrote down.",
   "license": "MIT",
