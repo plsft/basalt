@@ -1,0 +1,17 @@
+{
+  "name": "@basalt/ui",
+  "version": "0.0.0",
+  "description": "Shared React components and brand tokens for Basalt surfaces.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "build": "exit 0",
+    "typecheck": "tsc --noEmit",
+    "test": "echo \"@basalt/ui: no tests yet\" && exit 0"
+  }
+}

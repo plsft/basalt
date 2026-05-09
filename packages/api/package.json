@@ -1,0 +1,13 @@
+{
+  "name": "@basalt/api",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Basalt cloud API — Hono on Cloudflare Workers.",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "build": "exit 0",
+    "typecheck": "tsc --noEmit",
+    "test": "echo \"@basalt/api: no tests yet\" && exit 0"
+  }
+}

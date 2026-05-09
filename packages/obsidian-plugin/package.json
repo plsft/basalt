@@ -1,0 +1,12 @@
+{
+  "name": "@basalt/obsidian-plugin",
+  "version": "0.0.0",
+  "description": "Basalt for Obsidian — Brief generation, promote-to-note, all in-vault.",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "build": "exit 0",
+    "typecheck": "tsc --noEmit",
+    "test": "echo \"@basalt/obsidian-plugin: no tests yet\" && exit 0"
+  }
+}

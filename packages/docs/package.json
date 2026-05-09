@@ -1,0 +1,13 @@
+{
+  "name": "@basalt/docs",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Basalt docs site — Astro + Starlight, Cloudflare Pages.",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "build": "exit 0",
+    "typecheck": "tsc --noEmit",
+    "test": "echo \"@basalt/docs: no tests yet\" && exit 0"
+  }
+}
