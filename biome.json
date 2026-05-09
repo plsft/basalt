@@ -65,6 +65,22 @@
       }
     },
     {
+      "includes": [
+        "**/vitest.config.ts",
+        "**/vite.config.ts",
+        "**/vitest.workspace.ts",
+        "**/astro.config.*",
+        "**/tailwind.config.*"
+      ],
+      "linter": {
+        "rules": {
+          "style": {
+            "noDefaultExport": "off"
+          }
+        }
+      }
+    },
+    {
       "includes": ["**/*.test.ts", "**/__tests__/**", "**/tests/**"],
       "linter": {
         "rules": {

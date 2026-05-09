@@ -28,14 +28,21 @@
 
     "noEmit": true
   },
-  "include": ["packages/*/src/**/*.ts", "packages/*/src/**/*.tsx"],
+  "include": [
+    "packages/*/src/**/*.ts",
+    "packages/*/src/**/*.tsx",
+    "tests/**/*.ts",
+    "vitest.config.ts",
+    "scripts/**/*.ts"
+  ],
   "exclude": [
     "node_modules",
     "dist",
     "target",
     "reference",
     ".basalt",
-    "**/*.test.ts",
-    "**/__tests__/**"
+    "tests/parity/fixtures",
+    "tests/parity/baseline",
+    ".venv-reference"
   ]
 }
