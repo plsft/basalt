@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "section": "connection",
+  "track_record": {
+    "schema": 1,
+    "window_days": 90,
+    "confirmed": 0,
+    "pending": 3,
+    "falsified": 0,
+    "total": 3,
+    "confirmed_pct": 0.0,
+    "falsified_pct": 0.0
+  },
+  "findings": {
+    "connection": []
+  }
+}

@@ -1,0 +1,903 @@
+{
+  "schema": 1,
+  "section": "all",
+  "track_record": {
+    "schema": 1,
+    "window_days": 90,
+    "confirmed": 0,
+    "pending": 8,
+    "falsified": 0,
+    "total": 8,
+    "confirmed_pct": 0.0,
+    "falsified_pct": 0.0
+  },
+  "findings": {
+    "buried_insight": [
+      {
+        "verb": "buried-insight",
+        "schema": 1,
+        "rel_path": "04-Reading\\Brooks-1975.md",
+        "title": "Brooks-1975",
+        "stem": "Brooks-1975",
+        "created": "2024-11-29",
+        "updated": "2024-12-15",
+        "word_count": 135,
+        "score": 13.282765901088714,
+        "hub_density": 0.0,
+        "hub_penalty": 1.0,
+        "inbound_recent_count": 4,
+        "quote": "compounding only happens to people who don't optimize for the next quarter.",
+        "quote_provenance": "callout body",
+        "vault_age_days": 719,
+        "thresholds": {
+          "min_age_days": 359,
+          "min_dormant_days": 119,
+          "recent_window_days": 359
+        },
+        "validators": [
+          {
+            "rel_path": "05-References\\Failure-Modes.md",
+            "title": "Failure Modes",
+            "updated": "2025-06-19",
+            "explicit_link": true,
+            "similarity": 1.0
+          },
+          {
+            "rel_path": "05-References\\OFI-Validation.md",
+            "title": "OFI Validation",
+            "updated": "2025-09-09",
+            "explicit_link": true,
+            "similarity": 1.0
+          },
+          {
+            "rel_path": "06-MOCs\\MOC-Inbox.md",
+            "title": "MOC Inbox",
+            "updated": "2025-10-10",
+            "explicit_link": true,
+            "similarity": 1.0
+          },
+          {
+            "rel_path": "05-References\\Embedding-Stability.md",
+            "title": "Embedding Stability",
+            "updated": "2025-11-27",
+            "explicit_link": true,
+            "similarity": 1.0
+          },
+          {
+            "rel_path": "02-Projects\\Atlas\\HYPOTHESIS.md",
+            "title": "HYPOTHESIS",
+            "updated": "2026-02-02",
+            "explicit_link": false,
+            "similarity": 0.9151391386985779
+          }
+        ],
+        "falsification": [
+          {
+            "kind": "no_new_validators",
+            "params": {
+              "rel_path": "04-Reading\\Brooks-1975.md",
+              "grace_days": 60
+            },
+            "text": "wrong if no new note links to or semantically validates 04-Reading\\Brooks-1975.md within 60 days"
+          },
+          {
+            "kind": "candidate_shrinks",
+            "params": {
+              "rel_path": "04-Reading\\Brooks-1975.md",
+              "drop_pct": 30
+            },
+            "text": "wrong if 04-Reading\\Brooks-1975.md loses more than 30% of its content (you actively dismantled the claim)"
+          },
+          {
+            "kind": "candidate_deleted",
+            "params": {
+              "rel_path": "04-Reading\\Brooks-1975.md"
+            },
+            "text": "wrong if 04-Reading\\Brooks-1975.md is deleted (you've moved on from this claim)"
+          }
+        ]
+      },
+      {
+        "verb": "buried-insight",
+        "schema": 1,
+        "rel_path": "04-Reading\\Sapolsky-2004.md",
+        "title": "Sapolsky-2004",
+        "stem": "Sapolsky-2004",
+        "created": "2024-07-13",
+        "updated": "2024-07-13",
+        "word_count": 102,
+        "score": 9.664825960000357,
+        "hub_density": 0.0,
+        "hub_penalty": 1.0,
+        "inbound_recent_count": 2,
+        "quote": "I keep being wrong about how long the patient version takes — usually longer than I think, and worth it.",
+        "quote_provenance": "callout body",
+        "vault_age_days": 719,
+        "thresholds": {
+          "min_age_days": 359,
+          "min_dormant_days": 119,
+          "recent_window_days": 359
+        },
+        "validators": [
+          {
+            "rel_path": "05-References\\Compounding-Patterns.md",
+            "title": "Compounding Patterns",
+            "updated": "2025-05-27",
+            "explicit_link": true,
+            "similarity": 1.0
+          },
+          {
+            "rel_path": "06-MOCs\\MOC-Inbox.md",
+            "title": "MOC Inbox",
+            "updated": "2025-10-10",
+            "explicit_link": true,
+            "similarity": 1.0
+          },
+          {
+            "rel_path": "04-Reading\\Knuth-1973.md",
+            "title": "Knuth-1973",
+            "updated": "2026-01-08",
+            "explicit_link": false,
+            "similarity": 0.9410793781280518
+          },
+          {
+            "rel_path": "01-Daily\\2026-03-14.md",
+            "title": "2026-03-14",
+            "updated": "2026-03-14",
+            "explicit_link": false,
+            "similarity": 0.9174181818962097
+          },
+          {
+            "rel_path": "02-Projects\\Beacon\\Beacon-Note-03.md",
+            "title": "Beacon Note 03",
+            "updated": "2025-11-28",
+            "explicit_link": false,
+            "similarity": 0.9093208312988281
+          }
+        ],
+        "falsification": [
+          {
+            "kind": "no_new_validators",
+            "params": {
+              "rel_path": "04-Reading\\Sapolsky-2004.md",
+              "grace_days": 60
+            },
+            "text": "wrong if no new note links to or semantically validates 04-Reading\\Sapolsky-2004.md within 60 days"
+          },
+          {
+            "kind": "candidate_shrinks",
+            "params": {
+              "rel_path": "04-Reading\\Sapolsky-2004.md",
+              "drop_pct": 30
+            },
+            "text": "wrong if 04-Reading\\Sapolsky-2004.md loses more than 30% of its content (you actively dismantled the claim)"
+          },
+          {
+            "kind": "candidate_deleted",
+            "params": {
+              "rel_path": "04-Reading\\Sapolsky-2004.md"
+            },
+            "text": "wrong if 04-Reading\\Sapolsky-2004.md is deleted (you've moved on from this claim)"
+          }
+        ]
+      },
+      {
+        "verb": "buried-insight",
+        "schema": 1,
+        "rel_path": "04-Reading\\Feynman-1965.md",
+        "title": "Feynman-1965",
+        "stem": "Feynman-1965",
+        "created": "2025-03-15",
+        "updated": "2025-04-28",
+        "word_count": 80,
+        "score": 9.040104808012645,
+        "hub_density": 0.0,
+        "hub_penalty": 1.0,
+        "inbound_recent_count": 2,
+        "quote": "you can't fix a culture problem with tooling, but the wrong tooling rots a healthy one.",
+        "quote_provenance": "callout body",
+        "vault_age_days": 719,
+        "thresholds": {
+          "min_age_days": 359,
+          "min_dormant_days": 119,
+          "recent_window_days": 359
+        },
+        "validators": [
+          {
+            "rel_path": "06-MOCs\\MOC-Reading.md",
+            "title": "MOC Reading",
+            "updated": "2025-08-13",
+            "explicit_link": true,
+            "similarity": 1.0
+          },
+          {
+            "rel_path": "06-MOCs\\MOC-Inbox.md",
+            "title": "MOC Inbox",
+            "updated": "2025-10-10",
+            "explicit_link": true,
+            "similarity": 1.0
+          },
+          {
+            "rel_path": "07-Insights\\Insight-001.md",
+            "title": "Insight 001",
+            "updated": "2025-09-29",
+            "explicit_link": false,
+            "similarity": 0.9071717858314514
+          },
+          {
+            "rel_path": "02-Projects\\Beacon\\Beacon-Note-02.md",
+            "title": "Beacon Note 02",
+            "updated": "2026-04-12",
+            "explicit_link": false,
+            "similarity": 0.8885388374328613
+          },
+          {
+            "rel_path": "05-References\\Backpressure-Notes.md",
+            "title": "Backpressure Notes",
+            "updated": "2025-09-26",
+            "explicit_link": false,
+            "similarity": 0.8801324963569641
+          }
+        ],
+        "falsification": [
+          {
+            "kind": "no_new_validators",
+            "params": {
+              "rel_path": "04-Reading\\Feynman-1965.md",
+              "grace_days": 60
+            },
+            "text": "wrong if no new note links to or semantically validates 04-Reading\\Feynman-1965.md within 60 days"
+          },
+          {
+            "kind": "candidate_shrinks",
+            "params": {
+              "rel_path": "04-Reading\\Feynman-1965.md",
+              "drop_pct": 30
+            },
+            "text": "wrong if 04-Reading\\Feynman-1965.md loses more than 30% of its content (you actively dismantled the claim)"
+          },
+          {
+            "kind": "candidate_deleted",
+            "params": {
+              "rel_path": "04-Reading\\Feynman-1965.md"
+            },
+            "text": "wrong if 04-Reading\\Feynman-1965.md is deleted (you've moved on from this claim)"
+          }
+        ]
+      }
+    ],
+    "connection": [],
+    "contradiction": [
+      {
+        "verb": "contradiction",
+        "schema": 1,
+        "version": "v0-heuristic",
+        "topical_similarity": 0.882920503616333,
+        "contradiction_score": 2.2,
+        "score": 1.9424251079559327,
+        "signals": [
+          "asymmetric negation",
+          "asymmetric reversal marker"
+        ],
+        "note_a": {
+          "rel_path": "01-Daily\\2026-03-04.md",
+          "title": "2026-03-04",
+          "quote": "When the tooling stops getting in the way, trust is not a metric.",
+          "quote_provenance": "first prose sentence"
+        },
+        "note_b": {
+          "rel_path": "07-Insights\\Insight-011.md",
+          "title": "Insight 011",
+          "quote": "What you publicize is what you actually value.",
+          "quote_provenance": "callout body"
+        },
+        "falsification": [
+          {
+            "kind": "neither_edited",
+            "params": {
+              "a": "01-Daily\\2026-03-04.md",
+              "b": "07-Insights\\Insight-011.md",
+              "grace_days": 60
+            },
+            "text": "wrong if neither note is edited within 60 days (you don't think it's a real conflict — heuristic was a false positive)"
+          },
+          {
+            "kind": "still_in_conflict",
+            "params": {
+              "a": "01-Daily\\2026-03-04.md",
+              "b": "07-Insights\\Insight-011.md",
+              "grace_days": 90
+            },
+            "text": "confirmed if both notes still exist with the contradiction signal intact after 90 days (the conflict is real and unresolved)"
+          }
+        ]
+      },
+      {
+        "verb": "contradiction",
+        "schema": 1,
+        "version": "v0-heuristic",
+        "topical_similarity": 0.8883109092712402,
+        "contradiction_score": 1.2,
+        "score": 1.0659730911254883,
+        "signals": [
+          "asymmetric reversal marker"
+        ],
+        "note_a": {
+          "rel_path": "01-Daily\\2026-03-03.md",
+          "title": "2026-03-03",
+          "quote": "It's a side effect of doing the boring thing for years.",
+          "quote_provenance": "callout body"
+        },
+        "note_b": {
+          "rel_path": "01-Daily\\2026-04-21.md",
+          "title": "2026-04-21",
+          "quote": "What you publicize is what you actually value.",
+          "quote_provenance": "callout body"
+        },
+        "falsification": [
+          {
+            "kind": "neither_edited",
+            "params": {
+              "a": "01-Daily\\2026-03-03.md",
+              "b": "01-Daily\\2026-04-21.md",
+              "grace_days": 60
+            },
+            "text": "wrong if neither note is edited within 60 days (you don't think it's a real conflict — heuristic was a false positive)"
+          },
+          {
+            "kind": "still_in_conflict",
+            "params": {
+              "a": "01-Daily\\2026-03-03.md",
+              "b": "01-Daily\\2026-04-21.md",
+              "grace_days": 90
+            },
+            "text": "confirmed if both notes still exist with the contradiction signal intact after 90 days (the conflict is real and unresolved)"
+          }
+        ]
+      }
+    ],
+    "implicit_thesis": [
+      {
+        "verb": "implicit-thesis",
+        "schema": 1,
+        "version": "v0-cluster",
+        "score": 86.76832752609583,
+        "cluster_size": 15,
+        "folder_diversity": 0,
+        "span_days": 688,
+        "mean_similarity": 0.8851326107978821,
+        "centroid": {
+          "rel_path": "07-Insights\\Insight-002.md",
+          "title": "Insight 002",
+          "quote": "the cheapest correction happens when the constraint is still legible.",
+          "quote_provenance": "callout body"
+        },
+        "members": [
+          {
+            "rel_path": "07-Insights\\Insight-002.md",
+            "title": "Insight 002",
+            "folder": "",
+            "quote": "the cheapest correction happens when the constraint is still legible.",
+            "quote_provenance": "callout body"
+          },
+          {
+            "rel_path": "02-Projects\\Beacon\\Beacon.md",
+            "title": "Beacon",
+            "folder": "",
+            "quote": "compounding only happens to people who don't optimize for the next quarter.",
+            "quote_provenance": "callout body"
+          },
+          {
+            "rel_path": "07-Insights\\Insight-014.md",
+            "title": "Insight 014",
+            "folder": "",
+            "quote": "you can't fix a culture problem with tooling, but the wrong tooling rots a healthy one.",
+            "quote_provenance": "callout body"
+          },
+          {
+            "rel_path": "02-Projects\\Crucible\\HYPOTHESIS.md",
+            "title": "HYPOTHESIS",
+            "folder": "",
+            "quote": "compounding only happens to people who don't optimize for the next quarter.",
+            "quote_provenance": "callout body"
+          },
+          {
+            "rel_path": "02-Projects\\Crucible\\Crucible.md",
+            "title": "Crucible",
+            "folder": "",
+            "quote": "I keep being wrong about how long the patient version takes — usually longer than I think, and worth it.",
+            "quote_provenance": "callout body"
+          },
+          {
+            "rel_path": "02-Projects\\Crucible\\Crucible-Note-08.md",
+            "title": "Crucible Note 08",
+            "folder": "",
+            "quote": "compounding only happens to people who don't optimize for the next quarter.",
+            "quote_provenance": "callout body"
+          },
+          {
+            "rel_path": "04-Reading\\Kuhn-1962.md",
+            "title": "Kuhn-1962",
+            "folder": "",
+            "quote": "I keep being wrong about how long the patient version takes — usually longer than I think, and worth it.",
+            "quote_provenance": "callout body"
+          },
+          {
+            "rel_path": "07-Insights\\Insight-037.md",
+            "title": "Insight 037",
+            "folder": "",
+            "quote": "you can't fix a culture problem with tooling, but the wrong tooling rots a healthy one.",
+            "quote_provenance": "callout body"
+          },
+          {
+            "rel_path": "07-Insights\\Insight-030.md",
+            "title": "Insight 030",
+            "folder": "",
+            "quote": "compounding only happens to people who don't optimize for the next quarter.",
+            "quote_provenance": "callout body"
+          },
+          {
+            "rel_path": "04-Reading\\Carse-1986.md",
+            "title": "Carse-1986",
+            "folder": "",
+            "quote": "the cheapest correction happens when the constraint is still legible.",
+            "quote_provenance": "callout body"
+          },
+          {
+            "rel_path": "07-Insights\\Insight-004.md",
+            "title": "Insight 004",
+            "folder": "",
+            "quote": "I keep being wrong about how long the patient version takes — usually longer than I think, and worth it.",
+            "quote_provenance": "callout body"
+          },
+          {
+            "rel_path": "02-Projects\\Beacon\\Beacon-Note-03.md",
+            "title": "Beacon Note 03",
+            "folder": "",
+            "quote": "I keep being wrong about how long the patient version takes — usually longer than I think, and worth it.",
+            "quote_provenance": "callout body"
+          },
+          {
+            "rel_path": "07-Insights\\Insight-010.md",
+            "title": "Insight 010",
+            "folder": "",
+            "quote": "the cheapest correction happens when the constraint is still legible.",
+            "quote_provenance": "callout body"
+          },
+          {
+            "rel_path": "07-Insights\\Insight-039.md",
+            "title": "Insight 039",
+            "folder": "",
+            "quote": "the right abstraction is the one you can throw away in six months without panic.",
+            "quote_provenance": "callout body"
+          },
+          {
+            "rel_path": "04-Reading\\Bachelard-1938.md",
+            "title": "Bachelard-1938",
+            "folder": "",
+            "quote": "compounding only happens to people who don't optimize for the next quarter.",
+            "quote_provenance": "callout body"
+          }
+        ],
+        "falsification": [
+          {
+            "kind": "centroid_deleted",
+            "params": {
+              "rel_path": "07-Insights\\Insight-002.md"
+            },
+            "text": "wrong if 07-Insights\\Insight-002.md is deleted (the proxy thesis statement is gone — the cluster needs a new centroid)"
+          },
+          {
+            "kind": "cluster_dispersed",
+            "params": {
+              "member_paths": [
+                "07-Insights\\Insight-002.md",
+                "02-Projects\\Beacon\\Beacon.md",
+                "07-Insights\\Insight-014.md",
+                "02-Projects\\Crucible\\HYPOTHESIS.md",
+                "02-Projects\\Crucible\\Crucible.md",
+                "02-Projects\\Crucible\\Crucible-Note-08.md",
+                "04-Reading\\Kuhn-1962.md",
+                "07-Insights\\Insight-037.md",
+                "07-Insights\\Insight-030.md",
+                "04-Reading\\Carse-1986.md",
+                "07-Insights\\Insight-004.md",
+                "02-Projects\\Beacon\\Beacon-Note-03.md",
+                "07-Insights\\Insight-010.md",
+                "07-Insights\\Insight-039.md",
+                "04-Reading\\Bachelard-1938.md"
+              ],
+              "min_remaining": 13
+            },
+            "text": "wrong if more than 2 of the 15 cluster members are deleted within 90 days (the through-line dissolves)"
+          },
+          {
+            "kind": "no_new_rephrasing",
+            "params": {
+              "member_paths": [
+                "07-Insights\\Insight-002.md",
+                "02-Projects\\Beacon\\Beacon.md",
+                "07-Insights\\Insight-014.md",
+                "02-Projects\\Crucible\\HYPOTHESIS.md",
+                "02-Projects\\Crucible\\Crucible.md",
+                "02-Projects\\Crucible\\Crucible-Note-08.md",
+                "04-Reading\\Kuhn-1962.md",
+                "07-Insights\\Insight-037.md",
+                "07-Insights\\Insight-030.md",
+                "04-Reading\\Carse-1986.md",
+                "07-Insights\\Insight-004.md",
+                "02-Projects\\Beacon\\Beacon-Note-03.md",
+                "07-Insights\\Insight-010.md",
+                "07-Insights\\Insight-039.md",
+                "04-Reading\\Bachelard-1938.md"
+              ],
+              "grace_days": 90
+            },
+            "text": "wrong if no new note expresses a similar claim within 90 days (the convergence was a snapshot, not a recurring theme)"
+          }
+        ]
+      },
+      {
+        "verb": "implicit-thesis",
+        "schema": 1,
+        "version": "v0-cluster",
+        "score": 86.74000113937366,
+        "cluster_size": 15,
+        "folder_diversity": 0,
+        "span_days": 676,
+        "mean_similarity": 0.8872289657592773,
+        "centroid": {
+          "rel_path": "02-Projects\\Beacon\\Beacon.md",
+          "title": "Beacon",
+          "quote": "compounding only happens to people who don't optimize for the next quarter.",
+          "quote_provenance": "callout body"
+        },
+        "members": [
+          {
+            "rel_path": "02-Projects\\Beacon\\Beacon.md",
+            "title": "Beacon",
+            "folder": "",
+            "quote": "compounding only happens to people who don't optimize for the next quarter.",
+            "quote_provenance": "callout body"
+          },
+          {
+            "rel_path": "07-Insights\\Insight-002.md",
+            "title": "Insight 002",
+            "folder": "",
+            "quote": "the cheapest correction happens when the constraint is still legible.",
+            "quote_provenance": "callout body"
+          },
+          {
+            "rel_path": "07-Insights\\Insight-014.md",
+            "title": "Insight 014",
+            "folder": "",
+            "quote": "you can't fix a culture problem with tooling, but the wrong tooling rots a healthy one.",
+            "quote_provenance": "callout body"
+          },
+          {
+            "rel_path": "02-Projects\\Crucible\\Crucible-Note-08.md",
+            "title": "Crucible Note 08",
+            "folder": "",
+            "quote": "compounding only happens to people who don't optimize for the next quarter.",
+            "quote_provenance": "callout body"
+          },
+          {
+            "rel_path": "04-Reading\\Carse-1986.md",
+            "title": "Carse-1986",
+            "folder": "",
+            "quote": "the cheapest correction happens when the constraint is still legible.",
+            "quote_provenance": "callout body"
+          },
+          {
+            "rel_path": "02-Projects\\Crucible\\Crucible-Note-02.md",
+            "title": "Crucible Note 02",
+            "folder": "",
+            "quote": "you can't fix a culture problem with tooling, but the wrong tooling rots a healthy one.",
+            "quote_provenance": "callout body"
+          },
+          {
+            "rel_path": "04-Reading\\Bachelard-1938.md",
+            "title": "Bachelard-1938",
+            "folder": "",
+            "quote": "compounding only happens to people who don't optimize for the next quarter.",
+            "quote_provenance": "callout body"
+          },
+          {
+            "rel_path": "07-Insights\\Insight-010.md",
+            "title": "Insight 010",
+            "folder": "",
+            "quote": "the cheapest correction happens when the constraint is still legible.",
+            "quote_provenance": "callout body"
+          },
+          {
+            "rel_path": "04-Reading\\Hofstadter-1979.md",
+            "title": "Hofstadter-1979",
+            "folder": "",
+            "quote": "compounding only happens to people who don't optimize for the next quarter.",
+            "quote_provenance": "callout body"
+          },
+          {
+            "rel_path": "07-Insights\\Insight-039.md",
+            "title": "Insight 039",
+            "folder": "",
+            "quote": "the right abstraction is the one you can throw away in six months without panic.",
+            "quote_provenance": "callout body"
+          },
+          {
+            "rel_path": "07-Insights\\Insight-020.md",
+            "title": "Insight 020",
+            "folder": "",
+            "quote": "you can't fix a culture problem with tooling, but the wrong tooling rots a healthy one.",
+            "quote_provenance": "callout body"
+          },
+          {
+            "rel_path": "02-Projects\\Crucible\\Crucible.md",
+            "title": "Crucible",
+            "folder": "",
+            "quote": "I keep being wrong about how long the patient version takes — usually longer than I think, and worth it.",
+            "quote_provenance": "callout body"
+          },
+          {
+            "rel_path": "02-Projects\\Beacon\\Beacon-Note-03.md",
+            "title": "Beacon Note 03",
+            "folder": "",
+            "quote": "I keep being wrong about how long the patient version takes — usually longer than I think, and worth it.",
+            "quote_provenance": "callout body"
+          },
+          {
+            "rel_path": "02-Projects\\Driftwood\\HYPOTHESIS.md",
+            "title": "HYPOTHESIS",
+            "folder": "",
+            "quote": "the moat isn't speed alone — it's the user's willingness to keep coming back.",
+            "quote_provenance": "callout body"
+          },
+          {
+            "rel_path": "04-Reading\\Polya-1945.md",
+            "title": "Polya-1945",
+            "folder": "",
+            "quote": "the right abstraction is the one you can throw away in six months without panic.",
+            "quote_provenance": "callout body"
+          }
+        ],
+        "falsification": [
+          {
+            "kind": "centroid_deleted",
+            "params": {
+              "rel_path": "02-Projects\\Beacon\\Beacon.md"
+            },
+            "text": "wrong if 02-Projects\\Beacon\\Beacon.md is deleted (the proxy thesis statement is gone — the cluster needs a new centroid)"
+          },
+          {
+            "kind": "cluster_dispersed",
+            "params": {
+              "member_paths": [
+                "02-Projects\\Beacon\\Beacon.md",
+                "07-Insights\\Insight-002.md",
+                "07-Insights\\Insight-014.md",
+                "02-Projects\\Crucible\\Crucible-Note-08.md",
+                "04-Reading\\Carse-1986.md",
+                "02-Projects\\Crucible\\Crucible-Note-02.md",
+                "04-Reading\\Bachelard-1938.md",
+                "07-Insights\\Insight-010.md",
+                "04-Reading\\Hofstadter-1979.md",
+                "07-Insights\\Insight-039.md",
+                "07-Insights\\Insight-020.md",
+                "02-Projects\\Crucible\\Crucible.md",
+                "02-Projects\\Beacon\\Beacon-Note-03.md",
+                "02-Projects\\Driftwood\\HYPOTHESIS.md",
+                "04-Reading\\Polya-1945.md"
+              ],
+              "min_remaining": 13
+            },
+            "text": "wrong if more than 2 of the 15 cluster members are deleted within 90 days (the through-line dissolves)"
+          },
+          {
+            "kind": "no_new_rephrasing",
+            "params": {
+              "member_paths": [
+                "02-Projects\\Beacon\\Beacon.md",
+                "07-Insights\\Insight-002.md",
+                "07-Insights\\Insight-014.md",
+                "02-Projects\\Crucible\\Crucible-Note-08.md",
+                "04-Reading\\Carse-1986.md",
+                "02-Projects\\Crucible\\Crucible-Note-02.md",
+                "04-Reading\\Bachelard-1938.md",
+                "07-Insights\\Insight-010.md",
+                "04-Reading\\Hofstadter-1979.md",
+                "07-Insights\\Insight-039.md",
+                "07-Insights\\Insight-020.md",
+                "02-Projects\\Crucible\\Crucible.md",
+                "02-Projects\\Beacon\\Beacon-Note-03.md",
+                "02-Projects\\Driftwood\\HYPOTHESIS.md",
+                "04-Reading\\Polya-1945.md"
+              ],
+              "grace_days": 90
+            },
+            "text": "wrong if no new note expresses a similar claim within 90 days (the convergence was a snapshot, not a recurring theme)"
+          }
+        ]
+      },
+      {
+        "verb": "implicit-thesis",
+        "schema": 1,
+        "version": "v0-cluster",
+        "score": 86.62258654944372,
+        "cluster_size": 15,
+        "folder_diversity": 0,
+        "span_days": 688,
+        "mean_similarity": 0.8836458921432495,
+        "centroid": {
+          "rel_path": "07-Insights\\Insight-037.md",
+          "title": "Insight 037",
+          "quote": "you can't fix a culture problem with tooling, but the wrong tooling rots a healthy one.",
+          "quote_provenance": "callout body"
+        },
+        "members": [
+          {
+            "rel_path": "07-Insights\\Insight-037.md",
+            "title": "Insight 037",
+            "folder": "",
+            "quote": "you can't fix a culture problem with tooling, but the wrong tooling rots a healthy one.",
+            "quote_provenance": "callout body"
+          },
+          {
+            "rel_path": "02-Projects\\Crucible\\HYPOTHESIS.md",
+            "title": "HYPOTHESIS",
+            "folder": "",
+            "quote": "compounding only happens to people who don't optimize for the next quarter.",
+            "quote_provenance": "callout body"
+          },
+          {
+            "rel_path": "07-Insights\\Insight-009.md",
+            "title": "Insight 009",
+            "folder": "",
+            "quote": "the moat isn't speed alone — it's the user's willingness to keep coming back.",
+            "quote_provenance": "callout body"
+          },
+          {
+            "rel_path": "07-Insights\\Insight-033.md",
+            "title": "Insight 033",
+            "folder": "",
+            "quote": "The thing that keeps coming up is the moat isn't speed alone — it's the user's willingness to keep coming back.",
+            "quote_provenance": "first prose sentence"
+          },
+          {
+            "rel_path": "02-Projects\\Atlas\\Atlas-Note-07.md",
+            "title": "Atlas Note 07",
+            "folder": "",
+            "quote": "the moat isn't speed alone — it's the user's willingness to keep coming back.",
+            "quote_provenance": "callout body"
+          },
+          {
+            "rel_path": "07-Insights\\Insight-027.md",
+            "title": "Insight 027",
+            "folder": "",
+            "quote": "the right abstraction is the one you can throw away in six months without panic.",
+            "quote_provenance": "callout body"
+          },
+          {
+            "rel_path": "07-Insights\\Insight-002.md",
+            "title": "Insight 002",
+            "folder": "",
+            "quote": "the cheapest correction happens when the constraint is still legible.",
+            "quote_provenance": "callout body"
+          },
+          {
+            "rel_path": "07-Insights\\Insight-030.md",
+            "title": "Insight 030",
+            "folder": "",
+            "quote": "compounding only happens to people who don't optimize for the next quarter.",
+            "quote_provenance": "callout body"
+          },
+          {
+            "rel_path": "07-Insights\\Insight-014.md",
+            "title": "Insight 014",
+            "folder": "",
+            "quote": "you can't fix a culture problem with tooling, but the wrong tooling rots a healthy one.",
+            "quote_provenance": "callout body"
+          },
+          {
+            "rel_path": "07-Insights\\Insight-018.md",
+            "title": "Insight 018",
+            "folder": "",
+            "quote": "the moat isn't speed alone — it's the user's willingness to keep coming back.",
+            "quote_provenance": "callout body"
+          },
+          {
+            "rel_path": "07-Insights\\Insight-032.md",
+            "title": "Insight 032",
+            "folder": "",
+            "quote": "The thing that keeps coming up is the moat isn't speed alone — it's the user's willingness to keep coming back.",
+            "quote_provenance": "first prose sentence"
+          },
+          {
+            "rel_path": "07-Insights\\Insight-004.md",
+            "title": "Insight 004",
+            "folder": "",
+            "quote": "I keep being wrong about how long the patient version takes — usually longer than I think, and worth it.",
+            "quote_provenance": "callout body"
+          },
+          {
+            "rel_path": "02-Projects\\Atlas\\Atlas-Note-05.md",
+            "title": "Atlas Note 05",
+            "folder": "",
+            "quote": "the right abstraction is the one you can throw away in six months without panic.",
+            "quote_provenance": "callout body"
+          },
+          {
+            "rel_path": "04-Reading\\Kuhn-1962.md",
+            "title": "Kuhn-1962",
+            "folder": "",
+            "quote": "I keep being wrong about how long the patient version takes — usually longer than I think, and worth it.",
+            "quote_provenance": "callout body"
+          },
+          {
+            "rel_path": "02-Projects\\Crucible\\Crucible.md",
+            "title": "Crucible",
+            "folder": "",
+            "quote": "I keep being wrong about how long the patient version takes — usually longer than I think, and worth it.",
+            "quote_provenance": "callout body"
+          }
+        ],
+        "falsification": [
+          {
+            "kind": "centroid_deleted",
+            "params": {
+              "rel_path": "07-Insights\\Insight-037.md"
+            },
+            "text": "wrong if 07-Insights\\Insight-037.md is deleted (the proxy thesis statement is gone — the cluster needs a new centroid)"
+          },
+          {
+            "kind": "cluster_dispersed",
+            "params": {
+              "member_paths": [
+                "07-Insights\\Insight-037.md",
+                "02-Projects\\Crucible\\HYPOTHESIS.md",
+                "07-Insights\\Insight-009.md",
+                "07-Insights\\Insight-033.md",
+                "02-Projects\\Atlas\\Atlas-Note-07.md",
+                "07-Insights\\Insight-027.md",
+                "07-Insights\\Insight-002.md",
+                "07-Insights\\Insight-030.md",
+                "07-Insights\\Insight-014.md",
+                "07-Insights\\Insight-018.md",
+                "07-Insights\\Insight-032.md",
+                "07-Insights\\Insight-004.md",
+                "02-Projects\\Atlas\\Atlas-Note-05.md",
+                "04-Reading\\Kuhn-1962.md",
+                "02-Projects\\Crucible\\Crucible.md"
+              ],
+              "min_remaining": 13
+            },
+            "text": "wrong if more than 2 of the 15 cluster members are deleted within 90 days (the through-line dissolves)"
+          },
+          {
+            "kind": "no_new_rephrasing",
+            "params": {
+              "member_paths": [
+                "07-Insights\\Insight-037.md",
+                "02-Projects\\Crucible\\HYPOTHESIS.md",
+                "07-Insights\\Insight-009.md",
+                "07-Insights\\Insight-033.md",
+                "02-Projects\\Atlas\\Atlas-Note-07.md",
+                "07-Insights\\Insight-027.md",
+                "07-Insights\\Insight-002.md",
+                "07-Insights\\Insight-030.md",
+                "07-Insights\\Insight-014.md",
+                "07-Insights\\Insight-018.md",
+                "07-Insights\\Insight-032.md",
+                "07-Insights\\Insight-004.md",
+                "02-Projects\\Atlas\\Atlas-Note-05.md",
+                "04-Reading\\Kuhn-1962.md",
+                "02-Projects\\Crucible\\Crucible.md"
+              ],
+              "grace_days": 90
+            },
+            "text": "wrong if no new note expresses a similar claim within 90 days (the convergence was a snapshot, not a recurring theme)"
+          }
+        ]
+      }
+    ],
+    "drift": []
+  }
+}

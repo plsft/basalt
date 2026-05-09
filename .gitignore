@@ -54,6 +54,11 @@ src-tauri/Cargo.lock
 .wrangler/
 .dev.vars
 
+# Python venvs (parity baseline regeneration uses .venv-reference/)
+.venv*/
+__pycache__/
+*.pyc
+
 # Auto-generated per-directory context files (claude-mem).
 # Root CLAUDE.md is the operating manual and is checked in.
 **/CLAUDE.md
