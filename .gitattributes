@@ -1,0 +1,17 @@
+# Default to native line endings on checkout, normalize to LF in the repo.
+* text=auto eol=lf
+
+# Always LF — shell scripts and YAML must not be CRLF or they break on Linux.
+*.sh    text eol=lf
+*.yml   text eol=lf
+*.yaml  text eol=lf
+
+# Mark binaries
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.gif   binary
+*.ico   binary
+*.woff  binary
+*.woff2 binary
+*.bun.lockb binary

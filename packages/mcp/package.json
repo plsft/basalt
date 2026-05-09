@@ -1,0 +1,15 @@
+{
+  "name": "@basalt/mcp",
+  "version": "0.0.0",
+  "description": "Basalt MCP server — exposes Brief, verbs, and audit as MCP tools.",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "basalt-mcp": "./src/index.ts"
+  },
+  "scripts": {
+    "build": "exit 0",
+    "typecheck": "tsc --noEmit",
+    "test": "echo \"@basalt/mcp: no tests yet\" && exit 0"
+  }
+}
