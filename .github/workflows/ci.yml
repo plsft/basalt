@@ -1,0 +1,86 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  BUN_VERSION: 1.3.13
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+      - run: bun install --frozen-lockfile
+      - run: bun run lint
+
+  format:
+    name: Format
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+      - run: bun install --frozen-lockfile
+      - run: bunx biome ci .
+
+  typecheck:
+    name: Typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+      - run: bun install --frozen-lockfile
+      - run: bun run typecheck
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+      - run: bun install --frozen-lockfile
+      - run: bun run test
+
+  parity:
+    name: Parity
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate parity infrastructure
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Phase 0 placeholder. Real parity assertions land in Phase 1 once the
+          # TS verbs exist. As of TASK-0.2, this job verifies the parity skeleton
+          # is in place; baselines themselves arrive in TASK-0.4, the runner in
+          # TASK-0.5, and full assertions in Phase 1.
+          if [ ! -d tests/parity ]; then
+            echo "tests/parity/ directory missing"; exit 1
+          fi
+          # If baselines exist, verify each is valid JSON.
+          if [ -d tests/parity/baseline ]; then
+            shopt -s nullglob
+            for f in tests/parity/baseline/*.json; do
+              echo "Validating $f"
+              python3 -c "import json,sys; json.load(open(sys.argv[1]))" "$f"
+            done
+          else
+            echo "tests/parity/baseline/ not yet present (lands in TASK-0.4)."
+          fi
