@@ -1,3 +1,5 @@
 [submodule "reference"]
 	path = reference
 	url = https://github.com/virtexvirtuoso/basalt.git
+	branch = main
+	ignore = untracked
