@@ -53,3 +53,8 @@ src-tauri/Cargo.lock
 # Cloudflare
 .wrangler/
 .dev.vars
+
+# Auto-generated per-directory context files (claude-mem).
+# Root CLAUDE.md is the operating manual and is checked in.
+**/CLAUDE.md
+!/CLAUDE.md
