@@ -1,23 +1,152 @@
-# Phase 2 — MCP Server + Obsidian Plugin
+# Phase 2 — CLI + MCP Server (credibility)
 
-> **Goal:** Ship two new surfaces over the same `@basalt/core` engine: an MCP server (replacing Fernando's Python MCP) and an Obsidian community plugin (the distribution wedge into non-technical users).
+> **Goal:** Ship the credibility surfaces over the same `@basalt/core` engine validated in Phase 1: a Bun-compiled CLI for the HN/Show HN/dev-tools audience, and an MCP server distributed into Claude Desktop / Cursor / Cline / Zed / VS Code Copilot.
 >
 > **Target tag:** `v0.2.0`
 >
 > **Estimated duration:** 4–6 weeks
 
-Both surfaces are thin views over the engine. The discipline from PRD §3 stands: no surface forks behavior, no surface adds a verb the others can't run, no surface modifies the user's vault.
+Both surfaces are thin views over the engine. The discipline from PRD §3 stands: no surface forks behavior, no surface adds a verb the others can't run, no surface modifies the user's vault. The schema written by the CLI's SQLite adapter is byte-compatible with both the Python reference (so existing Python users can swap CLIs without re-indexing) and the plugin's sql.js adapter (so a vault indexed by one surface is queryable by the other).
+
+Sequencing rationale (PRD §7): credibility surfaces follow the wedge. Phase 1 put Basalt in front of the audience that has the pain (Obsidian users); Phase 2 wins the dev-tooling audience and the AI-tool integration audience without forking the engine.
 
 ---
 
-## TASK-2.1 — Scaffold `@basalt/mcp`
+## TASK-2.1 — Scaffold `@basalt/cli`
+
+**Spec:**
+- Set up `packages/cli/` with TypeScript + Bun build
+- Install `commander` (or use Bun's argv parsing) for command parsing
+- Install `@iarna/toml` for config file parsing
+- Install `env-paths` for cross-platform config paths
+- Create `src/index.ts` entry point
+- Create `src/commands/` with stubs for each command listed in PRD §4.2:
+  - `init`, `index`, `brief`, `thesis`, `drift`, `connection`, `contradiction`, `buried`, `promote`, `audit`, `demo`, `about`
+- Create `src/config.ts` for `~/.basalt/config.toml` reading/writing
+- Configure `bun build --compile` to produce single-binary output for current platform
+- Configure `package.json` `bin` field for `npm install -g`
+
+**Files created:**
+```
+packages/cli/
+├── package.json
+├── tsconfig.json
+├── src/
+│   ├── index.ts
+│   ├── config.ts
+│   ├── commands/{init,index,brief,thesis,drift,connection,contradiction,buried,promote,audit,demo,about}.ts
+│   └── adapters/                # populated in TASK-2.2
+├── bin/                         # output dir for compiled binaries
+└── README.md
+```
+
+**Tests:**
+- `bun run --cwd packages/cli build` produces `dist/index.js`
+- `bun run --cwd packages/cli compile` produces `bin/basalt-<platform>`
+- `bin/basalt --help` outputs the command list
+- `bin/basalt about` outputs version + schema info
+
+**Definition of Done:** Standard DoD.
+
+---
+
+## TASK-2.2 — Implement CLI adapters (fs-node + better-sqlite3)
+
+**Spec:**
+- Implement `src/adapters/fs-node.ts` (CLI's `FilesystemAdapter` using `fs/promises`)
+  - Implement `createNoteFile(path, content)` strictly create-only — reject if target exists; do not modify any existing `.md` file. Architectural test required (mirrors TASK-1.14's plugin-side test).
+- Implement `src/adapters/storage-sqlite.ts` using `better-sqlite3`:
+  - Migrations sourced from `packages/core/src/migrations/` (single source of truth shared with the plugin's sql.js adapter)
+  - Embedding column stores Float32Array as binary blob (per SPEC.md §2.1)
+  - WAL mode enabled for concurrency
+  - Indexes on `rel_path`, `updated`, `created` (per the canonical schema)
+- The CLI re-exports `embedding-ollama` from `@basalt/core` (defined in TASK-1.4); no new embedding adapter needed
+
+**Files created:**
+```
+packages/cli/src/adapters/{fs-node,storage-sqlite}.ts
+packages/cli/src/adapters/{fs-node,storage-sqlite}.test.ts
+```
+
+**Tests:**
+- Unit: fs-node walks a fixture directory, returns expected file list and bytes
+- Unit: createNoteFile creates a new file when target doesn't exist; refuses with a typed error when it does
+- Architectural: greps `fs-node.ts` source for forbidden write APIs (`fs.rename`, `fs.unlink`, `fs.rm`, `fs.rmdir`, file-deletion shells); presence of any of these fails the build (CLAUDE.md §5)
+- Unit: storage-sqlite round-trips notes, embeddings, findings; respects schema constraints
+- Integration: full index pipeline (walk → parse → embed-mock → persist) on sample-vault-14 produces the expected number of records
+- Parity: storage-sqlite schema is byte-compatible with Python's `~/.basalt/basalt.db` schema (DDL string comparison; Python users must be able to swap CLIs without re-indexing)
+
+**Definition of Done:** Standard DoD.
+
+---
+
+## TASK-2.3 — Implement CLI commands
+
+**Spec:**
+- Implement each command in `src/commands/`:
+  - `init`: interactive prompts via `@inquirer/prompts`, writes config
+  - `index`: progress reporting via stderr, writes index DB
+  - `brief`: runs Engine.brief, renders to stdout (Markdown by default; `--format json` for JSON; `--format html` available)
+  - `thesis | drift | connection | contradiction | buried`: convenience wrappers around `brief --section X`
+  - `promote <finding-id> [--out PATH]`: renders the promoted note via `@basalt/core/promote` and writes via `fs-node.createNoteFile` (refuses to overwrite)
+  - `audit`: runs Engine.audit, prints calibration summary
+  - `demo`: runs against bundled `tests/parity/fixtures/sample-vault-14/`
+  - `about`: ASCII periodic-table animation (small Na tile rendering) + version + schema
+
+**Files modified:**
+```
+packages/cli/src/commands/*.ts
+```
+
+**Tests:**
+- Integration: each command runs against sample-vault-14 and produces expected output
+- Snapshot test: `basalt brief --section all --format json` output equals the parity baseline `tests/parity/baseline/sample-14-brief.json`
+- Integration: `basalt init` walks through prompts and produces a valid config (driven by stdin fixture)
+- Integration: `basalt demo` produces output without requiring user config
+- Integration: `basalt promote <id>` creates a new file under the configured promote folder; running it twice on the same finding errors with "target exists" (does not overwrite)
+
+**Definition of Done:** Standard DoD + `bin/basalt brief` on a real vault works end-to-end.
+
+---
+
+## TASK-2.4 — Cross-platform binary builds + npm publish prep
+
+**Spec:**
+- Configure GitHub Actions release workflow `.github/workflows/release-cli.yml`:
+  - Trigger: tag push matching `v0.*.*`
+  - Build single-binary for macOS (x64, arm64), Linux (x64, arm64), Windows (x64) via `bun build --compile --target=…`
+  - Upload binaries to GitHub release as assets
+- Configure npm publish:
+  - `npm publish --access public` from CI on tag push
+  - Publish `@basalt/cli` (verify the scope is registered or claim it; collision check per PRD §10 #2 / brand collision risk in §9)
+  - Document install paths in `packages/cli/README.md` and root `README.md`
+
+**Files created/modified:**
+```
+.github/workflows/release-cli.yml
+packages/cli/README.md
+README.md                         # Install section
+```
+
+**Tests:**
+- Tag a pre-release `v0.2.0-rc1` and verify CI produces all expected binaries
+- Manual: `npm install -g @basalt/cli` on a fresh machine works
+- Manual: download a Linux binary and run on a test VM
+- Manual: confirm Python-CLI users can point the TS CLI at their existing `~/.basalt/basalt.db` and `basalt brief` works without re-indexing (schema-compat smoke test)
+
+**Definition of Done:** Standard DoD + a successful pre-release run.
+
+---
+
+## TASK-2.5 — Scaffold `@basalt/mcp`
 
 **Spec:**
 - Set up `packages/mcp/` with TypeScript + Bun build
 - Install `@modelcontextprotocol/sdk` (Anthropic's TS SDK)
-- Reuse `@basalt/core` plus the same adapters as CLI (`fs-node`, `embedding-ollama`, `storage-sqlite`)
+- Reuse `@basalt/core` plus the same adapters as the CLI (`fs-node`, `embedding-ollama`, `storage-sqlite`)
 - Create `src/index.ts` entry point that initializes the MCP server
 - Create `src/tools.ts` with tool definitions for: `basalt_brief`, `basalt_connection`, `basalt_contradiction`, `basalt_drift`, `basalt_audit`
+- **Promote-to-note is intentionally NOT exposed via MCP** (PRD §4.3) — file creation belongs to a surface where the user can see the result, not a tool that returns text to a chat.
 - Each tool's input/output schema is declared via Zod and converted to JSON Schema for the MCP protocol
 - Configure `package.json` `bin` field for `npm install -g`
 - Configure `bun build --compile` for single-binary distribution
@@ -53,13 +182,13 @@ packages/mcp/
 
 ---
 
-## TASK-2.2 — MCP server: vault context + multi-vault handling
+## TASK-2.6 — MCP server: vault context + multi-vault handling
 
 **Spec:**
 - Vault path can be supplied three ways, in priority order:
   1. CLI args at server startup (`basalt-mcp --vault /path/to/vault`)
   2. Tool input parameter on each call (`basalt_brief({ vault: "..." })`)
-  3. Default from `~/.basalt/config.toml`
+  3. Default from `~/.basalt/config.toml` (the same config the CLI uses)
 - If multiple vaults are configured, tools accept a `vault_id` parameter; `tools/list` advertises configured vault IDs
 - Calls without a resolved vault path return a structured error (not an exception) with guidance
 - Index database is read-only when reached via MCP; write paths (e.g. `audit` updating finding statuses) are explicit and gated behind a `--allow-write` server flag
@@ -81,7 +210,7 @@ packages/mcp/src/tools/*.ts
 
 ---
 
-## TASK-2.3 — MCP server: Claude Desktop integration smoke test
+## TASK-2.7 — MCP server: Claude Desktop integration smoke test + npm publish
 
 **Spec:**
 - Document the Claude Desktop config snippet in `packages/mcp/README.md`:
@@ -98,12 +227,14 @@ packages/mcp/src/tools/*.ts
 - Manual test: install MCP server globally, configure Claude Desktop, ask Claude "run a Basalt brief on my vault" and verify all five tools resolve
 - Capture screenshots/transcript for the docs site (Phase 5 will reference these)
 - Add `examples/claude-desktop-config.json` and `examples/cursor-config.json` (Cursor MCP integration if available)
+- Configure npm publish for `@basalt/mcp` (added to the same release workflow as the CLI in TASK-2.4)
 
 **Files created:**
 ```
 packages/mcp/README.md
 packages/mcp/examples/{claude-desktop-config,cursor-config}.json
 docs/integration-screenshots/    # for Phase 5 docs site
+.github/workflows/release-cli.yml  # extended to also publish @basalt/mcp
 ```
 
 **Tests:**
@@ -114,223 +245,17 @@ docs/integration-screenshots/    # for Phase 5 docs site
 
 ---
 
-## TASK-2.4 — Scaffold `@basalt/obsidian-plugin`
-
-**Spec:**
-- Set up `packages/obsidian-plugin/` with TypeScript + esbuild
-- Use Obsidian's official sample plugin template as a starting point
-- Install `obsidian` types as devDependency
-- Create `manifest.json`:
-  ```json
-  {
-    "id": "basalt",
-    "name": "Basalt",
-    "version": "0.2.0",
-    "minAppVersion": "1.6.0",
-    "description": "A weekly Brief compiled from your notes. Reads what you've written and surfaces what you believe but never wrote down.",
-    "author": "Basalt",
-    "authorUrl": "https://basalt.<domain>",
-    "isDesktopOnly": false
-  }
-  ```
-- Configure esbuild to produce `main.js` + `styles.css` per Obsidian plugin convention
-- Create `src/main.ts` extending Obsidian's `Plugin` class with empty stubs for `onload`/`onunload`
-
-**Files created:**
-```
-packages/obsidian-plugin/
-├── package.json
-├── tsconfig.json
-├── manifest.json
-├── esbuild.config.mjs
-├── src/
-│   ├── main.ts                  # Plugin class
-│   ├── adapters/
-│   │   ├── fs-obsidian.ts       # Vault API adapter
-│   │   ├── storage-sqljs.ts     # sql.js adapter
-│   │   └── embedding-ollama.ts  # reused HTTP client
-│   ├── views/
-│   │   └── BriefView.ts         # custom view
-│   ├── settings.ts              # settings tab
-│   └── i18n/en.json
-├── styles.css
-└── README.md
-```
-
-**Tests:**
-- esbuild produces `main.js` and `styles.css`
-- Plugin loads in a test Obsidian vault without errors (manual smoke test)
-
-**Definition of Done:** Standard DoD.
-
----
-
-## TASK-2.5 — Implement Obsidian Vault adapter (filesystem)
-
-**Spec:**
-- Implement `src/adapters/fs-obsidian.ts`:
-  - Use Obsidian's `Vault` API to walk and read markdown files
-  - Convert Obsidian's relative paths to canonical absolute paths for citations
-  - Respect Obsidian's `.obsidian/` and any user-configured ignore patterns
-  - Implement the `FilesystemAdapter` interface from `@basalt/core`
-- Use `MetadataCache` for fast frontmatter access where possible (perf optimization)
-
-**Files created:**
-```
-packages/obsidian-plugin/src/adapters/fs-obsidian.ts
-packages/obsidian-plugin/src/adapters/fs-obsidian.test.ts  # unit tests with mock Vault
-```
-
-**Tests:**
-- Unit: walk produces expected file list given a mock Vault
-- Unit: readFile returns content given a mock TFile
-- Integration: against a real Obsidian instance with the sample-vault-14 fixture, walk and read produce identical bytes to fs-node adapter
-
-**Definition of Done:** Standard DoD.
-
----
-
-## TASK-2.6 — Implement sql.js storage adapter for Obsidian sandbox
-
-**Spec:**
-- Implement `src/adapters/storage-sqljs.ts`:
-  - Wrap `sql.js` (SQLite compiled to WASM) since `better-sqlite3` requires native modules unavailable in Obsidian
-  - Database file at `<vault>/.basalt/basalt.db`
-  - Persist via Obsidian's `Vault.adapter.writeBinary` for the underlying file
-  - Same schema and migrations as `storage-sqlite.ts` from CLI (single source of truth in `packages/core/src/migrations/` to avoid drift)
-- Benchmark on a 10,000-note vault: indexing must complete in < 5 minutes; querying < 1 second per verb
-
-**Files created:**
-```
-packages/obsidian-plugin/src/adapters/storage-sqljs.ts
-packages/obsidian-plugin/src/adapters/storage-sqljs.test.ts
-packages/core/src/migrations/                # moved from cli; single source
-```
-
-**Tests:**
-- Unit: round-trip writes/reads against an in-memory sql.js instance
-- Performance bench: 10,000-note synthetic vault, full index in < 5 min, full Brief in < 5s
-- If perf budget is missed, document fallback plan in PR (flat IndexedDB store with batched writes per PRD §9 risks)
-
-**Definition of Done:** Standard DoD + perf budget met OR documented fallback.
-
-**Notes:**
-- This is the highest-risk technical task in Phase 2. If sql.js is too slow, the fallback is a leaner persistence layer; that's a follow-up task, not a blocker for this one. Document the choice in `docs/parsing-decisions.md` or a new `docs/storage-decisions.md`.
-
----
-
-## TASK-2.7 — Implement BriefView + ribbon + status bar
-
-**Spec:**
-- Implement `src/views/BriefView.ts`:
-  - Extends Obsidian's `ItemView`
-  - Renders the latest Brief using `@basalt/core`'s render pipeline
-  - Click handlers on findings: Promote, Snooze, Dismiss
-  - "Open citation" links navigate to source notes via `app.workspace.openLinkText(...)`
-- Add ribbon icon: small Na-tile SVG in `styles.css`, click triggers Generate Brief
-- Add status bar item: shows indexing progress during background indexing
-- All UI strings in `src/i18n/en.json`
-
-**Files created/modified:**
-```
-packages/obsidian-plugin/src/views/BriefView.ts
-packages/obsidian-plugin/src/main.ts                # register view, ribbon, status bar
-packages/obsidian-plugin/styles.css                  # Na-tile, brand colors
-packages/obsidian-plugin/src/i18n/en.json
-```
-
-**Tests:**
-- Unit: BriefView renders given a mock Brief object
-- Integration (manual): plugin loads, ribbon icon visible, click triggers brief generation against a real vault, BriefView opens with output
-- Visual snapshot test: BriefView matches expected DOM structure for a fixture Brief
-
-**Definition of Done:** Standard DoD + manual smoke test recorded in PR.
-
----
-
-## TASK-2.8 — Implement Settings tab
-
-**Spec:**
-- Implement `src/settings.ts`:
-  - Vault path (default: current vault, override with secondary vault path)
-  - Ollama URL (default: `http://localhost:11434`)
-  - Embedding model selection (dropdown: `nomic-embed-text`, `bge-m3`, custom)
-  - BYOK provider keys (encrypted at rest using Obsidian's settings storage; document the limitation that this is not OS keychain on this surface)
-  - Brief cadence (manual / weekly auto on a schedule)
-  - Privacy preferences (opt out of any non-essential network calls — should already be true by default)
-- All settings persist via Obsidian's `loadData`/`saveData`
-
-**Files created:**
-```
-packages/obsidian-plugin/src/settings.ts
-packages/obsidian-plugin/src/settings.test.ts
-```
-
-**Tests:**
-- Unit: settings save/load round-trip preserves all fields
-- Unit: invalid Ollama URL produces validation error
-- Integration: settings UI renders and edits persist across plugin reload
-
-**Definition of Done:** Standard DoD.
-
----
-
-## TASK-2.9 — Implement weekly brief scheduling (in-plugin)
-
-**Spec:**
-- If user enables auto-cadence in settings, schedule a weekly brief via Obsidian's `setInterval`-equivalent
-- Schedule is best-effort (Obsidian must be running); document limitation
-- On trigger: run index (if vault has changed since last index) → run brief → notify user via Obsidian Notice + status bar update
-- Allow manual override at any time via the ribbon
-
-**Files modified:**
-```
-packages/obsidian-plugin/src/main.ts
-```
-
-**Tests:**
-- Unit: scheduling logic with mocked time
-- Integration (manual): set cadence to 60 seconds for testing, verify brief generates automatically
-
-**Definition of Done:** Standard DoD.
-
----
-
-## TASK-2.10 — Plugin packaging + community marketplace submission
-
-**Spec:**
-- Configure release script for the plugin:
-  - Tag-driven release builds `main.js`, `manifest.json`, `styles.css` into a release artifact
-  - Push to a `obsidian-releases` PR (separate from the monorepo's tag releases — Obsidian community releases are GitHub-release-driven)
-- Open the community submission PR to `obsidianmd/obsidian-releases` per Obsidian's community plugin guidelines
-- Set up the plugin's own GitHub repo or subdirectory release path that Obsidian's plugin browser can resolve
-- Document installation instructions in `packages/obsidian-plugin/README.md`
-
-**Files created/modified:**
-```
-.github/workflows/release-obsidian.yml
-packages/obsidian-plugin/README.md
-```
-
-**Tests:**
-- Tag a pre-release, verify the GitHub release contains the expected three artifacts
-- Manual: install the plugin from the GitHub release URL via Obsidian's "Install from URL" beta channel
-
-**Definition of Done:** Standard DoD + plugin installable via Obsidian's BRAT (Beta Reviewers Auto-update Tool) for testing before community marketplace approval.
-
-**Notes:**
-- The Obsidian community marketplace submission can take 1–4 weeks to be reviewed/merged. Begin the submission as part of this task; the marketplace listing itself is gating only for public launch, not for `v0.2.0` tag.
-
----
-
 ## Phase 2 Exit Criteria
 
 - [ ] All TASK-2.* merged
+- [ ] CLI installable via `npm install -g @basalt/cli` and as a single binary
+- [ ] CLI's `basalt promote` creates new files only — no path overwrites or modifies an existing file (architectural test passes)
+- [ ] CLI schema is byte-compatible with Python's; Python users can swap to the TS CLI without re-indexing
 - [ ] MCP server installable globally and integrates with Claude Desktop end-to-end
-- [ ] Obsidian plugin installable via BRAT and produces correct Briefs
-- [ ] sql.js perf budget met on 10k-note vault
-- [ ] No surface modifies the user's `.md` files (verified by tests)
-- [ ] Community marketplace submission opened (review pending is OK)
-- [ ] `scripts/release.sh --dry-run v0.2.0` clean
+- [ ] Promote-to-note remains absent from MCP (intentional per PRD §4.3)
+- [ ] No surface modifies the user's `.md` files (verified by tests in TASK-2.2 architectural grep)
+- [ ] Performance budgets met (PRD §6.4: engine index + brief on 1k vault)
+- [ ] CHANGELOG documents the cutover from the Python CLI to the TS CLI and the migration story
+- [ ] `scripts/release.sh --dry-run v0.2.0` produces a clean preview
 
-When all checked, tag `v0.2.0`. Phase 3 begins.
+When all checked, tag `v0.2.0`. Phase 3 (cloud API + web cockpit) begins.

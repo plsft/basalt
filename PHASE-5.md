@@ -274,7 +274,7 @@ Write the foundational docs content:
 - **Migration guide** (Python → TS CLI):
   - One-paragraph why
   - Drop-in command equivalence
-  - Schema compatibility (the index DB is byte-compatible — confirm in TASK-1.4)
+  - Schema compatibility (the index DB is byte-compatible — migration source defined in TASK-1.4, CLI-side compat asserted in TASK-2.2)
   - Caveats / known divergences from `docs/parsing-decisions.md`
 
 **Files created:**
