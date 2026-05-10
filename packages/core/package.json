@@ -7,11 +7,70 @@
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "exports": {
-    ".": "./src/index.ts"
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./adapters": {
+      "types": "./src/adapters/index.ts",
+      "import": "./src/adapters/index.ts"
+    },
+    "./parser": {
+      "types": "./src/parser/index.ts",
+      "import": "./src/parser/index.ts"
+    },
+    "./graph": {
+      "types": "./src/graph/index.ts",
+      "import": "./src/graph/index.ts"
+    },
+    "./math": {
+      "types": "./src/math/index.ts",
+      "import": "./src/math/index.ts"
+    },
+    "./verbs": {
+      "types": "./src/verbs/index.ts",
+      "import": "./src/verbs/index.ts"
+    },
+    "./brief": {
+      "types": "./src/brief/index.ts",
+      "import": "./src/brief/index.ts"
+    },
+    "./promote": {
+      "types": "./src/promote/index.ts",
+      "import": "./src/promote/index.ts"
+    },
+    "./audit": {
+      "types": "./src/audit/index.ts",
+      "import": "./src/audit/index.ts"
+    }
   },
+  "files": [
+    "src",
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
-    "build": "exit 0",
-    "typecheck": "tsc --noEmit",
-    "test": "echo \"@basalt/core: no tests yet\" && exit 0"
+    "build": "tsc -p tsconfig.json",
+    "build:watch": "tsc -p tsconfig.json --watch",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "echo \"@basalt/core: tests run from root via 'bun run test' (vitest discovers packages/*/src/**/*.test.ts)\" && exit 0",
+    "test:watch": "echo \"@basalt/core: use root 'bun run test:watch'\" && exit 0",
+    "dev": "tsc -p tsconfig.json --watch"
+  },
+  "dependencies": {
+    "graphology": "^0.26.0",
+    "graphology-communities-louvain": "^2.0.2",
+    "graphology-traversal": "^0.3.1",
+    "js-yaml": "^4.1.0",
+    "mdast-util-to-string": "^4.0.0",
+    "remark-frontmatter": "^5.0.0",
+    "remark-parse": "^11.0.0",
+    "remark-wiki-link": "^2.0.1",
+    "unified": "^11.0.5"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.9"
   }
 }

@@ -6,6 +6,9 @@ Phase boundaries get a release tag (`v0.<phase>.0`); public launch tags `v1.0.0`
 
 ## Unreleased
 
+### Added
+- [TASK-1.1] Scaffold `@basalt/core`. Wires the runtime-agnostic engine package per PRD §3.2: tsconfig extending the base with `outDir: dist/`, `package.json` with sub-path exports (`@basalt/core/{adapters,parser,graph,math,verbs,brief,promote,audit}`), runtime deps (unified, remark-parse, remark-frontmatter, remark-wiki-link, graphology, graphology-traversal, graphology-communities-louvain, mdast-util-to-string, js-yaml). Stubs every file in the §3.2 internal layout: types (Brief, Finding union, Note, Link, Embedding, EngineOptions), per-verb Finding shapes mirroring SPEC.md §5–9, four adapter interfaces (Storage, Embedding, Filesystem, AI) — Filesystem's `createNoteFile` documented as the only mutation primitive, strictly create-only — plus parser/graph/math/verb/brief/promote/audit module stubs. Each stub throws `not yet implemented` with a TASK-1.X reference. Build (`tsc -p tsconfig.json`) produces `dist/index.{js,d.ts}` cleanly; gauntlet green.
+
 ### Changed
 - Phase ordering re-aligned with PRD §7. PHASE-1.md and PHASE-2.md previously described "Core Engine + CLI" / "MCP Server + Obsidian Plugin", contradicting the PRD's wedge-first surface order (`Phase 1: core + plugin`, `Phase 2: CLI + MCP`). Rewritten to match the PRD: PHASE-1.md is now "Core Engine + Obsidian Plugin (the wedge)" with 19 tasks (core scaffold + parser + graph + storage primitives + engine + 5 verb ports + brief composition + promote-to-note + plugin scaffold/adapters/UI/distribution); PHASE-2.md is now "CLI + MCP Server (credibility)" with 7 tasks (CLI scaffold + adapters + commands + binary builds + MCP scaffold + multi-vault + Claude Desktop integration). Cross-reference in PHASE-5.md updated. PRD wins on architecture and product per CLAUDE.md §1.
 
