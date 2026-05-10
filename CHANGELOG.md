@@ -6,6 +6,9 @@ Phase boundaries get a release tag (`v0.<phase>.0`); public launch tags `v1.0.0`
 
 ## Unreleased
 
+### Changed
+- Phase ordering re-aligned with PRD §7. PHASE-1.md and PHASE-2.md previously described "Core Engine + CLI" / "MCP Server + Obsidian Plugin", contradicting the PRD's wedge-first surface order (`Phase 1: core + plugin`, `Phase 2: CLI + MCP`). Rewritten to match the PRD: PHASE-1.md is now "Core Engine + Obsidian Plugin (the wedge)" with 19 tasks (core scaffold + parser + graph + storage primitives + engine + 5 verb ports + brief composition + promote-to-note + plugin scaffold/adapters/UI/distribution); PHASE-2.md is now "CLI + MCP Server (credibility)" with 7 tasks (CLI scaffold + adapters + commands + binary builds + MCP scaffold + multi-vault + Claude Desktop integration). Cross-reference in PHASE-5.md updated. PRD wins on architecture and product per CLAUDE.md §1.
+
 ## v0.0.1 — 2026-05-09
 
 ### Added

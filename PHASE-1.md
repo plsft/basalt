@@ -1,12 +1,14 @@
-# Phase 1 — Core Engine + CLI
+# Phase 1 — Core Engine + Obsidian Plugin (the wedge)
 
-> **Goal:** Build `@basalt/core` with all five verbs at parity with the Python reference. Wrap in `@basalt/cli`. Cut over the open-source CLI artifact from Python to TypeScript.
+> **Goal:** Build `@basalt/core` with all five verbs at parity with the Python reference. Wrap in `@basalt/obsidian-plugin` — the wedge surface — and ship through BRAT plus the Obsidian community marketplace submission.
 >
 > **Target tag:** `v0.1.0`
 >
-> **Estimated duration:** 8–10 weeks
+> **Estimated duration:** 10–14 weeks
 
-This is the most algorithmically dense phase. Tasks 1.3 through 1.10 port the verbs one at a time, with parity tests gating each. **Do not move to Phase 2 until every parity test passes.**
+This is the most algorithmically dense phase. Tasks 1.6 through 1.10 port the verbs one at a time, with parity tests gating each. **Do not move to Phase 2 until every parity test passes.** The plugin tasks (1.13–1.19) sit on top of the validated engine — building the surface the audience that has the pain lives in (Obsidian) before the credibility surfaces (CLI, MCP) follow in Phase 2.
+
+Wedge-first ordering rationale: PRD §1, §4.1, §7. The plugin meets the audience where the pain is; CLI + MCP are credibility plays, not distribution wedges, and follow once the engine is validated by real plugin users.
 
 ---
 
@@ -37,6 +39,9 @@ packages/core/
 │   ├── math/{cosine,vector,thresholds}.ts  # stubs
 │   ├── verbs/{index,types,thesis,contradiction,drift,connection,buried}.ts  # stubs
 │   ├── brief/{compose,render}.ts  # stubs
+│   ├── promote/{index}.ts  # stub for TASK-1.12
+│   ├── promote/templates/  # empty dir, populated in TASK-1.12
+│   ├── migrations/  # empty dir; first migration lands in TASK-1.4
 │   └── audit/calibration.ts  # stub
 └── README.md
 ```
@@ -65,12 +70,12 @@ This is the parser-disagreement risk from PRD §9. Land it early.
   - Type coercion to match Python's PyYAML behavior on edge cases
 - Implement `src/parser/sentences.ts`:
   - Sentence segmentation (consider `sentence-splitter` library or hand-rolled)
-  - Load-bearing sentence selection per `SPEC.md` rules (em-dash, negation, conclusion-opener preference; cliffhanger refusal)
+  - Load-bearing sentence selection per `SPEC.md` §2.4 rules (em-dash, negation, conclusion-opener preference; cliffhanger refusal)
 - Build a parser-parity test:
   - For every `.md` file in both fixtures (sample-14, large-200), parse with both Python and TS
   - Diff the parsed structure
   - Document every disagreement in `docs/parsing-decisions.md`
-  - Resolve each: either align TS to Python, or align Python to TS (with Fernando), or accept a known-divergence with rationale
+  - Resolve each: align TS to Python, OR document the divergence with rationale (Python repo is frozen per PRD §10 #3)
 
 **Files created:**
 ```
@@ -103,23 +108,23 @@ tests/parity/parser.test.ts        # parser-only parity
 ## TASK-1.3 — Implement vault walker + link graph builder
 
 **Spec:**
-- Implement `FilesystemAdapter` interface (already declared in TASK-1.1; flesh out)
-- Implement `fs-node.ts` adapter (CLI/MCP). Lives in `packages/cli/src/adapters/` (not core — keep core runtime-agnostic)
+- Flesh out the `FilesystemAdapter` interface declared in TASK-1.1
+- Provide an in-memory mock adapter in `src/adapters/filesystem-memory.ts` for tests (real filesystem adapters land per surface: Obsidian Vault in TASK-1.14, fs-node in Phase 2)
 - Implement `src/graph/builder.ts`:
   - Walk vault via FilesystemAdapter
   - Parse each note via parser
   - Build a directed link graph using `graphology`
-  - Resolve wiki-links to actual notes by name (handling case-sensitivity, aliases, ambiguity per Python reference)
+  - Resolve wiki-links to actual notes by name (case-insensitive stem match per `SPEC.md` §1.3)
 - Implement `src/graph/hub-penalty.ts`:
-  - Calculate per-note outgoing-link-density (per 100 words)
-  - Hard-exclude notes >1.5
-  - Soft-penalize 0.5–1.5 (returns a penalty multiplier in `[0, 1]`)
+  - Calculate per-note outgoing-link-density (per 100 words) per `SPEC.md` §2.3
+  - Hard-exclude notes > `HUB_DENSITY_HARD = 1.5`
+  - Soft-penalize 0.5–1.5 (returns penalty multiplier in `[0, 1]`)
 
 **Files created:**
 ```
+packages/core/src/adapters/filesystem-memory.ts
 packages/core/src/graph/{builder,hub-penalty}.ts
 packages/core/src/graph/{builder,hub-penalty}.test.ts
-packages/cli/src/adapters/fs-node.ts
 ```
 
 **Tests:**
@@ -132,43 +137,38 @@ packages/cli/src/adapters/fs-node.ts
 
 ---
 
-## TASK-1.4 — Implement embedding adapter + storage adapter (SQLite)
+## TASK-1.4 — Implement storage primitives + embedding adapter
 
 **Spec:**
-- Implement `EmbeddingAdapter` interface (declared; flesh out)
-- Implement `embedding-ollama.ts` (lives in `packages/cli/src/adapters/`):
-  - Ollama HTTP client (`fetch` against `localhost:11434`)
-  - Batch embedding requests (configurable batch size, default 32)
+- Flesh out the `StorageAdapter` and `EmbeddingAdapter` interfaces declared in TASK-1.1
+- Implement `embedding-mock.ts` (deterministic; lives in `packages/core/src/adapters/`)
+- Implement `embedding-ollama.ts` (lives in `packages/core/src/adapters/` — used by plugin, CLI, desktop; cloud has its own Workers AI implementation):
+  - Ollama HTTP client (`fetch` against the configured endpoint, default `http://localhost:11434`)
+  - Batched async with semaphore (default `EMBED_CONCURRENCY = 6` per SPEC.md §2.2)
   - Health check method
-  - Error handling for Ollama not running (clear message, exit code 2)
-- Implement `embedding-mock.ts` for deterministic tests (in `packages/core/src/adapters/`)
-- Implement `StorageAdapter` interface (declared; flesh out)
-- Implement `storage-sqlite.ts` (in `packages/cli/src/adapters/`) using `better-sqlite3`:
-  - Schema: `notes`, `embeddings`, `links`, `findings`
-  - Migrations versioned and forward-only
-  - Embedding column stores Float32Array as binary blob
-  - WAL mode enabled for concurrency
-  - Indexes on `path`, `mtime`, `vault_id`
+  - Error handling for Ollama not running (clear error type, surface-side decides exit code)
+- Author canonical schema migrations under `packages/core/src/migrations/`:
+  - `001-init.sql` matching Python's `~/.basalt/basalt.db` schema byte-for-byte (SPEC.md §2.1)
+  - Migrations are forward-only; per-surface storage adapters (sql.js for plugin, better-sqlite3 for CLI in Phase 2, Tauri-SQL for desktop in Phase 4) reuse this single source
+- Provide an in-memory `storage-memory.ts` adapter (sql.js compiled to `:memory:` so the migrations exercise the real DDL) for tests
 
 **Files created:**
 ```
-packages/core/src/adapters/embedding-mock.ts
-packages/cli/src/adapters/embedding-ollama.ts
-packages/cli/src/adapters/storage-sqlite.ts
-packages/cli/src/adapters/storage-sqlite.migrations/{001-init,002-…}.sql
+packages/core/src/adapters/{embedding-mock,embedding-ollama,storage-memory}.ts
+packages/core/src/migrations/001-init.sql
+packages/core/src/adapters/{embedding-mock,embedding-ollama,storage-memory}.test.ts
 ```
 
 **Tests:**
 - Unit: embedding-mock returns deterministic vectors for the same input
 - Unit: embedding-ollama uses fetch mocking to verify request format, batching, error handling
-- Unit: storage-sqlite round-trips notes, embeddings, findings; respects schema constraints
-- Integration: full index pipeline (walk → parse → embed-mock → persist) on sample-vault-14 produces the expected number of records
-- Parity: storage-sqlite schema matches Python's `~/.basalt/basalt.db` schema (table names, columns, types)
+- Unit: storage-memory round-trips notes, embeddings, findings via the canonical migrations; respects schema constraints
+- Parity: schema in `001-init.sql` is byte-equivalent to the schema in `reference/src/basalt/index.py:12-72` (asserted via DDL string comparison)
 
 **Definition of Done:** Standard DoD.
 
 **Notes:**
-- The schema must be byte-compatible with Python's so users can swap CLIs. If it's not, document the migration tool path in PRD §10 open decisions.
+- The schema must remain byte-compatible with Python's so users can swap CLIs in Phase 2 without re-indexing. Any deliberate divergence requires a `docs/decisions/` ADR.
 
 ---
 
@@ -182,11 +182,11 @@ packages/cli/src/adapters/storage-sqlite.migrations/{001-init,002-…}.sql
   - `engine.audit()` — re-runs calibration on past findings
   - Lifecycle hooks: `onProgress`, `onError` for surface-side reporting
 - Implement `src/brief/compose.ts` and `src/brief/render.ts`:
-  - Compose: take VerbResults, build a `Brief` object
+  - Compose: take VerbResults, build a `Brief` object matching SPEC.md §3
   - Render: produce Markdown, HTML, or JSON variants
 - Implement `src/audit/calibration.ts`:
-  - For each persisted finding with status `pending`: re-evaluate against current vault
-  - Update status: `proven`, `falsified`, `still-pending`
+  - For each persisted finding with status `pending`: re-evaluate against current vault per SPEC.md §10
+  - Update status: `confirmed`, `falsified`, `pending`
   - Output a calibration summary
 
 **Files created:**
@@ -217,18 +217,18 @@ packages/core/src/audit/calibration.test.ts
 
 **Spec:**
 
-Port the Buried Insight verb from `reference/src/basalt/verbs/buried.py`, following SPEC.md.
+Port the Buried Insight verb from `reference/src/basalt/buried.py`, following SPEC.md §9.
 
 - Implement `src/verbs/buried.ts` per SPEC.md
 - Register in `src/verbs/index.ts`
-- Vault-age-aware threshold derivation in `src/math/thresholds.ts` if not yet complete
+- Vault-age-aware threshold derivation in `src/math/thresholds.ts`
 - Parity test against `tests/parity/baseline/sample-14-buried.json` — must match exactly per PRD §8.1 tolerances
 
 **Files created:**
 ```
 packages/core/src/verbs/buried.ts
 packages/core/src/verbs/buried.test.ts
-packages/core/src/math/thresholds.ts (if not done)
+packages/core/src/math/thresholds.ts
 ```
 
 **Tests:**
@@ -249,8 +249,8 @@ packages/core/src/math/thresholds.ts (if not done)
 ## TASK-1.7 — Port verb: Connection (C)
 
 **Spec:**
-- Implement `src/verbs/connection.ts` per SPEC.md
-- Cosine similarity threshold ≥ 0.78 (verify against SPEC.md)
+- Implement `src/verbs/connection.ts` per SPEC.md §8
+- Cosine similarity threshold ≥ 0.78
 - Cross-folder pair detection
 - No-existing-wikilink filter
 - Parity test against `tests/parity/baseline/sample-14-connection.json`
@@ -268,11 +268,11 @@ packages/core/src/math/thresholds.ts (if not done)
 ## TASK-1.8 — Port verb: Drift (Hg)
 
 **Spec:**
-- Implement `src/verbs/drift.ts` per SPEC.md
-- Stated priority: project-folder note count over 30-day window
-- Lived priority: daily-note mention count over same window
+- Implement `src/verbs/drift.ts` per SPEC.md §7
+- Stated priority: project-folder note count
+- Lived priority: daily-note mention count over a 30-day window
 - Largest divergence detection
-- Daily-note recognition (frontmatter `type: daily` or filename matching `YYYY-MM-DD` patterns — match Python exactly)
+- Daily-note recognition (frontmatter `tags: [daily]` or filename matching `YYYY-MM-DD` patterns — match Python's regex exactly)
 - Parity test against `tests/parity/baseline/sample-14-drift.json`
 
 **Tests:**
@@ -289,16 +289,16 @@ packages/core/src/math/thresholds.ts (if not done)
 ## TASK-1.9 — Port verb: Contradiction (Cl)
 
 **Spec:**
-- Implement `src/verbs/contradiction.ts` per SPEC.md (v0 heuristic)
-- Same-topic pair detection (similarity-based)
+- Implement `src/verbs/contradiction.ts` per SPEC.md §6 (v0 heuristic)
+- Same-topic pair detection (similarity ≥ 0.72)
 - Asymmetric negation detection
-- Reversal markers and polarity pairs (e.g. `ship`/`kill`, `works`/`broken`) — list lives in SPEC.md, mirror Python's exact word list
-- Output: candidates, not verdicts (output structure includes `confidence: "candidate"`)
+- Reversal markers and the 21 polarity pairs from SPEC.md §6.2
+- Output: candidates, not verdicts (`version: "v0-heuristic"` in the schema)
 - Parity test against `tests/parity/baseline/sample-14-contradiction.json`
 
 **Tests:**
 - Unit: negation detection on hand-curated pairs (English negation patterns)
-- Unit: polarity pair lookup
+- Unit: polarity pair lookup (substring semantics — match Python's `pos in a` behavior)
 - Parity: exact match on both fixtures
 - Edge: vaults with zero same-topic pairs → empty result
 
@@ -309,16 +309,16 @@ packages/core/src/math/thresholds.ts (if not done)
 ## TASK-1.10 — Port verb: Implicit Thesis (Na)
 
 **Spec:**
-- Implement `src/verbs/thesis.ts` per SPEC.md (v0 cluster heuristic)
+- Implement `src/verbs/thesis.ts` per SPEC.md §5 (v0 cluster heuristic)
 - Tight-neighborhood (near-clique) cluster detection over the embedding similarity graph
 - Cluster size 3–15
-- Centroid identification (most-central note in the cluster)
+- Centroid identification (highest mean intra-cluster similarity)
 - Centroid load-bearing sentence as proxy thesis
 - Parity test against `tests/parity/baseline/sample-14-thesis.json`
 
 **Tests:**
-- Unit: clique detection on synthetic graphs with known structure
-- Unit: cluster-size filter
+- Unit: tight-neighborhood detection on synthetic graphs with known structure
+- Unit: cluster-size + diversity gates
 - Parity: exact match on both fixtures
 - Edge: dense vaults producing many clusters → top-N filter works
 - Edge: sparse vaults producing zero clusters → empty result
@@ -344,94 +344,260 @@ packages/core/src/math/thresholds.ts (if not done)
 
 ---
 
-## TASK-1.12 — Scaffold `@basalt/cli`
+## TASK-1.12 — Promote-to-note primitive + per-verb templates
 
 **Spec:**
-- Set up `packages/cli/` with TypeScript + Bun build
-- Install `commander` (or use Bun's argv parsing) for command parsing
-- Install `@iarna/toml` for config file parsing
-- Install `env-paths` for cross-platform config paths
-- Create `src/index.ts` entry point
-- Create `src/commands/` with stubs for each command listed in PRD §4.1
-- Create `src/config.ts` for `~/.basalt/config.toml` reading/writing
-- Configure `bun build --compile` to produce single-binary output for current platform
-- Configure `package.json` `bin` field for `npm install -g`
+
+Implement the *only* mutation primitive in the read-only-by-default engine (PRD §2.1, §2.3, §3.3).
+
+- Implement `src/promote/index.ts`:
+  - Public function `promoteFindingToNote(finding, opts)` returns a `NoteContent { path, body }` object
+  - Accepts a target folder (configurable; default `<vault>/Basalt/` per PRD §10 #6 — open decision; surface this as a halt if unresolved before this task runs)
+  - Routes per-verb to a template
+  - Pure: produces content without writing. The surface (plugin) calls `FilesystemAdapter.createNoteFile(path, content)` to actually create the file. `createNoteFile` is **strictly create-only** — implementations must reject if target exists (PRD §3.3, CLAUDE.md §5)
+- Implement `src/promote/templates/{thesis,contradiction,drift,connection,buried}.ts`:
+  - Each takes a finding, returns a Markdown body string
+  - Templates use stable wikilinks back to the cited notes (this is what makes the new note "earn its keep" — bidirectional links from the promoted note to the source notes)
+  - Per PRD §2.3 examples:
+    - Implicit Thesis cluster → `Thesis: <topic>.md` with cluster members as wikilinks
+    - Buried Insight → `Resurfaced: <title>.md` with recent citing notes
+    - Connection pair → `Bridge: A ⇄ B.md` with both notes wikilinked
+    - Contradiction pair → `Tension: A ⇄ B.md`
+    - Drift → `Drift: <project> <under|over>.md`
+- Architectural test: assert that no public path inside `promote/` writes to the filesystem directly. The only IO surface is the returned `NoteContent`, which the surface must hand to `FilesystemAdapter.createNoteFile`.
 
 **Files created:**
 ```
-packages/cli/
+packages/core/src/promote/index.ts
+packages/core/src/promote/templates/{thesis,contradiction,drift,connection,buried}.ts
+packages/core/src/promote/index.test.ts
+packages/core/src/promote/templates/*.test.ts
+```
+
+**Tests:**
+- Unit: each template produces deterministic output for a fixture finding (snapshot)
+- Unit: promoteFindingToNote routes by `verb` discriminator and surfaces a clear error for unknown verbs
+- Architectural: a static `grep`-driven test asserts `promote/` source contains no `fs/promises`, `node:fs`, or other write APIs (the surface enforces creation; core just plans content)
+
+**Definition of Done:** Standard DoD.
+
+**Notes:**
+- This is the load-bearing test of the read-only architecture (PRD §2.1). If anything inside `core/` writes a file directly, the property breaks.
+
+---
+
+## TASK-1.13 — Scaffold `@basalt/obsidian-plugin`
+
+**Spec:**
+- Set up `packages/obsidian-plugin/` with TypeScript + esbuild
+- Use Obsidian's official sample plugin template as a starting point
+- Install `obsidian` types as devDependency
+- Create `manifest.json`:
+  ```json
+  {
+    "id": "basalt",
+    "name": "Basalt",
+    "version": "0.1.0",
+    "minAppVersion": "1.6.0",
+    "description": "A weekly Brief compiled from your notes. Reads what you've written and surfaces what you believe but never wrote down.",
+    "author": "1556 Ventures LLC",
+    "authorUrl": "https://virtuosoai.dev/basalt/",
+    "isDesktopOnly": false
+  }
+  ```
+- Configure esbuild to produce `main.js` + `styles.css` per Obsidian plugin convention
+- Create `src/main.ts` extending Obsidian's `Plugin` class with empty stubs for `onload`/`onunload`
+
+**Files created:**
+```
+packages/obsidian-plugin/
 ├── package.json
 ├── tsconfig.json
+├── manifest.json
+├── esbuild.config.mjs
 ├── src/
-│   ├── index.ts
-│   ├── config.ts
-│   ├── commands/{init,index,brief,thesis,drift,connection,contradiction,buried,audit,demo,about}.ts
-│   └── adapters/{fs-node,embedding-ollama,storage-sqlite}.ts  # already created in earlier tasks
-├── bin/                         # output dir for compiled binaries
+│   ├── main.ts                  # Plugin class
+│   ├── adapters/
+│   │   ├── fs-obsidian.ts       # stub — TASK-1.14
+│   │   ├── storage-sqljs.ts     # stub — TASK-1.15
+│   │   └── embedding-ollama.ts  # re-export of @basalt/core's adapter
+│   ├── views/
+│   │   └── BriefView.ts         # stub — TASK-1.16
+│   ├── settings.ts              # stub — TASK-1.17
+│   └── i18n/en.json
+├── styles.css
 └── README.md
 ```
 
 **Tests:**
-- `bun run --cwd packages/cli build` produces `dist/index.js`
-- `bun run --cwd packages/cli compile` produces `bin/basalt-<platform>`
-- `bin/basalt --help` outputs the command list
-- `bin/basalt about` outputs version + schema info
+- esbuild produces `main.js` and `styles.css`
+- Plugin loads in a test Obsidian vault without errors (manual smoke test)
 
 **Definition of Done:** Standard DoD.
 
 ---
 
-## TASK-1.13 — Implement CLI commands
+## TASK-1.14 — Implement Obsidian Vault adapter (filesystem)
 
 **Spec:**
-- Implement each command in `src/commands/`:
-  - `init`: interactive prompts via `@inquirer/prompts`, writes config
-  - `index`: progress reporting via stderr, writes index DB
-  - `brief`: runs Engine.brief, renders to stdout (Markdown by default; `--json` flag for JSON)
-  - `thesis | drift | connection | contradiction | buried`: convenience wrappers around `brief --section X`
-  - `audit`: runs Engine.audit, prints calibration summary
-  - `demo`: runs against bundled `tests/parity/fixtures/sample-vault-14/`
-  - `about`: ASCII periodic-table animation (small Na tile rendering) + version + schema
+- Implement `src/adapters/fs-obsidian.ts`:
+  - Use Obsidian's `Vault` API to walk and read markdown files
+  - Convert Obsidian's relative paths to canonical absolute paths for citations
+  - Respect Obsidian's `.obsidian/` and any user-configured ignore patterns (mirror SPEC.md §1.1's `EXCLUDE_DIRS`)
+  - Implement the `FilesystemAdapter` interface from `@basalt/core`
+  - Implement `createNoteFile(path, content)` strictly create-only — reject if target exists; do not modify any existing `.md` file. **Architectural test required.**
+- Use `MetadataCache` for fast frontmatter access where possible (perf optimization)
 
-**Files modified:**
+**Files created:**
 ```
-packages/cli/src/commands/*.ts
+packages/obsidian-plugin/src/adapters/fs-obsidian.ts
+packages/obsidian-plugin/src/adapters/fs-obsidian.test.ts  # unit tests with mock Vault
 ```
 
 **Tests:**
-- Integration: each command runs against sample-vault-14 and produces expected output
-- Snapshot test: `basalt brief --section all --json` output equals the parity baseline
-- Integration: `basalt init` walks through prompts and produces a valid config (driven by stdin fixture)
-- Integration: `basalt demo` produces output without requiring user config
+- Unit: walk produces expected file list given a mock Vault
+- Unit: readFile returns content given a mock TFile
+- Unit: createNoteFile creates a new file when target doesn't exist; refuses with a typed error when it does
+- Architectural test: greps the adapter source for forbidden Vault APIs (`modify`, `rename`, `delete`, `trash`, `process`); presence of any of these fails the build (CLAUDE.md §5: "Modifying any of the user's existing `.md` files" forbidden)
+- Integration: against a real Obsidian instance with the sample-vault-14 fixture, walk and read produce identical bytes to the in-memory adapter
 
-**Definition of Done:** Standard DoD + `bin/basalt brief` on a real vault works end-to-end.
+**Definition of Done:** Standard DoD.
 
 ---
 
-## TASK-1.14 — Cross-platform binary builds + npm publish prep
+## TASK-1.15 — Implement sql.js storage adapter for Obsidian sandbox
 
 **Spec:**
-- Configure GitHub Actions release workflow `.github/workflows/release.yml`:
-  - Trigger: tag push matching `v0.*.*`
-  - Build single-binary for macOS (x64, arm64), Linux (x64, arm64), Windows (x64) via `bun build --compile --target=…`
-  - Upload binaries to GitHub release as assets
-- Configure npm publish:
-  - `npm publish --access public` from CI on tag push
-  - Verify scope `@basalt` is registered or use unscoped `basalt` (collision check — see PRD §10)
-- Document install paths in `README.md`
+- Implement `src/adapters/storage-sqljs.ts`:
+  - Wrap `sql.js` (SQLite compiled to WASM) since `better-sqlite3` requires native modules unavailable in Obsidian
+  - Database file at `<vault>/.basalt/basalt.db`
+  - Persist via Obsidian's `Vault.adapter.writeBinary` for the underlying file
+  - Same migrations as core's canonical migration set (`packages/core/src/migrations/`); single source of truth
+- Benchmark on a 10,000-note vault: indexing must complete in < 5 minutes; querying < 1 second per verb (PRD §6.4)
 
-**Files created/modified:**
+**Files created:**
 ```
-.github/workflows/release.yml
-README.md                         # Install section
+packages/obsidian-plugin/src/adapters/storage-sqljs.ts
+packages/obsidian-plugin/src/adapters/storage-sqljs.test.ts
+packages/obsidian-plugin/bench/storage-sqljs.bench.ts
 ```
 
 **Tests:**
-- Tag a pre-release `v0.1.0-rc1` and verify CI produces all expected binaries
-- Manual: `npm install -g basalt` (or `@basalt/cli`) on a fresh machine works
-- Manual: download a Linux binary and run on a test VM
+- Unit: round-trip writes/reads against an in-memory sql.js instance
+- Performance bench: 10,000-note synthetic vault, full index in < 5 min, full Brief in < 5s
+- Schema parity: the resulting `.basalt/basalt.db` is byte-compatible with Python's (DDL output diff — same as TASK-1.4 assertion)
+- If perf budget is missed, document fallback plan in PR (flat IndexedDB store with batched writes per PRD §9 risks)
 
-**Definition of Done:** Standard DoD + a successful pre-release run.
+**Definition of Done:** Standard DoD + perf budget met OR documented fallback.
+
+**Notes:**
+- This is the highest-risk technical task in Phase 1. If sql.js is too slow on 10k vaults, the fallback is a leaner persistence layer (flat IndexedDB); that's a follow-up task. Document the choice in `docs/decisions/`.
+
+---
+
+## TASK-1.16 — Implement BriefView + ribbon + status bar
+
+**Spec:**
+- Implement `src/views/BriefView.ts`:
+  - Extends Obsidian's `ItemView`
+  - Renders the latest Brief using `@basalt/core`'s render pipeline
+  - Click handlers on findings: Promote (calls `promoteFindingToNote` + `FilesystemAdapter.createNoteFile`), Snooze, Dismiss
+  - "Open citation" links navigate to source notes via `app.workspace.openLinkText(...)`
+- Add ribbon icon: small Na-tile SVG in `styles.css`, click triggers Generate Brief
+- Add status bar item: shows indexing progress during background indexing
+- All UI strings in `src/i18n/en.json`
+
+**Files created/modified:**
+```
+packages/obsidian-plugin/src/views/BriefView.ts
+packages/obsidian-plugin/src/main.ts                # register view, ribbon, status bar
+packages/obsidian-plugin/styles.css                  # Na-tile, brand colors
+packages/obsidian-plugin/src/i18n/en.json
+```
+
+**Tests:**
+- Unit: BriefView renders given a mock Brief object
+- Unit: Promote click triggers `createNoteFile` once with the expected path; rejects gracefully if the file exists
+- Integration (manual): plugin loads, ribbon icon visible, click triggers brief generation against a real vault, BriefView opens with output
+- Visual snapshot test: BriefView matches expected DOM structure for a fixture Brief
+
+**Definition of Done:** Standard DoD + manual smoke test recorded in PR.
+
+---
+
+## TASK-1.17 — Implement Settings tab
+
+**Spec:**
+- Implement `src/settings.ts`:
+  - Vault path (default: current vault, override with secondary vault path)
+  - Ollama URL (default: `http://localhost:11434`)
+  - Embedding model selection (dropdown: `nomic-embed-text`, `bge-m3`, custom)
+  - Promote-to folder (default per PRD §10 #6 — surface as halt if unresolved)
+  - BYOK provider keys (encrypted at rest using Obsidian's settings storage; document the limitation that this is not OS keychain on this surface)
+  - Brief cadence (manual / weekly auto on a schedule)
+  - Privacy preferences (opt out of any non-essential network calls — should already be true by default)
+- All settings persist via Obsidian's `loadData`/`saveData`
+
+**Files created:**
+```
+packages/obsidian-plugin/src/settings.ts
+packages/obsidian-plugin/src/settings.test.ts
+```
+
+**Tests:**
+- Unit: settings save/load round-trip preserves all fields
+- Unit: invalid Ollama URL produces validation error
+- Integration: settings UI renders and edits persist across plugin reload
+
+**Definition of Done:** Standard DoD.
+
+---
+
+## TASK-1.18 — Implement weekly brief scheduling (in-plugin)
+
+**Spec:**
+- If user enables auto-cadence in settings, schedule a weekly brief via Obsidian's `setInterval`-equivalent
+- Schedule is best-effort (Obsidian must be running); document limitation
+- On trigger: run index (if vault has changed since last index) → run brief → notify user via Obsidian Notice + status bar update
+- Allow manual override at any time via the ribbon
+
+**Files modified:**
+```
+packages/obsidian-plugin/src/main.ts
+```
+
+**Tests:**
+- Unit: scheduling logic with mocked time
+- Integration (manual): set cadence to 60 seconds for testing, verify brief generates automatically
+
+**Definition of Done:** Standard DoD.
+
+---
+
+## TASK-1.19 — Plugin packaging + community marketplace submission
+
+**Spec:**
+- Configure release workflow `.github/workflows/release-obsidian.yml`:
+  - Tag-driven release builds `main.js`, `manifest.json`, `styles.css` into a release artifact
+  - Upload to the GitHub release tied to the monorepo's `v0.1.0` tag (or a separate plugin-tag if Obsidian's resolver requires it; pick whichever the marketplace tooling expects)
+- Open the community submission PR to `obsidianmd/obsidian-releases` per Obsidian's community plugin guidelines
+- Set up the plugin's own GitHub repo or subdirectory release path that Obsidian's plugin browser can resolve
+- Document installation instructions in `packages/obsidian-plugin/README.md`
+
+**Files created/modified:**
+```
+.github/workflows/release-obsidian.yml
+packages/obsidian-plugin/README.md
+```
+
+**Tests:**
+- Tag a pre-release, verify the GitHub release contains the expected three artifacts
+- Manual: install the plugin from the GitHub release URL via Obsidian's "Install from URL" / BRAT beta channel
+
+**Definition of Done:** Standard DoD + plugin installable via Obsidian's BRAT (Beta Reviewers Auto-update Tool) for testing before community marketplace approval.
+
+**Notes:**
+- The Obsidian community marketplace submission can take 1–4 weeks to be reviewed/merged. Begin the submission as part of this task; the marketplace listing itself is gating only for public launch (Phase 6), not for `v0.1.0` tag. BRAT is enough for `v0.1.0`.
 
 ---
 
@@ -442,10 +608,13 @@ Before tagging `v0.1.0`:
 - [ ] All TASK-1.* merged
 - [ ] All five verbs at parity with Python (exact match on baselines)
 - [ ] Full Brief at parity with Python on both fixtures
-- [ ] CLI installable via `npm install -g` and as a single binary
-- [ ] Performance budgets met (PRD §6.4)
-- [ ] CHANGELOG documents the cutover from Python CLI to TS CLI
-- [ ] README updated with install instructions and migration note for existing Python CLI users
+- [ ] Promote-to-note creates new files only — architectural test passes; no path inside `core/promote/` writes directly
+- [ ] Plugin installable via BRAT and produces correct Briefs against a real Obsidian vault
+- [ ] sql.js perf budget met on 10k-note vault (or documented fallback shipping in 1.15)
+- [ ] No surface modifies the user's existing `.md` files (architectural test in TASK-1.14 + TASK-1.16)
+- [ ] Community marketplace submission opened (review pending is OK)
+- [ ] Performance budgets met (PRD §6.4 — engine index + brief, plugin idle memory + 10k-vault index)
+- [ ] CHANGELOG documents the wedge launch
 - [ ] `scripts/release.sh --dry-run v0.1.0` produces a clean preview
 
-When all checked, tag `v0.1.0`. Announce on GitHub release notes only — public marketing waits until Phase 6.
+When all checked, tag `v0.1.0`. The plugin lives on BRAT for ~1–4 weeks while the community marketplace PR is reviewed. Phase 2 begins immediately — the CLI and MCP credibility surfaces don't need to wait for marketplace approval.
