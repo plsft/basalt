@@ -6,6 +6,22 @@ Phase boundaries get a release tag (`v0.<phase>.0`); public launch tags `v1.0.0`
 
 ## Unreleased
 
+### Added — v1.4.0 work (self-hosting)
+- `packages/api/src/selfhost/` — Node-runtime variant of the API. Drops
+  in `SelfhostD1` (better-sqlite3), `SelfhostKV` (one file per key with
+  optional TTL envelope), `SelfhostR2` (raw file + sidecar metadata.json),
+  `SelfhostVectorize` (flat brute-force ANN over SQLite), and
+  `SelfhostAI` (Ollama-routed embedding + chat). Same Hono app, same
+  routes, same OpenAPI schema — swap bindings, get the whole Pro tier on
+  one box.
+- `packages/api/Dockerfile.selfhost` — multi-stage Alpine image,
+  bun build --compile to a single binary, non-root user, /health probe.
+- `docker-compose.yml` — three-service stack (Ollama + ollama-init +
+  basalt-api) with named volumes. Web-cockpit nginx layer commented in.
+- `docs/v1.4.0-selfhost` — quick start, storage layout, backup recipe,
+  production hardening checklist.
+- 12 new tests; 634 total.
+
 ## v1.3.0 — 2026-05-11
 
 ### Added — v1.3.0 work (multi-vault search)
