@@ -1,15 +1,11 @@
 // packages/obsidian-plugin/src/views/BriefView.ts
 // BriefView ItemView — full implementation in TASK-1.16.
 
-import { ItemView, type WorkspaceLeaf } from "obsidian";
+import { ItemView } from "obsidian";
 
 export const BRIEF_VIEW_TYPE = "basalt-brief";
 
 export class BriefView extends ItemView {
-  constructor(leaf: WorkspaceLeaf) {
-    super(leaf);
-  }
-
   override getViewType(): string {
     return BRIEF_VIEW_TYPE;
   }
