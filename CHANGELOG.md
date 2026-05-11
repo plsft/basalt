@@ -7,6 +7,18 @@ Phase boundaries get a release tag (`v0.<phase>.0`); public launch tags `v1.0.0`
 ## Unreleased
 
 ### Added
+- **API v1.1.0 plumbing**: `/v1/briefs/generate` now runs the v1 verb
+  augmentation pass when `c.env.AI` (Workers AI binding) is available;
+  request payload accepts `llm: false` to opt out (saves cost when the
+  client only wants v0 output). Failures degrade gracefully — v0 findings
+  always ship.
+- **BYOK endpoints**: `GET/PUT/DELETE /v1/byok` for per-user provider
+  API keys. AES-GCM encrypted at rest in BYOK_KEYS KV using
+  BYOK_ENCRYPTION_KEY (wrangler secret). Random IV per encryption, audit
+  log entry on put/delete. 7 unit tests covering envelope round-trip,
+  random-IV ciphertext divergence, wrong-secret rejection, malformed
+  envelope rejection.
+
 - **CLI v1.1.0 plumbing**: `--llm <ollama|openai|anthropic|none>` flag on
   `basalt brief` + every alias (`thesis`, `contradiction`, `connection`,
   `drift`, `buried`); `--llm-model` for model override. When enabled,

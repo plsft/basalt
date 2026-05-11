@@ -22,7 +22,8 @@
       "!packages/obsidian-plugin/main.js",
       "!**/*.css",
       "!**/*.astro",
-      "!**/*.mdx"
+      "!**/*.mdx",
+      "!**/openapi.json"
     ]
   },
   "formatter": {

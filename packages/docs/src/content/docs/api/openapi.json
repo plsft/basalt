@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Basalt API",
-    "version": "0.0.1",
+    "version": "1.0.0",
     "description": "Pro-tier hosted backend for Basalt. Runs on Cloudflare Workers; Open-tier surfaces (CLI, plugin, MCP, desktop) do not call this API.",
     "license": {
       "name": "MIT",
@@ -39,21 +39,32 @@
           },
           "environment": {
             "type": "string",
-            "enum": ["staging", "production"]
+            "enum": [
+              "staging",
+              "production"
+            ]
           },
           "timestamp": {
             "type": "string",
             "format": "date-time"
           }
         },
-        "required": ["ok", "version", "schema", "timestamp"]
+        "required": [
+          "ok",
+          "version",
+          "schema",
+          "timestamp"
+        ]
       },
       "Status": {
         "type": "object",
         "properties": {
           "status": {
             "type": "string",
-            "enum": ["ok", "degraded"]
+            "enum": [
+              "ok",
+              "degraded"
+            ]
           },
           "time": {
             "type": "string",
@@ -74,11 +85,18 @@
                   "type": "string"
                 }
               },
-              "required": ["name", "ok"]
+              "required": [
+                "name",
+                "ok"
+              ]
             }
           }
         },
-        "required": ["status", "time", "checks"]
+        "required": [
+          "status",
+          "time",
+          "checks"
+        ]
       },
       "Ok": {
         "type": "object",
@@ -87,7 +105,9 @@
             "type": "boolean"
           }
         },
-        "required": ["ok"]
+        "required": [
+          "ok"
+        ]
       },
       "User": {
         "type": "object",
@@ -101,24 +121,38 @@
           },
           "tier": {
             "type": "string",
-            "enum": ["free", "pro", "founder"]
+            "enum": [
+              "free",
+              "pro",
+              "founder"
+            ]
           }
         },
-        "required": ["id", "email", "tier"]
+        "required": [
+          "id",
+          "email",
+          "tier"
+        ]
       },
       "OAuthStartRequest": {
         "type": "object",
         "properties": {
           "provider": {
             "type": "string",
-            "enum": ["google", "github"]
+            "enum": [
+              "google",
+              "github"
+            ]
           },
           "redirect_uri": {
             "type": "string",
             "format": "uri"
           }
         },
-        "required": ["provider", "redirect_uri"]
+        "required": [
+          "provider",
+          "redirect_uri"
+        ]
       },
       "OAuthStartResponse": {
         "type": "object",
@@ -131,14 +165,20 @@
             "format": "uri"
           }
         },
-        "required": ["state", "authorize_url"]
+        "required": [
+          "state",
+          "authorize_url"
+        ]
       },
       "OAuthCallbackRequest": {
         "type": "object",
         "properties": {
           "provider": {
             "type": "string",
-            "enum": ["google", "github"]
+            "enum": [
+              "google",
+              "github"
+            ]
           },
           "code": {
             "type": "string"
@@ -147,7 +187,11 @@
             "type": "string"
           }
         },
-        "required": ["provider", "code", "state"]
+        "required": [
+          "provider",
+          "code",
+          "state"
+        ]
       },
       "OAuthCallbackResponse": {
         "type": "object",
@@ -157,10 +201,17 @@
           },
           "tier": {
             "type": "string",
-            "enum": ["free", "pro", "founder"]
+            "enum": [
+              "free",
+              "pro",
+              "founder"
+            ]
           }
         },
-        "required": ["user_id", "tier"]
+        "required": [
+          "user_id",
+          "tier"
+        ]
       },
       "Vault": {
         "type": "object",
@@ -186,7 +237,13 @@
             "format": "date-time"
           }
         },
-        "required": ["id", "user_id", "name", "created_at", "updated_at"]
+        "required": [
+          "id",
+          "user_id",
+          "name",
+          "created_at",
+          "updated_at"
+        ]
       },
       "VaultList": {
         "type": "array",
@@ -202,10 +259,15 @@
           },
           "source": {
             "type": "string",
-            "enum": ["upload", "sync"]
+            "enum": [
+              "upload",
+              "sync"
+            ]
           }
         },
-        "required": ["name"]
+        "required": [
+          "name"
+        ]
       },
       "BriefGenerateRequest": {
         "type": "object",
@@ -223,11 +285,19 @@
             "type": "array",
             "items": {
               "type": "string",
-              "enum": ["buried-insight", "connection", "contradiction", "drift", "implicit-thesis"]
+              "enum": [
+                "buried-insight",
+                "connection",
+                "contradiction",
+                "drift",
+                "implicit-thesis"
+              ]
             }
           }
         },
-        "required": ["vault_id"]
+        "required": [
+          "vault_id"
+        ]
       },
       "Brief": {
         "type": "object",
@@ -246,7 +316,11 @@
             "type": "object"
           }
         },
-        "required": ["schema", "section", "findings"]
+        "required": [
+          "schema",
+          "section",
+          "findings"
+        ]
       },
       "BriefList": {
         "type": "object",
@@ -262,7 +336,9 @@
             "nullable": true
           }
         },
-        "required": ["items"]
+        "required": [
+          "items"
+        ]
       },
       "FindingList": {
         "type": "object",
@@ -278,7 +354,9 @@
             "nullable": true
           }
         },
-        "required": ["items"]
+        "required": [
+          "items"
+        ]
       },
       "FindingSnoozeRequest": {
         "type": "object",
@@ -288,7 +366,9 @@
             "format": "date-time"
           }
         },
-        "required": ["until"]
+        "required": [
+          "until"
+        ]
       },
       "VaultSnapshot": {
         "type": "object",
@@ -379,7 +459,12 @@
                   "description": "Base64-encoded little-endian float32."
                 }
               },
-              "required": ["rel_path", "model", "dim", "vec_b64"]
+              "required": [
+                "rel_path",
+                "model",
+                "dim",
+                "vec_b64"
+              ]
             }
           },
           "links": {
@@ -394,11 +479,21 @@
                   "type": "string"
                 }
               },
-              "required": ["from_rel_path", "target"]
+              "required": [
+                "from_rel_path",
+                "target"
+              ]
             }
           }
         },
-        "required": ["schema", "vault_id", "created_at", "notes", "embeddings", "links"]
+        "required": [
+          "schema",
+          "vault_id",
+          "created_at",
+          "notes",
+          "embeddings",
+          "links"
+        ]
       },
       "VaultSnapshotAck": {
         "type": "object",
@@ -422,7 +517,62 @@
             "type": "integer"
           }
         },
-        "required": ["ok", "vault_id", "note_count", "embedding_count", "link_count", "bytes"]
+        "required": [
+          "ok",
+          "vault_id",
+          "note_count",
+          "embedding_count",
+          "link_count",
+          "bytes"
+        ]
+      },
+      "ByokPutRequest": {
+        "type": "object",
+        "properties": {
+          "provider": {
+            "type": "string",
+            "enum": [
+              "openai",
+              "anthropic",
+              "google"
+            ]
+          },
+          "api_key": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 4096
+          }
+        },
+        "required": [
+          "provider",
+          "api_key"
+        ]
+      },
+      "ByokStatusList": {
+        "type": "object",
+        "properties": {
+          "providers": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "provider": {
+                  "type": "string"
+                },
+                "has_key": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "provider",
+                "has_key"
+              ]
+            }
+          }
+        },
+        "required": [
+          "providers"
+        ]
       },
       "SnapshotMeta": {
         "type": "object",
@@ -444,14 +594,20 @@
             }
           }
         },
-        "required": ["key", "size"]
+        "required": [
+          "key",
+          "size"
+        ]
       },
       "BillingCheckoutRequest": {
         "type": "object",
         "properties": {
           "plan": {
             "type": "string",
-            "enum": ["pro", "founder"]
+            "enum": [
+              "pro",
+              "founder"
+            ]
           },
           "success_url": {
             "type": "string",
@@ -462,7 +618,11 @@
             "format": "uri"
           }
         },
-        "required": ["plan", "success_url", "cancel_url"]
+        "required": [
+          "plan",
+          "success_url",
+          "cancel_url"
+        ]
       },
       "BillingCheckoutResponse": {
         "type": "object",
@@ -475,7 +635,10 @@
             "format": "uri"
           }
         },
-        "required": ["id", "url"]
+        "required": [
+          "id",
+          "url"
+        ]
       },
       "Error": {
         "type": "object",
@@ -487,7 +650,9 @@
             "type": "string"
           }
         },
-        "required": ["error"]
+        "required": [
+          "error"
+        ]
       }
     },
     "securitySchemes": {
@@ -504,7 +669,9 @@
       "get": {
         "summary": "Worker health probe",
         "description": "Returns the worker's deployed version, schema, and a UTC timestamp.",
-        "tags": ["System"],
+        "tags": [
+          "System"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -543,7 +710,9 @@
       "get": {
         "summary": "Alias for /health",
         "description": "Status-page-friendly path.",
-        "tags": ["System"],
+        "tags": [
+          "System"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -582,7 +751,9 @@
       "get": {
         "summary": "Aggregated dependency status",
         "description": "Probes D1 + KV, returns overall ok|degraded plus per-check detail.",
-        "tags": ["System"],
+        "tags": [
+          "System"
+        ],
         "responses": {
           "200": {
             "description": "OK or degraded",
@@ -621,7 +792,9 @@
       "post": {
         "summary": "Begin OAuth login flow",
         "description": "Generates a server-side state token + provider authorize_url.",
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "responses": {
           "200": {
             "description": "Authorize URL",
@@ -670,7 +843,9 @@
       "post": {
         "summary": "Complete OAuth login",
         "description": "Exchanges the OAuth code, fetches user info, upserts the user, issues a session cookie.",
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "responses": {
           "200": {
             "description": "Session established",
@@ -719,7 +894,9 @@
       "post": {
         "summary": "End the current session",
         "description": "Deletes the session in KV and clears the basalt_session cookie.",
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "responses": {
           "200": {
             "description": "Logged out",
@@ -758,7 +935,9 @@
       "get": {
         "summary": "Current user",
         "description": "Returns the authenticated user's id, email, and tier.",
-        "tags": ["Identity"],
+        "tags": [
+          "Identity"
+        ],
         "responses": {
           "200": {
             "description": "User",
@@ -800,7 +979,9 @@
       "delete": {
         "summary": "Soft-delete the current user",
         "description": "Sets deleted_at on the user row; data is purged after a 30-day grace window.",
-        "tags": ["Identity"],
+        "tags": [
+          "Identity"
+        ],
         "responses": {
           "200": {
             "description": "Deletion scheduled",
@@ -844,7 +1025,9 @@
       "get": {
         "summary": "List the user's vaults",
         "description": "Excludes soft-deleted vaults.",
-        "tags": ["Vaults"],
+        "tags": [
+          "Vaults"
+        ],
         "responses": {
           "200": {
             "description": "Vault list",
@@ -886,7 +1069,9 @@
       "post": {
         "summary": "Register a new vault",
         "description": "Creates a vault row and enqueues an indexing job.",
-        "tags": ["Vaults"],
+        "tags": [
+          "Vaults"
+        ],
         "responses": {
           "201": {
             "description": "Vault created",
@@ -940,7 +1125,9 @@
       "delete": {
         "summary": "Soft-delete a vault",
         "description": "30-day grace before hard purge. Findings + briefs are retained until the grace window expires.",
-        "tags": ["Vaults"],
+        "tags": [
+          "Vaults"
+        ],
         "responses": {
           "200": {
             "description": "Deleted",
@@ -984,7 +1171,9 @@
       "post": {
         "summary": "Upload a vault snapshot",
         "description": "Stores a client-built VaultSnapshot (notes + embeddings + links) in R2 keyed by user_id/vault_id. /v1/briefs/generate uses the latest snapshot.",
-        "tags": ["Vaults"],
+        "tags": [
+          "Vaults"
+        ],
         "responses": {
           "200": {
             "description": "Stored",
@@ -1038,7 +1227,9 @@
       "get": {
         "summary": "Snapshot metadata",
         "description": "Returns size, upload time, and custom metadata for the latest snapshot.",
-        "tags": ["Vaults"],
+        "tags": [
+          "Vaults"
+        ],
         "responses": {
           "200": {
             "description": "Snapshot meta",
@@ -1082,7 +1273,9 @@
       "post": {
         "summary": "Generate a brief",
         "description": "Runs the indexer + verbs against the named vault. Pro-tier only. Rate limit 6/min.",
-        "tags": ["Briefs"],
+        "tags": [
+          "Briefs"
+        ],
         "responses": {
           "200": {
             "description": "Brief",
@@ -1141,7 +1334,9 @@
       "get": {
         "summary": "List briefs for a vault",
         "description": "Cursor-paginated.",
-        "tags": ["Briefs"],
+        "tags": [
+          "Briefs"
+        ],
         "responses": {
           "200": {
             "description": "Brief list",
@@ -1185,7 +1380,9 @@
       "get": {
         "summary": "Fetch a brief by id",
         "description": "Returns the full Brief JSON.",
-        "tags": ["Briefs"],
+        "tags": [
+          "Briefs"
+        ],
         "responses": {
           "200": {
             "description": "Brief",
@@ -1227,7 +1424,9 @@
       "delete": {
         "summary": "Delete a brief and its findings",
         "description": "Hard delete (no soft-delete column on briefs).",
-        "tags": ["Briefs"],
+        "tags": [
+          "Briefs"
+        ],
         "responses": {
           "200": {
             "description": "Deleted",
@@ -1271,7 +1470,9 @@
       "get": {
         "summary": "Cross-brief finding timeline",
         "description": "Filterable by verb, vault_id, status. Cursor-paginated by finding id.",
-        "tags": ["Findings"],
+        "tags": [
+          "Findings"
+        ],
         "responses": {
           "200": {
             "description": "Findings",
@@ -1315,7 +1516,9 @@
       "post": {
         "summary": "Snooze a finding until a date",
         "description": "Owner-scoped via JOIN to briefs.user_id.",
-        "tags": ["Findings"],
+        "tags": [
+          "Findings"
+        ],
         "responses": {
           "200": {
             "description": "Snoozed",
@@ -1369,7 +1572,9 @@
       "post": {
         "summary": "Mark a finding as falsified by the user",
         "description": "Owner-scoped; updates status to 'falsified' with a user-dismissed verdict_reason.",
-        "tags": ["Findings"],
+        "tags": [
+          "Findings"
+        ],
         "responses": {
           "200": {
             "description": "Dismissed",
@@ -1413,7 +1618,9 @@
       "post": {
         "summary": "Mark a finding as confirmed",
         "description": "Owner-scoped; updates status to 'confirmed' with verdict timestamp.",
-        "tags": ["Findings"],
+        "tags": [
+          "Findings"
+        ],
         "responses": {
           "200": {
             "description": "Confirmed",
@@ -1457,7 +1664,9 @@
       "post": {
         "summary": "Promote a finding to a note (client-side)",
         "description": "Always returns 400 with guidance — promote-to-note runs on the client. The API never mutates user-owned content.",
-        "tags": ["Findings"],
+        "tags": [
+          "Findings"
+        ],
         "responses": {
           "400": {
             "description": "Client-side action required",
@@ -1497,11 +1706,159 @@
         ]
       }
     },
+    "/v1/byok": {
+      "get": {
+        "summary": "List BYOK provider key status",
+        "description": "Returns has_key per provider (openai, anthropic, google).",
+        "tags": [
+          "Default"
+        ],
+        "responses": {
+          "200": {
+            "description": "BYOK status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ByokStatusList"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "5XX": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "session": []
+          }
+        ]
+      },
+      "put": {
+        "summary": "Store or rotate a BYOK provider key",
+        "description": "AES-GCM encrypted at rest in BYOK_KEYS KV. Server-side master key only.",
+        "tags": [
+          "Default"
+        ],
+        "responses": {
+          "200": {
+            "description": "Stored",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ok"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "5XX": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ByokPutRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/byok/:provider": {
+      "delete": {
+        "summary": "Delete a BYOK provider key",
+        "description": "Removes the encrypted envelope from KV; logs an audit event.",
+        "tags": [
+          "Default"
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ok"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "5XX": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "session": []
+          }
+        ]
+      }
+    },
     "/v1/billing/checkout": {
       "post": {
         "summary": "Create a Stripe Checkout session",
         "description": "Plan = pro | founder. Founder is capped at 200 lifetime seats.",
-        "tags": ["Billing"],
+        "tags": [
+          "Billing"
+        ],
         "responses": {
           "200": {
             "description": "Checkout URL",
@@ -1555,7 +1912,9 @@
       "post": {
         "summary": "Stripe webhook receiver",
         "description": "HMAC-SHA256 verified. Handles checkout.session.completed and subscription events.",
-        "tags": ["Billing"],
+        "tags": [
+          "Billing"
+        ],
         "responses": {
           "200": {
             "description": "Acknowledged",
