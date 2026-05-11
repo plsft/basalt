@@ -4,13 +4,17 @@
 
 import type { VerbContext } from "../engine";
 import { HUB_DENSITY_HARD, hubPenalty } from "../graph/hub-penalty";
-import { dot } from "../math/vector";
+import { dotF32 } from "../math/vector";
 import { extractClaimQuote, stripMarkdown } from "../parser/sentences";
 import type { ContradictionFinding } from "./types";
 
 // Constants from contradiction.py:39-42.
 export const CONTRADICTION_DEFAULT_MIN_SIM = 0.72;
 export const CONTRADICTION_MIN_WORD_COUNT = 60;
+// MAX_PAIRS matches Python's cap. Per docs/parsing-decisions.md D-11, this
+// is order-sensitive: pairs in the [0.7199..0.7201] sim band may be kept or
+// dropped depending on accumulator-precision-induced ordering. We accept
+// this divergence rather than diverge from the Python algorithm.
 export const CONTRADICTION_MAX_PAIRS = 200;
 
 // contradiction.py:53-58 — _NEGATION
@@ -130,7 +134,7 @@ export async function findContradictions(
     const a = eligible[i]!;
     for (let j = i + 1; j < eligible.length; j++) {
       const b = eligible[j]!;
-      const sim = dot(vecById.get(a.id)!, vecById.get(b.id)!);
+      const sim = dotF32(vecById.get(a.id)!, vecById.get(b.id)!);
       if (sim < minSim) continue;
       qualifying.push({ a, b, sim });
       if (qualifying.length >= CONTRADICTION_MAX_PAIRS) break outer;

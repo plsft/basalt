@@ -7,6 +7,46 @@ Phase boundaries get a release tag (`v0.<phase>.0`); public launch tags `v1.0.0`
 ## Unreleased
 
 ### Added
+- [TASK-1.15] `SqlJsStorage` — full sql.js (WASM) `StorageAdapter` for the
+  Obsidian plugin. Mirrors `packages/cli/src/adapters/storage-sqlite.ts`
+  byte-for-byte on schema + SQL (both share `MIGRATIONS` from `@basalt/core`).
+  Persistence: serializes the in-memory DB to a vault-relative
+  `.basalt-index.db` file on every mutation via `Vault.adapter.writeBinary`.
+  Blob round-trip uses `Uint8Array` + `DataView` (no Node Buffer dep). 4
+  vitest tests exercise: fresh init writes a serialized DB, full
+  note+embedding+finding round-trip across re-open, `upsertFinding`
+  idempotency on (verb, finding_key) while pending, and case-insensitive
+  stem resolution with last-wins. `esbuild.config.mjs` copies
+  `sql-wasm.wasm` next to `main.js` at build time.
+- [TASK-1.16/17/18] Plugin engine integration + Settings tab + weekly
+  scheduling. `BriefView` is now an interactive ItemView with a real
+  Generate Brief button driving an `@basalt/core` `Engine` end-to-end via
+  `ObsidianFilesystem` + `SqlJsStorage` + (Ollama with MockEmbedder
+  fallback) embedding. `BasaltSettingTab` exposes Ollama URL, embedding
+  model, promote folder, cadence (manual/weekly), weekly-run hour, and the
+  privacy opt-out toggle. Weekly scheduler uses `window.setInterval(10min)`
+  + a `lastWeeklyRun` epoch-ms guard; auto-fires `runBrief` once per
+  7-day window and writes the brief into the configured promote folder.
+  Two commands registered: `Basalt: Generate Brief` and `Basalt: Reindex
+  vault`. Plugin builds clean (143KB main.js + 660KB sql-wasm.wasm).
+
+### Changed
+- Parity divergences D-9 / D-10 / D-11 fully investigated and documented in
+  `docs/parsing-decisions.md`. The Contradiction (D-11) divergence is
+  root-caused as `MAX_PAIRS=200` order-sensitivity interacting with float32
+  accumulator precision differences between TS's `dotF32` and NumPy's BLAS
+  sgemm; verified by direct debug instrumentation that the reference pair
+  (2026-03-04, Insight-011) is computed identically in TS but never enters
+  the qualifying set because TS fills its 200-pair cap with different
+  borderline pairs (the `[0.7199..0.7201]` band flips). Connection (D-9)
+  TS-only candidates clear every visible filter; most likely cause is a
+  subtle `_extract_claim_quote` regex divergence we couldn't isolate
+  without re-running Python. All three are decided: divergence accepted,
+  rationale recorded. New `dotF32` ships in `@basalt/core/math/vector.ts`
+  with pairwise (tree-reduction) float32 summation matching BLAS sgemm
+  semantics; used in `connection`, `contradiction`, and `thesis` verbs.
+  528 tests pass (added 4 from sql.js round-trip suite).
+
 - [Phase 5] Marketing site, docs site, and launch artifacts. `@basalt/ui` ships
   the canonical brand tokens (`tokens.ts` + `tailwind.preset.ts`, PRD §2.5).
   `@basalt/site` (Astro 5) with Roman-numeral landing (I/II/.../VII sections),

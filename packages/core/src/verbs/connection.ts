@@ -4,7 +4,7 @@
 
 import type { VerbContext } from "../engine";
 import { HUB_DENSITY_HARD, hubPenalty } from "../graph/hub-penalty";
-import { dot } from "../math/vector";
+import { dotF32 } from "../math/vector";
 import { extractClaimQuote } from "../parser/sentences";
 import type { ConnectionFinding } from "./types";
 
@@ -64,7 +64,7 @@ export async function findConnections(
     const a = eligible[i]!;
     for (let j = i + 1; j < eligible.length; j++) {
       const b = eligible[j]!;
-      const sim = dot(vecById.get(a.id)!, vecById.get(b.id)!);
+      const sim = dotF32(vecById.get(a.id)!, vecById.get(b.id)!);
       if (sim < minSim) continue;
       const [low, high] = [a.id, b.id].sort((x, y) => x - y);
       if (linked.has(`${low}|${high}`)) continue;

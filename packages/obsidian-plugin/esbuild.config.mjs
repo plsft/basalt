@@ -5,8 +5,32 @@
 // required for the loader. External libraries (obsidian, electron, node
 // built-ins) are NOT bundled — they're provided by the host.
 
+import { copyFile, mkdir } from "node:fs/promises";
+import path from "node:path";
 import process from "node:process";
+import { fileURLToPath } from "node:url";
 import esbuild from "esbuild";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+// Copy sql.js WASM binary next to main.js so the runtime loader can find it.
+const wasmCandidates = [
+  path.join(__dirname, "node_modules", "sql.js", "dist", "sql-wasm.wasm"),
+  path.join(__dirname, "..", "..", "node_modules", "sql.js", "dist", "sql-wasm.wasm"),
+];
+const wasmDst = path.join(__dirname, "sql-wasm.wasm");
+let copied = false;
+for (const src of wasmCandidates) {
+  try {
+    await mkdir(__dirname, { recursive: true });
+    await copyFile(src, wasmDst);
+    copied = true;
+    break;
+  } catch {}
+}
+if (!copied) {
+  console.warn(`[esbuild] could not copy sql-wasm.wasm from: ${wasmCandidates.join(", ")}`);
+}
 
 const isProd = process.argv.includes("production");
 const banner = `/*

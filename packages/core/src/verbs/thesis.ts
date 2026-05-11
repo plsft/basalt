@@ -5,6 +5,7 @@
 import type { VerbContext } from "../engine";
 import { tightNeighborhoods } from "../graph/cliques";
 import { HUB_DENSITY_HARD, hubPenalty } from "../graph/hub-penalty";
+import { dotF32 } from "../math/vector";
 import { extractClaimQuote } from "../parser/sentences";
 import type { ImplicitThesisFinding } from "./types";
 
@@ -42,7 +43,9 @@ export async function findImplicitTheses(
   );
   if (eligible.length < minClusterSize) return [];
 
-  // Pairwise similarity matrix (with diagonal masked at -1).
+  // Pairwise similarity matrix (with diagonal masked at -1). Uses dotF32 to
+  // match NumPy's BLAS sgemm accumulator precision; the parity baselines were
+  // computed against Python's `matrix @ matrix.T` over float32 embeddings.
   const n = eligible.length;
   const sims = new Float32Array(n * n);
   for (let i = 0; i < n; i++) {
@@ -53,9 +56,7 @@ export async function findImplicitTheses(
         continue;
       }
       const vj = vecById.get(eligible[j]!.id)!;
-      let s = 0;
-      for (let k = 0; k < vi.length; k++) s += (vi[k] ?? 0) * (vj[k] ?? 0);
-      sims[i * n + j] = s;
+      sims[i * n + j] = dotF32(vi, vj);
     }
   }
 
