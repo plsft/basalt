@@ -1,0 +1,124 @@
+---
+title: v1.4.0 — Self-hosting
+description: Run the entire Basalt Pro tier on your own infrastructure.
+---
+
+`v1.4.0` ships a Node-runtime build of the Basalt API plus a Docker
+Compose stack that runs the entire Pro tier (auth, brief generation,
+search, BYOK, vault snapshots) on one box.
+
+## What's in the box
+
+| Component         | Cloud (Workers)         | Self-host                                     |
+| ----------------- | ----------------------- | --------------------------------------------- |
+| API runtime       | Cloudflare Workers      | Bun via `@hono/node-server`                   |
+| Database          | D1                      | SQLite (`better-sqlite3`)                     |
+| Sessions / KV     | Cloudflare KV           | Local fs (one file per key)                   |
+| Blobs (snapshots) | R2                      | Local fs                                      |
+| Vector index      | Vectorize               | SQLite-backed brute-force ANN                 |
+| Inference         | Workers AI              | Ollama (local)                                |
+| Queues            | Cloudflare Queues       | Inline / no-op                                |
+| OAuth + Stripe    | Same                    | Same (configure via env)                      |
+
+Same routes. Same OpenAPI schema. Same client code on the CLI/Desktop
+side — set `apiUrl` to your self-host instance and everything works.
+
+## Quick start
+
+```sh
+git clone https://github.com/plsft/basalt
+cd basalt
+docker compose up -d
+```
+
+Three containers come up:
+
+- `basalt-ollama` — Ollama serving `nomic-embed-text` (embeddings) +
+  `llama3.2:3b` (chat). First run pulls ~2 GB.
+- `basalt-api` — the Bun-compiled API. Health: `http://localhost:8787/health`.
+- `ollama-init` — one-shot job that pulls the two models on first boot.
+
+Data lives in `basalt-api-data` and `basalt-ollama-data` named volumes.
+Back these up.
+
+## Point the CLI at your self-host
+
+```toml
+# ~/.basalt/config.toml
+apiUrl = "http://localhost:8787"
+apiToken = ""        # populated by OAuth login or set manually
+apiVaultId = ""      # from POST /v1/vaults
+```
+
+```sh
+basalt snapshot push       # uploads the local index
+basalt search "query"      # cross-vault search via self-host
+```
+
+## Storage layout
+
+Inside `/data` (the `basalt-api-data` volume):
+
+```
+/data/
+├── db.sqlite              # D1 replacement
+├── vectors.sqlite         # Vectorize replacement
+├── kv/
+│   ├── sessions/<token>   # session cookies
+│   ├── rate-limits/<key>  # KV-backed rate limiter
+│   └── byok/<key>         # encrypted BYOK keys
+└── r2/
+    └── briefs/<key>       # snapshots + brief artifacts
+```
+
+## Backups
+
+The whole stack is two SQLite files + a tree of small text/blob files.
+Standard SQLite backup pattern:
+
+```sh
+docker compose exec basalt-api sqlite3 /data/db.sqlite ".backup /data/backup.db"
+docker cp basalt-api:/data/backup.db ./backup-$(date +%F).db
+```
+
+Or just back up the volume directly:
+
+```sh
+docker run --rm -v basalt-api-data:/data -v $(pwd):/backup alpine \
+  tar czf /backup/basalt-$(date +%F).tar.gz /data
+```
+
+## Hardening for production
+
+The default Compose file is a single-box stack. For real production:
+
+1. **Reverse proxy + TLS.** Put nginx / Caddy / Traefik in front of the
+   API for TLS termination and HTTP/2.
+2. **OAuth + Stripe secrets.** Uncomment the env vars in
+   `docker-compose.yml` and populate from a `.env` file.
+3. **`BYOK_ENCRYPTION_KEY`.** Generate a 32-byte secret (`openssl rand
+   -hex 32`) and set it via env so BYOK keys are encrypted at rest.
+4. **Resource limits.** Add Docker `mem_limit` + `cpus` to each
+   container; Ollama with the 3B model wants ~4 GB.
+5. **Periodic backups.** Cron the SQLite backup or use Litestream for
+   live replication to S3.
+
+## What's NOT self-hostable today
+
+- **CLI binary publishing.** Stays on npm; self-host doesn't change the
+  client distribution model.
+- **Founder-tier cap enforcement.** The 200-seat cap is meaningful on
+  the hosted offering; not relevant when you self-host.
+- **Cross-region edge serving.** Workers gets you 200+ POPs out of the
+  box. The self-host stack serves one region; put a CDN in front if you
+  need global latency.
+
+## Limits
+
+- The flat vector index works fine up to ~100k vectors per user. Beyond
+  that, swap `SelfhostVectorize` for pg_vector / Qdrant / Weaviate — the
+  interface is small enough to re-implement.
+- SQLite WAL mode handles ~1k writes/sec on commodity hardware. Heavy
+  multi-tenant use wants Postgres.
+- No multi-process clustering. The Bun process is single-threaded for
+  request handling; vertical scaling only.

@@ -1,0 +1,51 @@
+# Self-hosted Basalt API container.
+#
+# Single-process Bun runtime serving Hono + every Pro tier route, backed
+# by SQLite (D1 replacement), local fs (KV + R2 replacement), and a flat
+# vector store. Ollama is the inference + embedding provider — bring up
+# `ollama serve` alongside this container.
+
+FROM oven/bun:1.3.13-alpine AS build
+
+WORKDIR /app
+
+# Copy lockfile + everything we need to install workspace deps.
+COPY package.json bun.lock ./
+COPY packages/api/package.json ./packages/api/
+COPY packages/core/package.json ./packages/core/
+RUN bun install --frozen-lockfile
+
+COPY packages/core ./packages/core
+COPY packages/api ./packages/api
+COPY tsconfig.base.json ./
+
+# Pre-compile the entrypoint to a single binary for fast cold starts.
+RUN bun build --compile --target=bun \
+    packages/api/src/selfhost/server.ts \
+    --outfile dist/basalt-selfhost
+
+# --- runtime stage ---
+FROM oven/bun:1.3.13-alpine
+WORKDIR /app
+
+COPY --from=build /app/dist/basalt-selfhost ./basalt-selfhost
+COPY packages/api/migrations ./packages/api/migrations
+COPY packages/api/openapi.json ./openapi.json
+
+ENV BASALT_SELFHOST_DATA_DIR=/data
+ENV BASALT_SELFHOST_PORT=8787
+ENV BASALT_SELFHOST_ENV=production
+
+VOLUME /data
+EXPOSE 8787
+
+# Run under a non-root user.
+RUN adduser -D -u 1000 basalt && \
+    mkdir -p /data && \
+    chown -R basalt:basalt /data
+USER basalt
+
+HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
+    CMD wget --quiet --tries=1 --spider http://localhost:8787/health || exit 1
+
+CMD ["./basalt-selfhost"]

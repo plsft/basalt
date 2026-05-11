@@ -1,0 +1,81 @@
+# Self-hosted Basalt stack. Run with:
+#
+#   docker compose up -d
+#
+# Bring-up sequence:
+#   1. Ollama starts; pulls nomic-embed-text + llama3.2:3b on first run.
+#   2. Basalt API starts; applies SQLite migrations on first boot.
+#   3. Web cockpit (optional; uncomment) serves the React UI.
+#
+# Data lives in named volumes — back these up. The Basalt vault content
+# itself never lives here; you push snapshots from your local CLI/desktop.
+
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: basalt-ollama
+    restart: unless-stopped
+    volumes:
+      - ollama-data:/root/.ollama
+    ports:
+      - "11434:11434"
+    # Optional GPU passthrough — uncomment if you have NVIDIA + nvidia-docker.
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - capabilities: [gpu]
+
+  ollama-init:
+    image: ollama/ollama:latest
+    depends_on:
+      - ollama
+    entrypoint: ["/bin/sh", "-c"]
+    command: |
+      "
+      sleep 5;
+      OLLAMA_HOST=http://ollama:11434 ollama pull nomic-embed-text;
+      OLLAMA_HOST=http://ollama:11434 ollama pull llama3.2:3b;
+      "
+    restart: "no"
+
+  basalt-api:
+    build:
+      context: .
+      dockerfile: packages/api/Dockerfile.selfhost
+    container_name: basalt-api
+    restart: unless-stopped
+    depends_on:
+      - ollama
+    environment:
+      BASALT_SELFHOST_OLLAMA_URL: http://ollama:11434
+      BASALT_SELFHOST_PORT: 8787
+      BASALT_SELFHOST_ENV: production
+      # Optional — set these to enable OAuth / Stripe / BYOK at rest.
+      # OAUTH_GITHUB_CLIENT_ID:   ${OAUTH_GITHUB_CLIENT_ID:-}
+      # OAUTH_GITHUB_CLIENT_SECRET: ${OAUTH_GITHUB_CLIENT_SECRET:-}
+      # STRIPE_SECRET_KEY:        ${STRIPE_SECRET_KEY:-}
+      # STRIPE_WEBHOOK_SECRET:    ${STRIPE_WEBHOOK_SECRET:-}
+      # BYOK_ENCRYPTION_KEY:      ${BYOK_ENCRYPTION_KEY:-}
+    volumes:
+      - basalt-data:/data
+    ports:
+      - "8787:8787"
+
+  # Uncomment to also run the web cockpit. The cockpit is a static Vite
+  # build served by nginx alongside the API. Configure VITE_API_BASE to
+  # http://basalt-api:8787 (or the public URL behind your reverse proxy).
+  #
+  # basalt-web:
+  #   image: nginx:alpine
+  #   restart: unless-stopped
+  #   ports:
+  #     - "5173:80"
+  #   volumes:
+  #     - ./packages/web/dist:/usr/share/nginx/html:ro
+
+volumes:
+  ollama-data:
+    name: basalt-ollama-data
+  basalt-data:
+    name: basalt-api-data
