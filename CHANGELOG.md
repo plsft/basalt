@@ -6,6 +6,8 @@ Phase boundaries get a release tag (`v0.<phase>.0`); public launch tags `v1.0.0`
 
 ## Unreleased
 
+## v1.1.0 — 2026-05-11
+
 ### Added
 - **API v1.1.0 plumbing**: `/v1/briefs/generate` now runs the v1 verb
   augmentation pass when `c.env.AI` (Workers AI binding) is available;
