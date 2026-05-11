@@ -30,6 +30,7 @@ export { type RenderFormat, renderBrief } from "./brief";
 export type { BriefOptions, EngineDeps, IndexOptions, VerbContext, VerbFn } from "./engine";
 export { Engine, registerVerb } from "./engine";
 export { HUB_DENSITY_HARD, HUB_DENSITY_SOFT, hubDensity, hubPenalty } from "./graph";
+export { MIGRATIONS } from "./migrations/index";
 export type { NoteContent, PromoteOptions } from "./promote";
 export { promoteFindingToNote } from "./promote";
 export type {
