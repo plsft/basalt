@@ -25,6 +25,7 @@ describe("buildSnapshot", () => {
     const storage = new MemoryStorage();
     await storage.init();
     const id = await storage.upsertNote({
+      path: "/v/a.md",
       relPath: "a.md",
       stem: "a",
       title: "A",
@@ -76,6 +77,7 @@ describe("buildSnapshot", () => {
     const storage = new MemoryStorage();
     await storage.init();
     await storage.upsertNote({
+      path: "/v/b.md",
       relPath: "b.md",
       stem: "b",
       title: "B",
