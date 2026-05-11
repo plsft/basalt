@@ -1,0 +1,583 @@
+{
+  "notes": [
+    {
+      "id": 1,
+      "rel_path": "01-Daily/2026-03-20.md",
+      "stem": "2026-03-20",
+      "word_count": 54
+    },
+    {
+      "id": 2,
+      "rel_path": "01-Daily/2026-04-15.md",
+      "stem": "2026-04-15",
+      "word_count": 54
+    },
+    {
+      "id": 3,
+      "rel_path": "01-Daily/2026-04-25.md",
+      "stem": "2026-04-25",
+      "word_count": 121
+    },
+    {
+      "id": 4,
+      "rel_path": "01-Daily/2026-04-28.md",
+      "stem": "2026-04-28",
+      "word_count": 101
+    },
+    {
+      "id": 5,
+      "rel_path": "01-Daily/2026-05-01.md",
+      "stem": "2026-05-01",
+      "word_count": 63
+    },
+    {
+      "id": 6,
+      "rel_path": "01-Daily/2026-05-03.md",
+      "stem": "2026-05-03",
+      "word_count": 126
+    },
+    {
+      "id": 7,
+      "rel_path": "02-Projects/Atlas/Atlas.md",
+      "stem": "Atlas",
+      "word_count": 77
+    },
+    {
+      "id": 8,
+      "rel_path": "02-Projects/Atlas/HYPOTHESIS.md",
+      "stem": "HYPOTHESIS",
+      "word_count": 217
+    },
+    {
+      "id": 9,
+      "rel_path": "02-Projects/Atlas/Strategy/Mon.md",
+      "stem": "Mon",
+      "word_count": 110
+    },
+    {
+      "id": 10,
+      "rel_path": "02-Projects/Atlas/Strategy/Wed.md",
+      "stem": "Wed",
+      "word_count": 175
+    },
+    {
+      "id": 11,
+      "rel_path": "02-Projects/SignalBot/BACKTEST.md",
+      "stem": "BACKTEST",
+      "word_count": 118
+    },
+    {
+      "id": 12,
+      "rel_path": "02-Projects/SignalBot/CALIBRATION.md",
+      "stem": "CALIBRATION",
+      "word_count": 121
+    },
+    {
+      "id": 13,
+      "rel_path": "02-Projects/SignalBot/HYPOTHESIS.md",
+      "stem": "HYPOTHESIS",
+      "word_count": 177
+    },
+    {
+      "id": 14,
+      "rel_path": "02-Projects/SignalBot/PHASE2.md",
+      "stem": "PHASE2",
+      "word_count": 101
+    },
+    {
+      "id": 15,
+      "rel_path": "02-Projects/SignalBot/PRODUCTION-NOTES.md",
+      "stem": "PRODUCTION-NOTES",
+      "word_count": 121
+    },
+    {
+      "id": 16,
+      "rel_path": "02-Projects/SignalBot/Tasks.md",
+      "stem": "Tasks",
+      "word_count": 84
+    },
+    {
+      "id": 17,
+      "rel_path": "03-People/Mentor.md",
+      "stem": "Mentor",
+      "word_count": 33
+    },
+    {
+      "id": 18,
+      "rel_path": "03-People/Sarah.md",
+      "stem": "Sarah",
+      "word_count": 28
+    },
+    {
+      "id": 19,
+      "rel_path": "04-Reading/Carse-1986.md",
+      "stem": "Carse-1986",
+      "word_count": 205
+    },
+    {
+      "id": 20,
+      "rel_path": "04-Trading/Signals/OFI-Validation.md",
+      "stem": "OFI-Validation",
+      "word_count": 115
+    },
+    {
+      "id": 21,
+      "rel_path": "06-Meetings/Strategy-Review.md",
+      "stem": "Strategy-Review",
+      "word_count": 116
+    },
+    {
+      "id": 22,
+      "rel_path": "07-Reference/Compounding-Patterns.md",
+      "stem": "Compounding-Patterns",
+      "word_count": 259
+    },
+    {
+      "id": 23,
+      "rel_path": "07-Reference/Microstructure-Primer.md",
+      "stem": "Microstructure-Primer",
+      "word_count": 102
+    },
+    {
+      "id": 24,
+      "rel_path": "07-Reference/RAG-Patterns.md",
+      "stem": "RAG-Patterns",
+      "word_count": 101
+    }
+  ],
+  "links": [
+    {
+      "from_id": 1,
+      "target": "BACKTEST",
+      "target_id": 11
+    },
+    {
+      "from_id": 1,
+      "target": "Microstructure-Primer",
+      "target_id": 23
+    },
+    {
+      "from_id": 1,
+      "target": "Sarah",
+      "target_id": 18
+    },
+    {
+      "from_id": 1,
+      "target": "BACKTEST",
+      "target_id": 11
+    },
+    {
+      "from_id": 2,
+      "target": "BACKTEST",
+      "target_id": 11
+    },
+    {
+      "from_id": 2,
+      "target": "CALIBRATION",
+      "target_id": 12
+    },
+    {
+      "from_id": 2,
+      "target": "Microstructure-Primer",
+      "target_id": 23
+    },
+    {
+      "from_id": 2,
+      "target": "Strategy-Review",
+      "target_id": 21
+    },
+    {
+      "from_id": 3,
+      "target": "Wed",
+      "target_id": 10
+    },
+    {
+      "from_id": 3,
+      "target": "Mon",
+      "target_id": 9
+    },
+    {
+      "from_id": 3,
+      "target": "CALIBRATION",
+      "target_id": 12
+    },
+    {
+      "from_id": 3,
+      "target": "Carse-1986",
+      "target_id": 19
+    },
+    {
+      "from_id": 4,
+      "target": "Wed",
+      "target_id": 10
+    },
+    {
+      "from_id": 5,
+      "target": "PRODUCTION-NOTES",
+      "target_id": 15
+    },
+    {
+      "from_id": 5,
+      "target": "HYPOTHESIS",
+      "target_id": 13
+    },
+    {
+      "from_id": 5,
+      "target": "OFI-Validation",
+      "target_id": 20
+    },
+    {
+      "from_id": 5,
+      "target": "Strategy-Review",
+      "target_id": 21
+    },
+    {
+      "from_id": 6,
+      "target": "BACKTEST",
+      "target_id": 11
+    },
+    {
+      "from_id": 7,
+      "target": "HYPOTHESIS",
+      "target_id": 13
+    },
+    {
+      "from_id": 7,
+      "target": "Strategy/Mon",
+      "target_id": null
+    },
+    {
+      "from_id": 7,
+      "target": "Strategy/Wed",
+      "target_id": null
+    },
+    {
+      "from_id": 8,
+      "target": "Atlas",
+      "target_id": 7
+    },
+    {
+      "from_id": 8,
+      "target": "Mentor",
+      "target_id": 17
+    },
+    {
+      "from_id": 9,
+      "target": "Mentor",
+      "target_id": 17
+    },
+    {
+      "from_id": 10,
+      "target": "Mon",
+      "target_id": 9
+    },
+    {
+      "from_id": 11,
+      "target": "PHASE2",
+      "target_id": 14
+    },
+    {
+      "from_id": 11,
+      "target": "HYPOTHESIS",
+      "target_id": 13
+    },
+    {
+      "from_id": 11,
+      "target": "HYPOTHESIS",
+      "target_id": 13
+    },
+    {
+      "from_id": 11,
+      "target": "HYPOTHESIS",
+      "target_id": 13
+    },
+    {
+      "from_id": 11,
+      "target": "PHASE2",
+      "target_id": 14
+    },
+    {
+      "from_id": 11,
+      "target": "CALIBRATION",
+      "target_id": 12
+    },
+    {
+      "from_id": 12,
+      "target": "BACKTEST",
+      "target_id": 11
+    },
+    {
+      "from_id": 12,
+      "target": "HYPOTHESIS",
+      "target_id": 13
+    },
+    {
+      "from_id": 12,
+      "target": "HYPOTHESIS",
+      "target_id": 13
+    },
+    {
+      "from_id": 12,
+      "target": "BACKTEST",
+      "target_id": 11
+    },
+    {
+      "from_id": 12,
+      "target": "PRODUCTION-NOTES",
+      "target_id": 15
+    },
+    {
+      "from_id": 13,
+      "target": "Microstructure-Primer",
+      "target_id": 23
+    },
+    {
+      "from_id": 13,
+      "target": "Mentor",
+      "target_id": 17
+    },
+    {
+      "from_id": 14,
+      "target": "HYPOTHESIS",
+      "target_id": 13
+    },
+    {
+      "from_id": 14,
+      "target": "HYPOTHESIS",
+      "target_id": 13
+    },
+    {
+      "from_id": 14,
+      "target": "HYPOTHESIS",
+      "target_id": 13
+    },
+    {
+      "from_id": 14,
+      "target": "BACKTEST",
+      "target_id": 11
+    },
+    {
+      "from_id": 14,
+      "target": "Microstructure-Primer",
+      "target_id": 23
+    },
+    {
+      "from_id": 15,
+      "target": "HYPOTHESIS",
+      "target_id": 13
+    },
+    {
+      "from_id": 15,
+      "target": "BACKTEST",
+      "target_id": 11
+    },
+    {
+      "from_id": 15,
+      "target": "HYPOTHESIS",
+      "target_id": 13
+    },
+    {
+      "from_id": 15,
+      "target": "CALIBRATION",
+      "target_id": 12
+    },
+    {
+      "from_id": 15,
+      "target": "Microstructure-Primer",
+      "target_id": 23
+    },
+    {
+      "from_id": 15,
+      "target": "HYPOTHESIS",
+      "target_id": 13
+    },
+    {
+      "from_id": 15,
+      "target": "BACKTEST",
+      "target_id": 11
+    },
+    {
+      "from_id": 15,
+      "target": "CALIBRATION",
+      "target_id": 12
+    },
+    {
+      "from_id": 16,
+      "target": "PRODUCTION-NOTES",
+      "target_id": 15
+    },
+    {
+      "from_id": 16,
+      "target": "CALIBRATION",
+      "target_id": 12
+    },
+    {
+      "from_id": 16,
+      "target": "OFI-Validation",
+      "target_id": 20
+    },
+    {
+      "from_id": 16,
+      "target": "HYPOTHESIS",
+      "target_id": 13
+    },
+    {
+      "from_id": 16,
+      "target": "PHASE2",
+      "target_id": 14
+    },
+    {
+      "from_id": 16,
+      "target": "BACKTEST",
+      "target_id": 11
+    },
+    {
+      "from_id": 16,
+      "target": "CALIBRATION",
+      "target_id": 12
+    },
+    {
+      "from_id": 16,
+      "target": "HYPOTHESIS",
+      "target_id": 13
+    },
+    {
+      "from_id": 16,
+      "target": "PHASE2",
+      "target_id": 14
+    },
+    {
+      "from_id": 16,
+      "target": "BACKTEST",
+      "target_id": 11
+    },
+    {
+      "from_id": 16,
+      "target": "CALIBRATION",
+      "target_id": 12
+    },
+    {
+      "from_id": 16,
+      "target": "PRODUCTION-NOTES",
+      "target_id": 15
+    },
+    {
+      "from_id": 17,
+      "target": "HYPOTHESIS",
+      "target_id": 13
+    },
+    {
+      "from_id": 18,
+      "target": "BACKTEST",
+      "target_id": 11
+    },
+    {
+      "from_id": 18,
+      "target": "OFI-Validation",
+      "target_id": 20
+    },
+    {
+      "from_id": 18,
+      "target": "Strategy-Review",
+      "target_id": 21
+    },
+    {
+      "from_id": 21,
+      "target": "BACKTEST",
+      "target_id": 11
+    },
+    {
+      "from_id": 21,
+      "target": "PRODUCTION-NOTES",
+      "target_id": 15
+    },
+    {
+      "from_id": 21,
+      "target": "HYPOTHESIS",
+      "target_id": 13
+    },
+    {
+      "from_id": 21,
+      "target": "OFI-Validation",
+      "target_id": 20
+    },
+    {
+      "from_id": 21,
+      "target": "Tasks",
+      "target_id": 16
+    },
+    {
+      "from_id": 21,
+      "target": "HYPOTHESIS",
+      "target_id": 13
+    },
+    {
+      "from_id": 21,
+      "target": "BACKTEST",
+      "target_id": 11
+    },
+    {
+      "from_id": 21,
+      "target": "Mentor",
+      "target_id": 17
+    },
+    {
+      "from_id": 23,
+      "target": "HYPOTHESIS",
+      "target_id": 13
+    },
+    {
+      "from_id": 23,
+      "target": "HYPOTHESIS",
+      "target_id": 13
+    }
+  ],
+  "out_link_count": {
+    "1": 3,
+    "2": 4,
+    "3": 4,
+    "4": 1,
+    "5": 4,
+    "6": 1,
+    "7": 3,
+    "8": 2,
+    "9": 1,
+    "10": 1,
+    "11": 3,
+    "12": 3,
+    "13": 2,
+    "14": 3,
+    "15": 4,
+    "16": 6,
+    "17": 1,
+    "18": 3,
+    "21": 6,
+    "23": 1
+  },
+  "density": {
+    "1": 3.0,
+    "2": 4.0,
+    "3": 3.3057851239669422,
+    "4": 0.9900990099009901,
+    "5": 4.0,
+    "6": 0.7936507936507936,
+    "7": 3.0,
+    "8": 0.9216589861751152,
+    "9": 0.9090909090909091,
+    "10": 0.5714285714285714,
+    "11": 2.5423728813559325,
+    "12": 2.479338842975207,
+    "13": 1.1299435028248588,
+    "14": 2.9702970297029703,
+    "15": 3.3057851239669422,
+    "16": 6.0,
+    "17": 1.0,
+    "18": 3.0,
+    "19": 0.0,
+    "20": 0.0,
+    "21": 5.172413793103448,
+    "22": 0.0,
+    "23": 0.9803921568627451,
+    "24": 0.0
+  }
+}

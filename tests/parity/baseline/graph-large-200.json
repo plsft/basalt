@@ -1,0 +1,2206 @@
+{
+  "notes": [
+    {
+      "id": 1,
+      "rel_path": "01-Daily/2026-03-03.md",
+      "stem": "2026-03-03",
+      "word_count": 73
+    },
+    {
+      "id": 2,
+      "rel_path": "01-Daily/2026-03-04.md",
+      "stem": "2026-03-04",
+      "word_count": 69
+    },
+    {
+      "id": 3,
+      "rel_path": "01-Daily/2026-03-05.md",
+      "stem": "2026-03-05",
+      "word_count": 59
+    },
+    {
+      "id": 4,
+      "rel_path": "01-Daily/2026-03-07.md",
+      "stem": "2026-03-07",
+      "word_count": 50
+    },
+    {
+      "id": 5,
+      "rel_path": "01-Daily/2026-03-08.md",
+      "stem": "2026-03-08",
+      "word_count": 72
+    },
+    {
+      "id": 6,
+      "rel_path": "01-Daily/2026-03-09.md",
+      "stem": "2026-03-09",
+      "word_count": 46
+    },
+    {
+      "id": 7,
+      "rel_path": "01-Daily/2026-03-10.md",
+      "stem": "2026-03-10",
+      "word_count": 52
+    },
+    {
+      "id": 8,
+      "rel_path": "01-Daily/2026-03-11.md",
+      "stem": "2026-03-11",
+      "word_count": 50
+    },
+    {
+      "id": 9,
+      "rel_path": "01-Daily/2026-03-13.md",
+      "stem": "2026-03-13",
+      "word_count": 34
+    },
+    {
+      "id": 10,
+      "rel_path": "01-Daily/2026-03-14.md",
+      "stem": "2026-03-14",
+      "word_count": 72
+    },
+    {
+      "id": 11,
+      "rel_path": "01-Daily/2026-03-16.md",
+      "stem": "2026-03-16",
+      "word_count": 83
+    },
+    {
+      "id": 12,
+      "rel_path": "01-Daily/2026-03-18.md",
+      "stem": "2026-03-18",
+      "word_count": 37
+    },
+    {
+      "id": 13,
+      "rel_path": "01-Daily/2026-03-19.md",
+      "stem": "2026-03-19",
+      "word_count": 67
+    },
+    {
+      "id": 14,
+      "rel_path": "01-Daily/2026-03-21.md",
+      "stem": "2026-03-21",
+      "word_count": 45
+    },
+    {
+      "id": 15,
+      "rel_path": "01-Daily/2026-03-22.md",
+      "stem": "2026-03-22",
+      "word_count": 65
+    },
+    {
+      "id": 16,
+      "rel_path": "01-Daily/2026-03-23.md",
+      "stem": "2026-03-23",
+      "word_count": 54
+    },
+    {
+      "id": 17,
+      "rel_path": "01-Daily/2026-03-25.md",
+      "stem": "2026-03-25",
+      "word_count": 83
+    },
+    {
+      "id": 18,
+      "rel_path": "01-Daily/2026-03-26.md",
+      "stem": "2026-03-26",
+      "word_count": 46
+    },
+    {
+      "id": 19,
+      "rel_path": "01-Daily/2026-03-28.md",
+      "stem": "2026-03-28",
+      "word_count": 64
+    },
+    {
+      "id": 20,
+      "rel_path": "01-Daily/2026-03-29.md",
+      "stem": "2026-03-29",
+      "word_count": 43
+    },
+    {
+      "id": 21,
+      "rel_path": "01-Daily/2026-03-31.md",
+      "stem": "2026-03-31",
+      "word_count": 52
+    },
+    {
+      "id": 22,
+      "rel_path": "01-Daily/2026-04-01.md",
+      "stem": "2026-04-01",
+      "word_count": 45
+    },
+    {
+      "id": 23,
+      "rel_path": "01-Daily/2026-04-03.md",
+      "stem": "2026-04-03",
+      "word_count": 53
+    },
+    {
+      "id": 24,
+      "rel_path": "01-Daily/2026-04-05.md",
+      "stem": "2026-04-05",
+      "word_count": 67
+    },
+    {
+      "id": 25,
+      "rel_path": "01-Daily/2026-04-06.md",
+      "stem": "2026-04-06",
+      "word_count": 33
+    },
+    {
+      "id": 26,
+      "rel_path": "01-Daily/2026-04-08.md",
+      "stem": "2026-04-08",
+      "word_count": 46
+    },
+    {
+      "id": 27,
+      "rel_path": "01-Daily/2026-04-09.md",
+      "stem": "2026-04-09",
+      "word_count": 75
+    },
+    {
+      "id": 28,
+      "rel_path": "01-Daily/2026-04-11.md",
+      "stem": "2026-04-11",
+      "word_count": 43
+    },
+    {
+      "id": 29,
+      "rel_path": "01-Daily/2026-04-13.md",
+      "stem": "2026-04-13",
+      "word_count": 65
+    },
+    {
+      "id": 30,
+      "rel_path": "01-Daily/2026-04-15.md",
+      "stem": "2026-04-15",
+      "word_count": 43
+    },
+    {
+      "id": 31,
+      "rel_path": "01-Daily/2026-04-17.md",
+      "stem": "2026-04-17",
+      "word_count": 68
+    },
+    {
+      "id": 32,
+      "rel_path": "01-Daily/2026-04-18.md",
+      "stem": "2026-04-18",
+      "word_count": 40
+    },
+    {
+      "id": 33,
+      "rel_path": "01-Daily/2026-04-20.md",
+      "stem": "2026-04-20",
+      "word_count": 49
+    },
+    {
+      "id": 34,
+      "rel_path": "01-Daily/2026-04-21.md",
+      "stem": "2026-04-21",
+      "word_count": 90
+    },
+    {
+      "id": 35,
+      "rel_path": "01-Daily/2026-04-23.md",
+      "stem": "2026-04-23",
+      "word_count": 55
+    },
+    {
+      "id": 36,
+      "rel_path": "01-Daily/2026-04-25.md",
+      "stem": "2026-04-25",
+      "word_count": 82
+    },
+    {
+      "id": 37,
+      "rel_path": "01-Daily/2026-04-26.md",
+      "stem": "2026-04-26",
+      "word_count": 50
+    },
+    {
+      "id": 38,
+      "rel_path": "01-Daily/2026-04-27.md",
+      "stem": "2026-04-27",
+      "word_count": 44
+    },
+    {
+      "id": 39,
+      "rel_path": "01-Daily/2026-04-29.md",
+      "stem": "2026-04-29",
+      "word_count": 63
+    },
+    {
+      "id": 40,
+      "rel_path": "01-Daily/2026-04-30.md",
+      "stem": "2026-04-30",
+      "word_count": 51
+    },
+    {
+      "id": 41,
+      "rel_path": "01-Daily/2026-05-01.md",
+      "stem": "2026-05-01",
+      "word_count": 44
+    },
+    {
+      "id": 42,
+      "rel_path": "01-Daily/2026-05-03.md",
+      "stem": "2026-05-03",
+      "word_count": 78
+    },
+    {
+      "id": 43,
+      "rel_path": "01-Daily/2026-05-05.md",
+      "stem": "2026-05-05",
+      "word_count": 78
+    },
+    {
+      "id": 44,
+      "rel_path": "01-Daily/2026-05-06.md",
+      "stem": "2026-05-06",
+      "word_count": 50
+    },
+    {
+      "id": 45,
+      "rel_path": "01-Daily/2026-05-08.md",
+      "stem": "2026-05-08",
+      "word_count": 38
+    },
+    {
+      "id": 46,
+      "rel_path": "02-Projects/Atlas/Atlas-Note-02.md",
+      "stem": "Atlas-Note-02",
+      "word_count": 118
+    },
+    {
+      "id": 47,
+      "rel_path": "02-Projects/Atlas/Atlas-Note-03.md",
+      "stem": "Atlas-Note-03",
+      "word_count": 142
+    },
+    {
+      "id": 48,
+      "rel_path": "02-Projects/Atlas/Atlas-Note-04.md",
+      "stem": "Atlas-Note-04",
+      "word_count": 114
+    },
+    {
+      "id": 49,
+      "rel_path": "02-Projects/Atlas/Atlas-Note-05.md",
+      "stem": "Atlas-Note-05",
+      "word_count": 130
+    },
+    {
+      "id": 50,
+      "rel_path": "02-Projects/Atlas/Atlas-Note-06.md",
+      "stem": "Atlas-Note-06",
+      "word_count": 119
+    },
+    {
+      "id": 51,
+      "rel_path": "02-Projects/Atlas/Atlas-Note-07.md",
+      "stem": "Atlas-Note-07",
+      "word_count": 148
+    },
+    {
+      "id": 52,
+      "rel_path": "02-Projects/Atlas/Atlas-Note-08.md",
+      "stem": "Atlas-Note-08",
+      "word_count": 113
+    },
+    {
+      "id": 53,
+      "rel_path": "02-Projects/Atlas/Atlas-Note-09.md",
+      "stem": "Atlas-Note-09",
+      "word_count": 102
+    },
+    {
+      "id": 54,
+      "rel_path": "02-Projects/Atlas/Atlas-Note-10.md",
+      "stem": "Atlas-Note-10",
+      "word_count": 132
+    },
+    {
+      "id": 55,
+      "rel_path": "02-Projects/Atlas/Atlas-Note-11.md",
+      "stem": "Atlas-Note-11",
+      "word_count": 83
+    },
+    {
+      "id": 56,
+      "rel_path": "02-Projects/Atlas/Atlas-Note-12.md",
+      "stem": "Atlas-Note-12",
+      "word_count": 89
+    },
+    {
+      "id": 57,
+      "rel_path": "02-Projects/Atlas/Atlas-Note-13.md",
+      "stem": "Atlas-Note-13",
+      "word_count": 81
+    },
+    {
+      "id": 58,
+      "rel_path": "02-Projects/Atlas/Atlas-Note-14.md",
+      "stem": "Atlas-Note-14",
+      "word_count": 103
+    },
+    {
+      "id": 59,
+      "rel_path": "02-Projects/Atlas/Atlas-Note-15.md",
+      "stem": "Atlas-Note-15",
+      "word_count": 114
+    },
+    {
+      "id": 60,
+      "rel_path": "02-Projects/Atlas/Atlas-Note-16.md",
+      "stem": "Atlas-Note-16",
+      "word_count": 100
+    },
+    {
+      "id": 61,
+      "rel_path": "02-Projects/Atlas/Atlas-Note-17.md",
+      "stem": "Atlas-Note-17",
+      "word_count": 134
+    },
+    {
+      "id": 62,
+      "rel_path": "02-Projects/Atlas/Atlas-Note-18.md",
+      "stem": "Atlas-Note-18",
+      "word_count": 171
+    },
+    {
+      "id": 63,
+      "rel_path": "02-Projects/Atlas/Atlas-Note-19.md",
+      "stem": "Atlas-Note-19",
+      "word_count": 93
+    },
+    {
+      "id": 64,
+      "rel_path": "02-Projects/Atlas/Atlas-Note-20.md",
+      "stem": "Atlas-Note-20",
+      "word_count": 142
+    },
+    {
+      "id": 65,
+      "rel_path": "02-Projects/Atlas/Atlas-Note-21.md",
+      "stem": "Atlas-Note-21",
+      "word_count": 135
+    },
+    {
+      "id": 66,
+      "rel_path": "02-Projects/Atlas/Atlas.md",
+      "stem": "Atlas",
+      "word_count": 129
+    },
+    {
+      "id": 67,
+      "rel_path": "02-Projects/Atlas/HYPOTHESIS.md",
+      "stem": "HYPOTHESIS",
+      "word_count": 144
+    },
+    {
+      "id": 68,
+      "rel_path": "02-Projects/Beacon/Beacon-Note-02.md",
+      "stem": "Beacon-Note-02",
+      "word_count": 164
+    },
+    {
+      "id": 69,
+      "rel_path": "02-Projects/Beacon/Beacon-Note-03.md",
+      "stem": "Beacon-Note-03",
+      "word_count": 127
+    },
+    {
+      "id": 70,
+      "rel_path": "02-Projects/Beacon/Beacon-Note-04.md",
+      "stem": "Beacon-Note-04",
+      "word_count": 115
+    },
+    {
+      "id": 71,
+      "rel_path": "02-Projects/Beacon/Beacon-Note-05.md",
+      "stem": "Beacon-Note-05",
+      "word_count": 151
+    },
+    {
+      "id": 72,
+      "rel_path": "02-Projects/Beacon/Beacon-Note-06.md",
+      "stem": "Beacon-Note-06",
+      "word_count": 149
+    },
+    {
+      "id": 73,
+      "rel_path": "02-Projects/Beacon/Beacon-Note-07.md",
+      "stem": "Beacon-Note-07",
+      "word_count": 177
+    },
+    {
+      "id": 74,
+      "rel_path": "02-Projects/Beacon/Beacon-Note-08.md",
+      "stem": "Beacon-Note-08",
+      "word_count": 160
+    },
+    {
+      "id": 75,
+      "rel_path": "02-Projects/Beacon/Beacon-Note-09.md",
+      "stem": "Beacon-Note-09",
+      "word_count": 121
+    },
+    {
+      "id": 76,
+      "rel_path": "02-Projects/Beacon/Beacon-Note-10.md",
+      "stem": "Beacon-Note-10",
+      "word_count": 122
+    },
+    {
+      "id": 77,
+      "rel_path": "02-Projects/Beacon/Beacon-Note-11.md",
+      "stem": "Beacon-Note-11",
+      "word_count": 125
+    },
+    {
+      "id": 78,
+      "rel_path": "02-Projects/Beacon/Beacon-Note-12.md",
+      "stem": "Beacon-Note-12",
+      "word_count": 175
+    },
+    {
+      "id": 79,
+      "rel_path": "02-Projects/Beacon/Beacon-Note-13.md",
+      "stem": "Beacon-Note-13",
+      "word_count": 113
+    },
+    {
+      "id": 80,
+      "rel_path": "02-Projects/Beacon/Beacon.md",
+      "stem": "Beacon",
+      "word_count": 131
+    },
+    {
+      "id": 81,
+      "rel_path": "02-Projects/Beacon/HYPOTHESIS.md",
+      "stem": "HYPOTHESIS",
+      "word_count": 103
+    },
+    {
+      "id": 82,
+      "rel_path": "02-Projects/Crucible/Crucible-Note-02.md",
+      "stem": "Crucible-Note-02",
+      "word_count": 94
+    },
+    {
+      "id": 83,
+      "rel_path": "02-Projects/Crucible/Crucible-Note-03.md",
+      "stem": "Crucible-Note-03",
+      "word_count": 154
+    },
+    {
+      "id": 84,
+      "rel_path": "02-Projects/Crucible/Crucible-Note-04.md",
+      "stem": "Crucible-Note-04",
+      "word_count": 137
+    },
+    {
+      "id": 85,
+      "rel_path": "02-Projects/Crucible/Crucible-Note-05.md",
+      "stem": "Crucible-Note-05",
+      "word_count": 182
+    },
+    {
+      "id": 86,
+      "rel_path": "02-Projects/Crucible/Crucible-Note-06.md",
+      "stem": "Crucible-Note-06",
+      "word_count": 124
+    },
+    {
+      "id": 87,
+      "rel_path": "02-Projects/Crucible/Crucible-Note-07.md",
+      "stem": "Crucible-Note-07",
+      "word_count": 156
+    },
+    {
+      "id": 88,
+      "rel_path": "02-Projects/Crucible/Crucible-Note-08.md",
+      "stem": "Crucible-Note-08",
+      "word_count": 171
+    },
+    {
+      "id": 89,
+      "rel_path": "02-Projects/Crucible/Crucible.md",
+      "stem": "Crucible",
+      "word_count": 151
+    },
+    {
+      "id": 90,
+      "rel_path": "02-Projects/Crucible/HYPOTHESIS.md",
+      "stem": "HYPOTHESIS",
+      "word_count": 145
+    },
+    {
+      "id": 91,
+      "rel_path": "02-Projects/Driftwood/Driftwood-Note-02.md",
+      "stem": "Driftwood-Note-02",
+      "word_count": 129
+    },
+    {
+      "id": 92,
+      "rel_path": "02-Projects/Driftwood/Driftwood-Note-03.md",
+      "stem": "Driftwood-Note-03",
+      "word_count": 113
+    },
+    {
+      "id": 93,
+      "rel_path": "02-Projects/Driftwood/Driftwood-Note-04.md",
+      "stem": "Driftwood-Note-04",
+      "word_count": 153
+    },
+    {
+      "id": 94,
+      "rel_path": "02-Projects/Driftwood/Driftwood.md",
+      "stem": "Driftwood",
+      "word_count": 119
+    },
+    {
+      "id": 95,
+      "rel_path": "02-Projects/Driftwood/HYPOTHESIS.md",
+      "stem": "HYPOTHESIS",
+      "word_count": 193
+    },
+    {
+      "id": 96,
+      "rel_path": "03-People/Ada.md",
+      "stem": "Ada",
+      "word_count": 58
+    },
+    {
+      "id": 97,
+      "rel_path": "03-People/Bram.md",
+      "stem": "Bram",
+      "word_count": 44
+    },
+    {
+      "id": 98,
+      "rel_path": "03-People/Camille.md",
+      "stem": "Camille",
+      "word_count": 29
+    },
+    {
+      "id": 99,
+      "rel_path": "03-People/Dimitri.md",
+      "stem": "Dimitri",
+      "word_count": 53
+    },
+    {
+      "id": 100,
+      "rel_path": "03-People/Elena.md",
+      "stem": "Elena",
+      "word_count": 50
+    },
+    {
+      "id": 101,
+      "rel_path": "03-People/Felix.md",
+      "stem": "Felix",
+      "word_count": 26
+    },
+    {
+      "id": 102,
+      "rel_path": "03-People/Greta.md",
+      "stem": "Greta",
+      "word_count": 40
+    },
+    {
+      "id": 103,
+      "rel_path": "03-People/Hiro.md",
+      "stem": "Hiro",
+      "word_count": 37
+    },
+    {
+      "id": 104,
+      "rel_path": "03-People/Ines.md",
+      "stem": "Ines",
+      "word_count": 22
+    },
+    {
+      "id": 105,
+      "rel_path": "03-People/Jonas.md",
+      "stem": "Jonas",
+      "word_count": 46
+    },
+    {
+      "id": 106,
+      "rel_path": "04-Reading/Bachelard-1938.md",
+      "stem": "Bachelard-1938",
+      "word_count": 119
+    },
+    {
+      "id": 107,
+      "rel_path": "04-Reading/Berger-1972.md",
+      "stem": "Berger-1972",
+      "word_count": 147
+    },
+    {
+      "id": 108,
+      "rel_path": "04-Reading/Brooks-1975.md",
+      "stem": "Brooks-1975",
+      "word_count": 135
+    },
+    {
+      "id": 109,
+      "rel_path": "04-Reading/Calvino-1972.md",
+      "stem": "Calvino-1972",
+      "word_count": 79
+    },
+    {
+      "id": 110,
+      "rel_path": "04-Reading/Carse-1986.md",
+      "stem": "Carse-1986",
+      "word_count": 95
+    },
+    {
+      "id": 111,
+      "rel_path": "04-Reading/Dijkstra-1972.md",
+      "stem": "Dijkstra-1972",
+      "word_count": 138
+    },
+    {
+      "id": 112,
+      "rel_path": "04-Reading/Feynman-1965.md",
+      "stem": "Feynman-1965",
+      "word_count": 80
+    },
+    {
+      "id": 113,
+      "rel_path": "04-Reading/Hardy-1940.md",
+      "stem": "Hardy-1940",
+      "word_count": 117
+    },
+    {
+      "id": 114,
+      "rel_path": "04-Reading/Hayek-1945.md",
+      "stem": "Hayek-1945",
+      "word_count": 121
+    },
+    {
+      "id": 115,
+      "rel_path": "04-Reading/Hofstadter-1979.md",
+      "stem": "Hofstadter-1979",
+      "word_count": 128
+    },
+    {
+      "id": 116,
+      "rel_path": "04-Reading/Kahneman-2011.md",
+      "stem": "Kahneman-2011",
+      "word_count": 144
+    },
+    {
+      "id": 117,
+      "rel_path": "04-Reading/Knuth-1973.md",
+      "stem": "Knuth-1973",
+      "word_count": 154
+    },
+    {
+      "id": 118,
+      "rel_path": "04-Reading/Kuhn-1962.md",
+      "stem": "Kuhn-1962",
+      "word_count": 106
+    },
+    {
+      "id": 119,
+      "rel_path": "04-Reading/Lyotard-1979.md",
+      "stem": "Lyotard-1979",
+      "word_count": 126
+    },
+    {
+      "id": 120,
+      "rel_path": "04-Reading/Mandelbrot-1982.md",
+      "stem": "Mandelbrot-1982",
+      "word_count": 128
+    },
+    {
+      "id": 121,
+      "rel_path": "04-Reading/Polya-1945.md",
+      "stem": "Polya-1945",
+      "word_count": 123
+    },
+    {
+      "id": 122,
+      "rel_path": "04-Reading/Sapolsky-2004.md",
+      "stem": "Sapolsky-2004",
+      "word_count": 102
+    },
+    {
+      "id": 123,
+      "rel_path": "04-Reading/Shannon-1948.md",
+      "stem": "Shannon-1948",
+      "word_count": 99
+    },
+    {
+      "id": 124,
+      "rel_path": "04-Reading/Stigler-1971.md",
+      "stem": "Stigler-1971",
+      "word_count": 85
+    },
+    {
+      "id": 125,
+      "rel_path": "04-Reading/Wittgenstein-1953.md",
+      "stem": "Wittgenstein-1953",
+      "word_count": 118
+    },
+    {
+      "id": 126,
+      "rel_path": "05-References/Auth-Patterns.md",
+      "stem": "Auth-Patterns",
+      "word_count": 137
+    },
+    {
+      "id": 127,
+      "rel_path": "05-References/Backpressure-Notes.md",
+      "stem": "Backpressure-Notes",
+      "word_count": 97
+    },
+    {
+      "id": 128,
+      "rel_path": "05-References/Capacity-Planning.md",
+      "stem": "Capacity-Planning",
+      "word_count": 68
+    },
+    {
+      "id": 129,
+      "rel_path": "05-References/Chunking-Strategies.md",
+      "stem": "Chunking-Strategies",
+      "word_count": 108
+    },
+    {
+      "id": 130,
+      "rel_path": "05-References/Cold-Start-Latency.md",
+      "stem": "Cold-Start-Latency",
+      "word_count": 90
+    },
+    {
+      "id": 131,
+      "rel_path": "05-References/Compounding-Patterns.md",
+      "stem": "Compounding-Patterns",
+      "word_count": 141
+    },
+    {
+      "id": 132,
+      "rel_path": "05-References/Cost-Modeling.md",
+      "stem": "Cost-Modeling",
+      "word_count": 109
+    },
+    {
+      "id": 133,
+      "rel_path": "05-References/Distributed-Tracing.md",
+      "stem": "Distributed-Tracing",
+      "word_count": 134
+    },
+    {
+      "id": 134,
+      "rel_path": "05-References/Embedding-Stability.md",
+      "stem": "Embedding-Stability",
+      "word_count": 121
+    },
+    {
+      "id": 135,
+      "rel_path": "05-References/Eventual-Consistency.md",
+      "stem": "Eventual-Consistency",
+      "word_count": 71
+    },
+    {
+      "id": 136,
+      "rel_path": "05-References/Failure-Modes.md",
+      "stem": "Failure-Modes",
+      "word_count": 114
+    },
+    {
+      "id": 137,
+      "rel_path": "05-References/Idempotency-Keys.md",
+      "stem": "Idempotency-Keys",
+      "word_count": 85
+    },
+    {
+      "id": 138,
+      "rel_path": "05-References/Idempotent-Workers.md",
+      "stem": "Idempotent-Workers",
+      "word_count": 132
+    },
+    {
+      "id": 139,
+      "rel_path": "05-References/Kalman-Filter.md",
+      "stem": "Kalman-Filter",
+      "word_count": 90
+    },
+    {
+      "id": 140,
+      "rel_path": "05-References/Microstructure-Primer.md",
+      "stem": "Microstructure-Primer",
+      "word_count": 147
+    },
+    {
+      "id": 141,
+      "rel_path": "05-References/Migration-Playbook.md",
+      "stem": "Migration-Playbook",
+      "word_count": 77
+    },
+    {
+      "id": 142,
+      "rel_path": "05-References/Observability-Levels.md",
+      "stem": "Observability-Levels",
+      "word_count": 134
+    },
+    {
+      "id": 143,
+      "rel_path": "05-References/OFI-Validation.md",
+      "stem": "OFI-Validation",
+      "word_count": 133
+    },
+    {
+      "id": 144,
+      "rel_path": "05-References/On-Call-Rotation.md",
+      "stem": "On-Call-Rotation",
+      "word_count": 104
+    },
+    {
+      "id": 145,
+      "rel_path": "05-References/P99-Discipline.md",
+      "stem": "P99-Discipline",
+      "word_count": 92
+    },
+    {
+      "id": 146,
+      "rel_path": "05-References/Privacy-Threat-Model.md",
+      "stem": "Privacy-Threat-Model",
+      "word_count": 117
+    },
+    {
+      "id": 147,
+      "rel_path": "05-References/RAG-Patterns.md",
+      "stem": "RAG-Patterns",
+      "word_count": 118
+    },
+    {
+      "id": 148,
+      "rel_path": "05-References/Retry-Backoff.md",
+      "stem": "Retry-Backoff",
+      "word_count": 79
+    },
+    {
+      "id": 149,
+      "rel_path": "05-References/Schema-Evolution.md",
+      "stem": "Schema-Evolution",
+      "word_count": 119
+    },
+    {
+      "id": 150,
+      "rel_path": "05-References/Sharding-Choices.md",
+      "stem": "Sharding-Choices",
+      "word_count": 114
+    },
+    {
+      "id": 151,
+      "rel_path": "05-References/SLA-Negotiation.md",
+      "stem": "SLA-Negotiation",
+      "word_count": 123
+    },
+    {
+      "id": 152,
+      "rel_path": "05-References/Sunset-Patterns.md",
+      "stem": "Sunset-Patterns",
+      "word_count": 69
+    },
+    {
+      "id": 153,
+      "rel_path": "05-References/Token-Lifetimes.md",
+      "stem": "Token-Lifetimes",
+      "word_count": 108
+    },
+    {
+      "id": 154,
+      "rel_path": "05-References/Vector-DB-Choices.md",
+      "stem": "Vector-DB-Choices",
+      "word_count": 120
+    },
+    {
+      "id": 155,
+      "rel_path": "05-References/Webhook-Design.md",
+      "stem": "Webhook-Design",
+      "word_count": 113
+    },
+    {
+      "id": 156,
+      "rel_path": "06-MOCs/MOC-Active.md",
+      "stem": "MOC-Active",
+      "word_count": 43
+    },
+    {
+      "id": 157,
+      "rel_path": "06-MOCs/MOC-Inbox.md",
+      "stem": "MOC-Inbox",
+      "word_count": 49
+    },
+    {
+      "id": 158,
+      "rel_path": "06-MOCs/MOC-People.md",
+      "stem": "MOC-People",
+      "word_count": 37
+    },
+    {
+      "id": 159,
+      "rel_path": "06-MOCs/MOC-Projects.md",
+      "stem": "MOC-Projects",
+      "word_count": 43
+    },
+    {
+      "id": 160,
+      "rel_path": "06-MOCs/MOC-Reading.md",
+      "stem": "MOC-Reading",
+      "word_count": 39
+    },
+    {
+      "id": 161,
+      "rel_path": "06-MOCs/MOC-Trading.md",
+      "stem": "MOC-Trading",
+      "word_count": 35
+    },
+    {
+      "id": 162,
+      "rel_path": "07-Insights/Insight-001.md",
+      "stem": "Insight-001",
+      "word_count": 180
+    },
+    {
+      "id": 163,
+      "rel_path": "07-Insights/Insight-002.md",
+      "stem": "Insight-002",
+      "word_count": 100
+    },
+    {
+      "id": 164,
+      "rel_path": "07-Insights/Insight-003.md",
+      "stem": "Insight-003",
+      "word_count": 152
+    },
+    {
+      "id": 165,
+      "rel_path": "07-Insights/Insight-004.md",
+      "stem": "Insight-004",
+      "word_count": 120
+    },
+    {
+      "id": 166,
+      "rel_path": "07-Insights/Insight-005.md",
+      "stem": "Insight-005",
+      "word_count": 150
+    },
+    {
+      "id": 167,
+      "rel_path": "07-Insights/Insight-006.md",
+      "stem": "Insight-006",
+      "word_count": 138
+    },
+    {
+      "id": 168,
+      "rel_path": "07-Insights/Insight-007.md",
+      "stem": "Insight-007",
+      "word_count": 140
+    },
+    {
+      "id": 169,
+      "rel_path": "07-Insights/Insight-008.md",
+      "stem": "Insight-008",
+      "word_count": 114
+    },
+    {
+      "id": 170,
+      "rel_path": "07-Insights/Insight-009.md",
+      "stem": "Insight-009",
+      "word_count": 137
+    },
+    {
+      "id": 171,
+      "rel_path": "07-Insights/Insight-010.md",
+      "stem": "Insight-010",
+      "word_count": 173
+    },
+    {
+      "id": 172,
+      "rel_path": "07-Insights/Insight-011.md",
+      "stem": "Insight-011",
+      "word_count": 140
+    },
+    {
+      "id": 173,
+      "rel_path": "07-Insights/Insight-012.md",
+      "stem": "Insight-012",
+      "word_count": 139
+    },
+    {
+      "id": 174,
+      "rel_path": "07-Insights/Insight-013.md",
+      "stem": "Insight-013",
+      "word_count": 89
+    },
+    {
+      "id": 175,
+      "rel_path": "07-Insights/Insight-014.md",
+      "stem": "Insight-014",
+      "word_count": 134
+    },
+    {
+      "id": 176,
+      "rel_path": "07-Insights/Insight-015.md",
+      "stem": "Insight-015",
+      "word_count": 172
+    },
+    {
+      "id": 177,
+      "rel_path": "07-Insights/Insight-016.md",
+      "stem": "Insight-016",
+      "word_count": 148
+    },
+    {
+      "id": 178,
+      "rel_path": "07-Insights/Insight-017.md",
+      "stem": "Insight-017",
+      "word_count": 165
+    },
+    {
+      "id": 179,
+      "rel_path": "07-Insights/Insight-018.md",
+      "stem": "Insight-018",
+      "word_count": 132
+    },
+    {
+      "id": 180,
+      "rel_path": "07-Insights/Insight-019.md",
+      "stem": "Insight-019",
+      "word_count": 94
+    },
+    {
+      "id": 181,
+      "rel_path": "07-Insights/Insight-020.md",
+      "stem": "Insight-020",
+      "word_count": 189
+    },
+    {
+      "id": 182,
+      "rel_path": "07-Insights/Insight-021.md",
+      "stem": "Insight-021",
+      "word_count": 126
+    },
+    {
+      "id": 183,
+      "rel_path": "07-Insights/Insight-022.md",
+      "stem": "Insight-022",
+      "word_count": 130
+    },
+    {
+      "id": 184,
+      "rel_path": "07-Insights/Insight-023.md",
+      "stem": "Insight-023",
+      "word_count": 165
+    },
+    {
+      "id": 185,
+      "rel_path": "07-Insights/Insight-024.md",
+      "stem": "Insight-024",
+      "word_count": 203
+    },
+    {
+      "id": 186,
+      "rel_path": "07-Insights/Insight-025.md",
+      "stem": "Insight-025",
+      "word_count": 145
+    },
+    {
+      "id": 187,
+      "rel_path": "07-Insights/Insight-026.md",
+      "stem": "Insight-026",
+      "word_count": 122
+    },
+    {
+      "id": 188,
+      "rel_path": "07-Insights/Insight-027.md",
+      "stem": "Insight-027",
+      "word_count": 85
+    },
+    {
+      "id": 189,
+      "rel_path": "07-Insights/Insight-028.md",
+      "stem": "Insight-028",
+      "word_count": 117
+    },
+    {
+      "id": 190,
+      "rel_path": "07-Insights/Insight-029.md",
+      "stem": "Insight-029",
+      "word_count": 103
+    },
+    {
+      "id": 191,
+      "rel_path": "07-Insights/Insight-030.md",
+      "stem": "Insight-030",
+      "word_count": 95
+    },
+    {
+      "id": 192,
+      "rel_path": "07-Insights/Insight-031.md",
+      "stem": "Insight-031",
+      "word_count": 108
+    },
+    {
+      "id": 193,
+      "rel_path": "07-Insights/Insight-032.md",
+      "stem": "Insight-032",
+      "word_count": 153
+    },
+    {
+      "id": 194,
+      "rel_path": "07-Insights/Insight-033.md",
+      "stem": "Insight-033",
+      "word_count": 144
+    },
+    {
+      "id": 195,
+      "rel_path": "07-Insights/Insight-034.md",
+      "stem": "Insight-034",
+      "word_count": 114
+    },
+    {
+      "id": 196,
+      "rel_path": "07-Insights/Insight-035.md",
+      "stem": "Insight-035",
+      "word_count": 152
+    },
+    {
+      "id": 197,
+      "rel_path": "07-Insights/Insight-036.md",
+      "stem": "Insight-036",
+      "word_count": 111
+    },
+    {
+      "id": 198,
+      "rel_path": "07-Insights/Insight-037.md",
+      "stem": "Insight-037",
+      "word_count": 99
+    },
+    {
+      "id": 199,
+      "rel_path": "07-Insights/Insight-038.md",
+      "stem": "Insight-038",
+      "word_count": 153
+    },
+    {
+      "id": 200,
+      "rel_path": "07-Insights/Insight-039.md",
+      "stem": "Insight-039",
+      "word_count": 163
+    }
+  ],
+  "links": [
+    {
+      "from_id": 126,
+      "target": "Atlas-Note-08",
+      "target_id": 52
+    },
+    {
+      "from_id": 126,
+      "target": "Dijkstra-1972",
+      "target_id": 111
+    },
+    {
+      "from_id": 126,
+      "target": "Hardy-1940",
+      "target_id": 113
+    },
+    {
+      "from_id": 127,
+      "target": "Eventual-Consistency",
+      "target_id": 135
+    },
+    {
+      "from_id": 128,
+      "target": "Beacon-Note-02",
+      "target_id": 68
+    },
+    {
+      "from_id": 128,
+      "target": "Greta",
+      "target_id": 102
+    },
+    {
+      "from_id": 128,
+      "target": "Beacon-Note-10",
+      "target_id": 76
+    },
+    {
+      "from_id": 129,
+      "target": "Beacon-Note-11",
+      "target_id": 77
+    },
+    {
+      "from_id": 129,
+      "target": "OFI-Validation",
+      "target_id": 143
+    },
+    {
+      "from_id": 130,
+      "target": "OFI-Validation",
+      "target_id": 143
+    },
+    {
+      "from_id": 131,
+      "target": "Sapolsky-2004",
+      "target_id": 122
+    },
+    {
+      "from_id": 131,
+      "target": "Beacon-Note-02",
+      "target_id": 68
+    },
+    {
+      "from_id": 131,
+      "target": "Atlas-Note-14",
+      "target_id": 58
+    },
+    {
+      "from_id": 132,
+      "target": "P99-Discipline",
+      "target_id": 145
+    },
+    {
+      "from_id": 132,
+      "target": "HYPOTHESIS",
+      "target_id": 95
+    },
+    {
+      "from_id": 132,
+      "target": "Atlas-Note-11",
+      "target_id": 55
+    },
+    {
+      "from_id": 133,
+      "target": "Beacon-Note-04",
+      "target_id": 70
+    },
+    {
+      "from_id": 134,
+      "target": "Brooks-1975",
+      "target_id": 108
+    },
+    {
+      "from_id": 135,
+      "target": "Beacon-Note-12",
+      "target_id": 78
+    },
+    {
+      "from_id": 136,
+      "target": "Brooks-1975",
+      "target_id": 108
+    },
+    {
+      "from_id": 136,
+      "target": "Atlas-Note-18",
+      "target_id": 62
+    },
+    {
+      "from_id": 137,
+      "target": "Beacon-Note-03",
+      "target_id": 69
+    },
+    {
+      "from_id": 137,
+      "target": "Stigler-1971",
+      "target_id": 124
+    },
+    {
+      "from_id": 138,
+      "target": "Lyotard-1979",
+      "target_id": 119
+    },
+    {
+      "from_id": 138,
+      "target": "Embedding-Stability",
+      "target_id": 134
+    },
+    {
+      "from_id": 139,
+      "target": "Beacon-Note-05",
+      "target_id": 71
+    },
+    {
+      "from_id": 140,
+      "target": "Ines",
+      "target_id": 104
+    },
+    {
+      "from_id": 141,
+      "target": "OFI-Validation",
+      "target_id": 143
+    },
+    {
+      "from_id": 142,
+      "target": "Sunset-Patterns",
+      "target_id": 152
+    },
+    {
+      "from_id": 142,
+      "target": "Failure-Modes",
+      "target_id": 136
+    },
+    {
+      "from_id": 143,
+      "target": "Beacon-Note-13",
+      "target_id": 79
+    },
+    {
+      "from_id": 143,
+      "target": "Atlas-Note-04",
+      "target_id": 48
+    },
+    {
+      "from_id": 143,
+      "target": "Brooks-1975",
+      "target_id": 108
+    },
+    {
+      "from_id": 144,
+      "target": "Crucible-Note-02",
+      "target_id": 82
+    },
+    {
+      "from_id": 144,
+      "target": "Eventual-Consistency",
+      "target_id": 135
+    },
+    {
+      "from_id": 144,
+      "target": "HYPOTHESIS",
+      "target_id": 95
+    },
+    {
+      "from_id": 145,
+      "target": "Schema-Evolution",
+      "target_id": 149
+    },
+    {
+      "from_id": 145,
+      "target": "Driftwood",
+      "target_id": 94
+    },
+    {
+      "from_id": 145,
+      "target": "Bachelard-1938",
+      "target_id": 106
+    },
+    {
+      "from_id": 146,
+      "target": "Hofstadter-1979",
+      "target_id": 115
+    },
+    {
+      "from_id": 146,
+      "target": "Bachelard-1938",
+      "target_id": 106
+    },
+    {
+      "from_id": 146,
+      "target": "Crucible-Note-02",
+      "target_id": 82
+    },
+    {
+      "from_id": 147,
+      "target": "Atlas-Note-04",
+      "target_id": 48
+    },
+    {
+      "from_id": 147,
+      "target": "Felix",
+      "target_id": 101
+    },
+    {
+      "from_id": 148,
+      "target": "Atlas-Note-12",
+      "target_id": 56
+    },
+    {
+      "from_id": 148,
+      "target": "Kuhn-1962",
+      "target_id": 118
+    },
+    {
+      "from_id": 148,
+      "target": "Dijkstra-1972",
+      "target_id": 111
+    },
+    {
+      "from_id": 149,
+      "target": "Atlas-Note-19",
+      "target_id": 63
+    },
+    {
+      "from_id": 149,
+      "target": "Beacon",
+      "target_id": 80
+    },
+    {
+      "from_id": 149,
+      "target": "Microstructure-Primer",
+      "target_id": 140
+    },
+    {
+      "from_id": 150,
+      "target": "Lyotard-1979",
+      "target_id": 119
+    },
+    {
+      "from_id": 150,
+      "target": "Crucible-Note-03",
+      "target_id": 83
+    },
+    {
+      "from_id": 151,
+      "target": "Atlas-Note-06",
+      "target_id": 50
+    },
+    {
+      "from_id": 151,
+      "target": "Cold-Start-Latency",
+      "target_id": 130
+    },
+    {
+      "from_id": 152,
+      "target": "Calvino-1972",
+      "target_id": 109
+    },
+    {
+      "from_id": 152,
+      "target": "Atlas-Note-19",
+      "target_id": 63
+    },
+    {
+      "from_id": 152,
+      "target": "HYPOTHESIS",
+      "target_id": 95
+    },
+    {
+      "from_id": 153,
+      "target": "Capacity-Planning",
+      "target_id": 128
+    },
+    {
+      "from_id": 153,
+      "target": "Knuth-1973",
+      "target_id": 117
+    },
+    {
+      "from_id": 154,
+      "target": "Atlas-Note-20",
+      "target_id": 64
+    },
+    {
+      "from_id": 154,
+      "target": "Polya-1945",
+      "target_id": 121
+    },
+    {
+      "from_id": 155,
+      "target": "Shannon-1948",
+      "target_id": 123
+    },
+    {
+      "from_id": 156,
+      "target": "Distributed-Tracing",
+      "target_id": 133
+    },
+    {
+      "from_id": 156,
+      "target": "Beacon-Note-09",
+      "target_id": 75
+    },
+    {
+      "from_id": 156,
+      "target": "Auth-Patterns",
+      "target_id": 126
+    },
+    {
+      "from_id": 156,
+      "target": "Atlas-Note-02",
+      "target_id": 46
+    },
+    {
+      "from_id": 156,
+      "target": "Carse-1986",
+      "target_id": 110
+    },
+    {
+      "from_id": 156,
+      "target": "P99-Discipline",
+      "target_id": 145
+    },
+    {
+      "from_id": 156,
+      "target": "Driftwood-Note-02",
+      "target_id": 91
+    },
+    {
+      "from_id": 156,
+      "target": "Atlas-Note-06",
+      "target_id": 50
+    },
+    {
+      "from_id": 156,
+      "target": "Atlas-Note-03",
+      "target_id": 47
+    },
+    {
+      "from_id": 156,
+      "target": "Atlas-Note-05",
+      "target_id": 49
+    },
+    {
+      "from_id": 156,
+      "target": "Backpressure-Notes",
+      "target_id": 127
+    },
+    {
+      "from_id": 156,
+      "target": "Compounding-Patterns",
+      "target_id": 131
+    },
+    {
+      "from_id": 156,
+      "target": "Atlas-Note-04",
+      "target_id": 48
+    },
+    {
+      "from_id": 156,
+      "target": "Crucible-Note-02",
+      "target_id": 82
+    },
+    {
+      "from_id": 156,
+      "target": "Camille",
+      "target_id": 98
+    },
+    {
+      "from_id": 156,
+      "target": "Beacon-Note-04",
+      "target_id": 70
+    },
+    {
+      "from_id": 157,
+      "target": "Hayek-1945",
+      "target_id": 114
+    },
+    {
+      "from_id": 157,
+      "target": "Atlas-Note-12",
+      "target_id": 56
+    },
+    {
+      "from_id": 157,
+      "target": "Vector-DB-Choices",
+      "target_id": 154
+    },
+    {
+      "from_id": 157,
+      "target": "Failure-Modes",
+      "target_id": 136
+    },
+    {
+      "from_id": 157,
+      "target": "Kuhn-1962",
+      "target_id": 118
+    },
+    {
+      "from_id": 157,
+      "target": "Felix",
+      "target_id": 101
+    },
+    {
+      "from_id": 157,
+      "target": "Camille",
+      "target_id": 98
+    },
+    {
+      "from_id": 157,
+      "target": "Brooks-1975",
+      "target_id": 108
+    },
+    {
+      "from_id": 157,
+      "target": "Jonas",
+      "target_id": 105
+    },
+    {
+      "from_id": 157,
+      "target": "HYPOTHESIS",
+      "target_id": 95
+    },
+    {
+      "from_id": 157,
+      "target": "Atlas-Note-04",
+      "target_id": 48
+    },
+    {
+      "from_id": 157,
+      "target": "Atlas-Note-18",
+      "target_id": 62
+    },
+    {
+      "from_id": 157,
+      "target": "OFI-Validation",
+      "target_id": 143
+    },
+    {
+      "from_id": 157,
+      "target": "Sapolsky-2004",
+      "target_id": 122
+    },
+    {
+      "from_id": 157,
+      "target": "Atlas-Note-16",
+      "target_id": 60
+    },
+    {
+      "from_id": 157,
+      "target": "Atlas-Note-14",
+      "target_id": 58
+    },
+    {
+      "from_id": 157,
+      "target": "Hardy-1940",
+      "target_id": 113
+    },
+    {
+      "from_id": 157,
+      "target": "Beacon-Note-13",
+      "target_id": 79
+    },
+    {
+      "from_id": 157,
+      "target": "Feynman-1965",
+      "target_id": 112
+    },
+    {
+      "from_id": 158,
+      "target": "Kalman-Filter",
+      "target_id": 139
+    },
+    {
+      "from_id": 158,
+      "target": "Privacy-Threat-Model",
+      "target_id": 146
+    },
+    {
+      "from_id": 158,
+      "target": "Atlas-Note-02",
+      "target_id": 46
+    },
+    {
+      "from_id": 158,
+      "target": "Atlas-Note-03",
+      "target_id": 47
+    },
+    {
+      "from_id": 158,
+      "target": "Atlas-Note-20",
+      "target_id": 64
+    },
+    {
+      "from_id": 158,
+      "target": "Microstructure-Primer",
+      "target_id": 140
+    },
+    {
+      "from_id": 158,
+      "target": "Crucible-Note-06",
+      "target_id": 86
+    },
+    {
+      "from_id": 158,
+      "target": "Atlas-Note-17",
+      "target_id": 61
+    },
+    {
+      "from_id": 158,
+      "target": "Polya-1945",
+      "target_id": 121
+    },
+    {
+      "from_id": 158,
+      "target": "Beacon-Note-02",
+      "target_id": 68
+    },
+    {
+      "from_id": 158,
+      "target": "Driftwood-Note-02",
+      "target_id": 91
+    },
+    {
+      "from_id": 158,
+      "target": "Beacon-Note-04",
+      "target_id": 70
+    },
+    {
+      "from_id": 158,
+      "target": "Atlas-Note-15",
+      "target_id": 59
+    },
+    {
+      "from_id": 159,
+      "target": "Driftwood-Note-04",
+      "target_id": 93
+    },
+    {
+      "from_id": 159,
+      "target": "Capacity-Planning",
+      "target_id": 128
+    },
+    {
+      "from_id": 159,
+      "target": "Backpressure-Notes",
+      "target_id": 127
+    },
+    {
+      "from_id": 159,
+      "target": "Atlas-Note-03",
+      "target_id": 47
+    },
+    {
+      "from_id": 159,
+      "target": "Ines",
+      "target_id": 104
+    },
+    {
+      "from_id": 159,
+      "target": "Driftwood-Note-03",
+      "target_id": 92
+    },
+    {
+      "from_id": 159,
+      "target": "Atlas-Note-07",
+      "target_id": 51
+    },
+    {
+      "from_id": 159,
+      "target": "Crucible-Note-05",
+      "target_id": 85
+    },
+    {
+      "from_id": 159,
+      "target": "RAG-Patterns",
+      "target_id": 147
+    },
+    {
+      "from_id": 159,
+      "target": "Bram",
+      "target_id": 97
+    },
+    {
+      "from_id": 159,
+      "target": "HYPOTHESIS",
+      "target_id": 95
+    },
+    {
+      "from_id": 159,
+      "target": "Felix",
+      "target_id": 101
+    },
+    {
+      "from_id": 159,
+      "target": "Sunset-Patterns",
+      "target_id": 152
+    },
+    {
+      "from_id": 159,
+      "target": "Elena",
+      "target_id": 100
+    },
+    {
+      "from_id": 159,
+      "target": "Webhook-Design",
+      "target_id": 155
+    },
+    {
+      "from_id": 159,
+      "target": "Beacon-Note-13",
+      "target_id": 79
+    },
+    {
+      "from_id": 160,
+      "target": "Token-Lifetimes",
+      "target_id": 153
+    },
+    {
+      "from_id": 160,
+      "target": "OFI-Validation",
+      "target_id": 143
+    },
+    {
+      "from_id": 160,
+      "target": "Observability-Levels",
+      "target_id": 142
+    },
+    {
+      "from_id": 160,
+      "target": "Atlas-Note-02",
+      "target_id": 46
+    },
+    {
+      "from_id": 160,
+      "target": "Elena",
+      "target_id": 100
+    },
+    {
+      "from_id": 160,
+      "target": "Beacon-Note-13",
+      "target_id": 79
+    },
+    {
+      "from_id": 160,
+      "target": "Feynman-1965",
+      "target_id": 112
+    },
+    {
+      "from_id": 160,
+      "target": "Dimitri",
+      "target_id": 99
+    },
+    {
+      "from_id": 160,
+      "target": "Beacon-Note-10",
+      "target_id": 76
+    },
+    {
+      "from_id": 160,
+      "target": "Microstructure-Primer",
+      "target_id": 140
+    },
+    {
+      "from_id": 160,
+      "target": "Beacon-Note-06",
+      "target_id": 72
+    },
+    {
+      "from_id": 160,
+      "target": "Atlas-Note-10",
+      "target_id": 54
+    },
+    {
+      "from_id": 160,
+      "target": "Atlas",
+      "target_id": 66
+    },
+    {
+      "from_id": 160,
+      "target": "Beacon",
+      "target_id": 80
+    },
+    {
+      "from_id": 161,
+      "target": "Beacon",
+      "target_id": 80
+    },
+    {
+      "from_id": 161,
+      "target": "Backpressure-Notes",
+      "target_id": 127
+    },
+    {
+      "from_id": 161,
+      "target": "Jonas",
+      "target_id": 105
+    },
+    {
+      "from_id": 161,
+      "target": "Chunking-Strategies",
+      "target_id": 129
+    },
+    {
+      "from_id": 161,
+      "target": "Driftwood-Note-04",
+      "target_id": 93
+    },
+    {
+      "from_id": 161,
+      "target": "Microstructure-Primer",
+      "target_id": 140
+    },
+    {
+      "from_id": 161,
+      "target": "Berger-1972",
+      "target_id": 107
+    },
+    {
+      "from_id": 161,
+      "target": "Carse-1986",
+      "target_id": 110
+    },
+    {
+      "from_id": 161,
+      "target": "Atlas-Note-02",
+      "target_id": 46
+    },
+    {
+      "from_id": 161,
+      "target": "Retry-Backoff",
+      "target_id": 148
+    },
+    {
+      "from_id": 161,
+      "target": "Atlas-Note-18",
+      "target_id": 62
+    },
+    {
+      "from_id": 161,
+      "target": "Atlas-Note-13",
+      "target_id": 57
+    }
+  ],
+  "out_link_count": {
+    "126": 3,
+    "127": 1,
+    "128": 3,
+    "129": 2,
+    "130": 1,
+    "131": 3,
+    "132": 3,
+    "133": 1,
+    "134": 1,
+    "135": 1,
+    "136": 2,
+    "137": 2,
+    "138": 2,
+    "139": 1,
+    "140": 1,
+    "141": 1,
+    "142": 2,
+    "143": 3,
+    "144": 3,
+    "145": 3,
+    "146": 3,
+    "147": 2,
+    "148": 3,
+    "149": 3,
+    "150": 2,
+    "151": 2,
+    "152": 3,
+    "153": 2,
+    "154": 2,
+    "155": 1,
+    "156": 16,
+    "157": 19,
+    "158": 13,
+    "159": 16,
+    "160": 14,
+    "161": 12
+  },
+  "density": {
+    "1": 0.0,
+    "2": 0.0,
+    "3": 0.0,
+    "4": 0.0,
+    "5": 0.0,
+    "6": 0.0,
+    "7": 0.0,
+    "8": 0.0,
+    "9": 0.0,
+    "10": 0.0,
+    "11": 0.0,
+    "12": 0.0,
+    "13": 0.0,
+    "14": 0.0,
+    "15": 0.0,
+    "16": 0.0,
+    "17": 0.0,
+    "18": 0.0,
+    "19": 0.0,
+    "20": 0.0,
+    "21": 0.0,
+    "22": 0.0,
+    "23": 0.0,
+    "24": 0.0,
+    "25": 0.0,
+    "26": 0.0,
+    "27": 0.0,
+    "28": 0.0,
+    "29": 0.0,
+    "30": 0.0,
+    "31": 0.0,
+    "32": 0.0,
+    "33": 0.0,
+    "34": 0.0,
+    "35": 0.0,
+    "36": 0.0,
+    "37": 0.0,
+    "38": 0.0,
+    "39": 0.0,
+    "40": 0.0,
+    "41": 0.0,
+    "42": 0.0,
+    "43": 0.0,
+    "44": 0.0,
+    "45": 0.0,
+    "46": 0.0,
+    "47": 0.0,
+    "48": 0.0,
+    "49": 0.0,
+    "50": 0.0,
+    "51": 0.0,
+    "52": 0.0,
+    "53": 0.0,
+    "54": 0.0,
+    "55": 0.0,
+    "56": 0.0,
+    "57": 0.0,
+    "58": 0.0,
+    "59": 0.0,
+    "60": 0.0,
+    "61": 0.0,
+    "62": 0.0,
+    "63": 0.0,
+    "64": 0.0,
+    "65": 0.0,
+    "66": 0.0,
+    "67": 0.0,
+    "68": 0.0,
+    "69": 0.0,
+    "70": 0.0,
+    "71": 0.0,
+    "72": 0.0,
+    "73": 0.0,
+    "74": 0.0,
+    "75": 0.0,
+    "76": 0.0,
+    "77": 0.0,
+    "78": 0.0,
+    "79": 0.0,
+    "80": 0.0,
+    "81": 0.0,
+    "82": 0.0,
+    "83": 0.0,
+    "84": 0.0,
+    "85": 0.0,
+    "86": 0.0,
+    "87": 0.0,
+    "88": 0.0,
+    "89": 0.0,
+    "90": 0.0,
+    "91": 0.0,
+    "92": 0.0,
+    "93": 0.0,
+    "94": 0.0,
+    "95": 0.0,
+    "96": 0.0,
+    "97": 0.0,
+    "98": 0.0,
+    "99": 0.0,
+    "100": 0.0,
+    "101": 0.0,
+    "102": 0.0,
+    "103": 0.0,
+    "104": 0.0,
+    "105": 0.0,
+    "106": 0.0,
+    "107": 0.0,
+    "108": 0.0,
+    "109": 0.0,
+    "110": 0.0,
+    "111": 0.0,
+    "112": 0.0,
+    "113": 0.0,
+    "114": 0.0,
+    "115": 0.0,
+    "116": 0.0,
+    "117": 0.0,
+    "118": 0.0,
+    "119": 0.0,
+    "120": 0.0,
+    "121": 0.0,
+    "122": 0.0,
+    "123": 0.0,
+    "124": 0.0,
+    "125": 0.0,
+    "126": 2.18978102189781,
+    "127": 1.0,
+    "128": 3.0,
+    "129": 1.8518518518518516,
+    "130": 1.0,
+    "131": 2.127659574468085,
+    "132": 2.7522935779816513,
+    "133": 0.7462686567164178,
+    "134": 0.8264462809917356,
+    "135": 1.0,
+    "136": 1.7543859649122808,
+    "137": 2.0,
+    "138": 1.5151515151515151,
+    "139": 1.0,
+    "140": 0.6802721088435374,
+    "141": 1.0,
+    "142": 1.4925373134328357,
+    "143": 2.255639097744361,
+    "144": 2.8846153846153846,
+    "145": 3.0,
+    "146": 2.5641025641025643,
+    "147": 1.6949152542372883,
+    "148": 3.0,
+    "149": 2.5210084033613445,
+    "150": 1.7543859649122808,
+    "151": 1.6260162601626016,
+    "152": 3.0,
+    "153": 1.8518518518518516,
+    "154": 1.6666666666666667,
+    "155": 0.8849557522123894,
+    "156": 16.0,
+    "157": 19.0,
+    "158": 13.0,
+    "159": 16.0,
+    "160": 14.0,
+    "161": 12.0,
+    "162": 0.0,
+    "163": 0.0,
+    "164": 0.0,
+    "165": 0.0,
+    "166": 0.0,
+    "167": 0.0,
+    "168": 0.0,
+    "169": 0.0,
+    "170": 0.0,
+    "171": 0.0,
+    "172": 0.0,
+    "173": 0.0,
+    "174": 0.0,
+    "175": 0.0,
+    "176": 0.0,
+    "177": 0.0,
+    "178": 0.0,
+    "179": 0.0,
+    "180": 0.0,
+    "181": 0.0,
+    "182": 0.0,
+    "183": 0.0,
+    "184": 0.0,
+    "185": 0.0,
+    "186": 0.0,
+    "187": 0.0,
+    "188": 0.0,
+    "189": 0.0,
+    "190": 0.0,
+    "191": 0.0,
+    "192": 0.0,
+    "193": 0.0,
+    "194": 0.0,
+    "195": 0.0,
+    "196": 0.0,
+    "197": 0.0,
+    "198": 0.0,
+    "199": 0.0,
+    "200": 0.0
+  }
+}
