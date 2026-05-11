@@ -7,6 +7,35 @@ Phase boundaries get a release tag (`v0.<phase>.0`); public launch tags `v1.0.0`
 ## Unreleased
 
 ### Added
+- API hardening: real OAuth (GitHub + Google) and HMAC-verified Stripe
+  webhooks. `/v1/auth/oauth/{start,callback,logout}` does real code exchange
+  + `userinfo` lookup against the providers, upserts the user row in D1
+  (UNIQUE on `(provider, provider_sub)`), and issues an HttpOnly +
+  Secure-in-prod session cookie backed by a 30-day KV TTL.
+  `/v1/billing/webhook` verifies the Stripe `stripe-signature` header via
+  SubtleCrypto HMAC-SHA256 (5-min timestamp tolerance, constant-time v1
+  compare, multi-v1 rotation supported) and handles
+  `checkout.session.completed` and `customer.subscription.{created,updated,deleted}`
+  to keep `subscriptions` + `users.tier` in sync. Founder tier enforces
+  the 200-seat lifetime cap at both Checkout creation and webhook receipt.
+  New helpers under `packages/api/src/lib/`: `ulid.ts` (Crockford base32 26-char
+  IDs sortable by timestamp), `session.ts` (cookie + token helpers),
+  `oauth.ts` (provider-agnostic code exchange + userinfo for GitHub/Google),
+  `stripe.ts` (signature verifier with no SDK dep). 19 new tests across
+  ulid + session + stripe-signature edge cases (rotation, tampered body,
+  out-of-tolerance timestamp, non-JSON body, missing header).
+- `scripts/generate-openapi.ts` — generates `packages/api/openapi.json` +
+  `packages/docs/src/content/docs/api/openapi.json` (29 KB each) describing
+  all 15 routes with 18 schemas, the session security scheme, per-route
+  rate-limit hints (`x-rate-limit`), and the 4XX/5XX error envelope.
+  Wired as `bun run openapi`.
+- `bench/` perf scripts and `docs/perf-results.md`. Three benches:
+  `index-throughput.ts` (1k notes / 244 ms = 4,099 notes/sec, vs PRD §6.4
+  budget of < 30 s — ~120× headroom), `cold-start.ts` (engine import + create
+  median 36 ms; `basalt about` CLI median 334 ms vs 1500 ms ceiling), and
+  `idle-memory.ts` (post-GC rss 161 MB on the Bun runtime — desktop's
+  100 MB budget is measured separately against the Tauri bundle which does
+  not embed Bun). Wired as `bun run bench` plus per-bench aliases.
 - [TASK-1.15] `SqlJsStorage` — full sql.js (WASM) `StorageAdapter` for the
   Obsidian plugin. Mirrors `packages/cli/src/adapters/storage-sqlite.ts`
   byte-for-byte on schema + SQL (both share `MIGRATIONS` from `@basalt/core`).
