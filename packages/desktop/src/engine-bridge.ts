@@ -2,32 +2,38 @@
 // Runs @basalt/core's Engine inside the Tauri WebView. Adapters:
 //   - filesystem: TauriFilesystem (uses @tauri-apps/plugin-fs + the Rust
 //     `walk_vault` custom command for fast directory walking)
-//   - storage: in-memory for now; the Tauri-SQL implementation lands in a
-//     follow-up
-//   - embedding: OllamaEmbedder pointed at the user-configured URL
-//
-// PRD §4.6 perf budgets: < 800ms cold start, < 100MB idle memory. The
-// in-memory adapter is sufficient to hit these on small-to-medium vaults;
-// switching to tauri-plugin-sql for persistence is the next step.
+//   - storage: in-memory (Tauri-SQL persistence lands in a follow-up)
+//   - embedding: OllamaEmbedder or MockEmbedder fallback
+//   - AI (v1 verbs): OllamaAI / OpenAIAI / AnthropicAI based on settings.
 
 import {
+  type AIAdapter,
+  AnthropicAI,
   type Brief,
   Engine,
   type FilesystemAdapter,
+  type Finding,
+  findContradictionsV1,
+  findImplicitThesesV1,
   MemoryStorage,
   MockEmbedder,
+  OllamaAI,
   OllamaEmbedder,
+  OpenAIAI,
   renderBrief,
   type VaultEntry,
 } from "@basalt/core";
 import "@basalt/core/verbs";
 import { invoke } from "@tauri-apps/api/core";
-import { readTextFile } from "@tauri-apps/plugin-fs";
+import { BaseDirectory, readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
+import type { DesktopSettings } from "./settings";
 
 export interface DesktopBrief {
   generated_at: string;
   brief: Brief;
   rendered_markdown: string;
+  /** Filled in when the LLM augmentation succeeds for any verb. */
+  llm_used: string | null;
 }
 
 class TauriFilesystem implements FilesystemAdapter {
@@ -41,33 +47,59 @@ class TauriFilesystem implements FilesystemAdapter {
     return await readTextFile(path);
   }
   async exists(_path: string): Promise<boolean> {
-    // Tauri's fs.exists requires explicit allowlist scopes; skip for v0.
     return true;
   }
-  async createNoteFile(_path: string, _content: string): Promise<boolean> {
-    // Promote-to-note from desktop lands in a follow-up: uses
-    // @tauri-apps/plugin-fs writeTextFile with the `create` flag set so
-    // existing files cause an error (mirrors the create-only contract
-    // of every other filesystem adapter).
-    throw new Error("createNoteFile: lands in a follow-up");
+  async createNoteFile(path: string, content: string): Promise<boolean> {
+    try {
+      await writeTextFile(path, content, { baseDir: BaseDirectory.AppLocalData, create: true });
+      return true;
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      if (/exists/i.test(msg)) return false;
+      throw e;
+    }
+  }
+}
+
+function resolveAi(s: DesktopSettings): AIAdapter | null {
+  switch (s.llmProvider) {
+    case "none":
+      return null;
+    case "ollama":
+      return new OllamaAI({
+        url: s.ollamaUrl,
+        ...(s.llmModel ? { model: s.llmModel } : {}),
+      });
+    case "openai":
+      if (!s.llmApiKey) return null;
+      return new OpenAIAI({
+        apiKey: s.llmApiKey,
+        ...(s.llmModel ? { model: s.llmModel } : {}),
+      });
+    case "anthropic":
+      if (!s.llmApiKey) return null;
+      return new AnthropicAI({
+        apiKey: s.llmApiKey,
+        ...(s.llmModel ? { model: s.llmModel } : {}),
+      });
+    default:
+      return null;
   }
 }
 
 export async function runBriefForVault(
   vault: string,
+  settings: DesktopSettings,
   onProgress: (msg: string) => void,
 ): Promise<DesktopBrief> {
   const fs = new TauriFilesystem();
   const storage = new MemoryStorage();
-  // Default to local Ollama; fall back to mock if Ollama is unreachable so
-  // the desktop's "Generate Brief" button works even pre-Ollama-install.
-  const ollamaUrl = "http://localhost:11434";
   let embedding: OllamaEmbedder | MockEmbedder;
   try {
-    const probe = await fetch(`${ollamaUrl}/api/tags`, { method: "GET" });
+    const probe = await fetch(`${settings.ollamaUrl}/api/tags`, { method: "GET" });
     if (probe.ok) {
-      embedding = new OllamaEmbedder({ url: ollamaUrl, model: "nomic-embed-text" });
-      onProgress("Embedding via Ollama (nomic-embed-text)…");
+      embedding = new OllamaEmbedder({ url: settings.ollamaUrl, model: settings.embeddingModel });
+      onProgress(`Embedding via Ollama (${settings.embeddingModel})…`);
     } else {
       throw new Error("ollama-not-ok");
     }
@@ -88,10 +120,126 @@ export async function runBriefForVault(
   await engine.index({ vault });
   onProgress("Generating Brief…");
   const brief = await engine.brief({ section: "all", top: 3 });
+
+  const ai = resolveAi(settings);
+  let llmUsed: string | null = null;
+  if (ai) {
+    try {
+      const ctx = await engine.verbContext(3);
+      onProgress(`Synthesizing thesis via ${ai.modelId()}…`);
+      const thesisV1 = await findImplicitThesesV1(ctx, { ai, topN: 3 });
+      if (thesisV1.length > 0) brief.findings.implicit_thesis = thesisV1 as unknown as Finding[];
+      onProgress(`Verdicts via ${ai.modelId()}…`);
+      const contradictionV1 = await findContradictionsV1(ctx, { ai });
+      if (contradictionV1.length > 0)
+        brief.findings.contradiction = contradictionV1 as unknown as Finding[];
+      llmUsed = ai.modelId();
+    } catch (e) {
+      onProgress(`LLM augmentation failed: ${e instanceof Error ? e.message : String(e)}`);
+    }
+  }
+
   await engine.close();
   return {
     generated_at: new Date().toISOString(),
     brief,
     rendered_markdown: renderBrief(brief, "markdown"),
+    llm_used: llmUsed,
   };
+}
+
+export async function pushSnapshotForVault(
+  vault: string,
+  settings: DesktopSettings,
+  onProgress: (msg: string) => void,
+): Promise<{ ok: boolean; note_count: number; embedding_count: number; bytes: number }> {
+  if (!settings.apiToken) throw new Error("API token not set in Settings.");
+  if (!settings.apiVaultId) throw new Error("Vault ID not set in Settings.");
+
+  const fs = new TauriFilesystem();
+  const storage = new MemoryStorage();
+  const embedder = new OllamaEmbedder({
+    url: settings.ollamaUrl,
+    model: settings.embeddingModel,
+  });
+  const engine = await Engine.create({
+    storage,
+    embedding: embedder,
+    filesystem: fs,
+    options: { today: new Date().toISOString().slice(0, 10) },
+  });
+  onProgress("Walking vault + embedding…");
+  await engine.index({ vault });
+  onProgress("Building snapshot…");
+
+  const snap = storage.snapshot();
+  const noteIdToRelPath = new Map<number, string>();
+  const notes: Array<Record<string, unknown>> = snap.notes.map((n) => {
+    noteIdToRelPath.set(n.id, n.relPath);
+    return {
+      rel_path: n.relPath,
+      stem: n.stem,
+      title: n.title,
+      created: n.created ?? undefined,
+      updated: n.updated ?? undefined,
+      word_count: n.wordCount,
+      content: n.content,
+      content_hash: n.contentHash,
+      tags: n.tags,
+    };
+  });
+  const embeddings: Array<Record<string, unknown>> = [];
+  for await (const e of storage.listEmbeddings()) {
+    const relPath = noteIdToRelPath.get(e.noteId);
+    if (!relPath) continue;
+    embeddings.push({
+      rel_path: relPath,
+      model: e.model,
+      dim: e.dim,
+      vec_b64: encodeFloat32LE(e.vec),
+    });
+  }
+  await engine.close();
+
+  const payload = {
+    schema: 1,
+    vault_id: settings.apiVaultId,
+    created_at: new Date().toISOString(),
+    today: new Date().toISOString().slice(0, 10),
+    notes,
+    embeddings,
+    links: [],
+  };
+  const body = JSON.stringify(payload);
+
+  onProgress(`POST ${settings.apiUrl}/v1/vaults/${settings.apiVaultId}/snapshot`);
+  const res = await fetch(
+    `${settings.apiUrl.replace(/\/$/, "")}/v1/vaults/${encodeURIComponent(settings.apiVaultId)}/snapshot`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        cookie: `basalt_session=${settings.apiToken}`,
+      },
+      body,
+    },
+  );
+  if (!res.ok) {
+    throw new Error(`Upload failed: HTTP ${res.status} ${await res.text()}`);
+  }
+  const result = (await res.json()) as {
+    note_count: number;
+    embedding_count: number;
+    bytes: number;
+  };
+  return { ok: true, ...result };
+}
+
+function encodeFloat32LE(vec: Float32Array): string {
+  const bytes = new Uint8Array(vec.byteLength);
+  const dv = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+  for (let i = 0; i < vec.length; i++) dv.setFloat32(i * 4, vec[i] ?? 0, true);
+  let s = "";
+  for (const b of bytes) s += String.fromCharCode(b);
+  return btoa(s);
 }
