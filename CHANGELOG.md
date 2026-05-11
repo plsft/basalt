@@ -6,6 +6,8 @@ Phase boundaries get a release tag (`v0.<phase>.0`); public launch tags `v1.0.0`
 
 ## Unreleased
 
+## v1.0.0 — 2026-05-11
+
 ### Added
 - Real brief generation on Workers + vault snapshot pipeline. New endpoints:
   - `POST /v1/vaults/:id/snapshot` accepts a `VaultSnapshot` (notes +
