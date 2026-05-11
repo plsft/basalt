@@ -45,8 +45,7 @@ export const verbs = [
 registerVerb("buried-insight", findBuriedInsights);
 registerVerb("connection", findConnections);
 registerVerb("drift", findDrift);
-// TASK-1.9: registerVerb("contradiction", findContradictions);
+registerVerb("contradiction", findContradictions);
 // TASK-1.10: registerVerb("implicit-thesis", findImplicitTheses);
 
-void findContradictions;
 void findImplicitTheses;
