@@ -15,6 +15,7 @@
       "name": "@basalt/api",
       "version": "0.0.0",
       "dependencies": {
+        "@basalt/core": "workspace:*",
         "@hono/zod-validator": "^0.4.2",
         "hono": "^4.6.0",
         "zod": "^3.24.0",

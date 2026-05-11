@@ -122,9 +122,28 @@ const ROUTES: RouteEntry[] = [
     method: "delete",
     path: "/v1/vaults/:id",
     summary: "Soft-delete a vault",
-    description: "30-day grace before hard purge.",
+    description:
+      "30-day grace before hard purge. Findings + briefs are retained until the grace window expires.",
     auth: true,
     response: { status: 200, description: "Deleted", schema: "Ok" },
+  },
+  {
+    method: "post",
+    path: "/v1/vaults/:id/snapshot",
+    summary: "Upload a vault snapshot",
+    description:
+      "Stores a client-built VaultSnapshot (notes + embeddings + links) in R2 keyed by user_id/vault_id. /v1/briefs/generate uses the latest snapshot.",
+    auth: true,
+    body: "VaultSnapshot",
+    response: { status: 200, description: "Stored", schema: "VaultSnapshotAck" },
+  },
+  {
+    method: "get",
+    path: "/v1/vaults/:id/snapshot/meta",
+    summary: "Snapshot metadata",
+    description: "Returns size, upload time, and custom metadata for the latest snapshot.",
+    auth: true,
+    response: { status: 200, description: "Snapshot meta", schema: "SnapshotMeta" },
   },
   {
     method: "post",
@@ -157,9 +176,52 @@ const ROUTES: RouteEntry[] = [
     method: "get",
     path: "/v1/findings",
     summary: "Cross-brief finding timeline",
-    description: "Filterable by verb and vault_id.",
+    description: "Filterable by verb, vault_id, status. Cursor-paginated by finding id.",
     auth: true,
     response: { status: 200, description: "Findings", schema: "FindingList" },
+  },
+  {
+    method: "post",
+    path: "/v1/findings/:id/snooze",
+    summary: "Snooze a finding until a date",
+    description: "Owner-scoped via JOIN to briefs.user_id.",
+    auth: true,
+    body: "FindingSnoozeRequest",
+    response: { status: 200, description: "Snoozed", schema: "Ok" },
+  },
+  {
+    method: "post",
+    path: "/v1/findings/:id/dismiss",
+    summary: "Mark a finding as falsified by the user",
+    description:
+      "Owner-scoped; updates status to 'falsified' with a user-dismissed verdict_reason.",
+    auth: true,
+    response: { status: 200, description: "Dismissed", schema: "Ok" },
+  },
+  {
+    method: "post",
+    path: "/v1/findings/:id/confirm",
+    summary: "Mark a finding as confirmed",
+    description: "Owner-scoped; updates status to 'confirmed' with verdict timestamp.",
+    auth: true,
+    response: { status: 200, description: "Confirmed", schema: "Ok" },
+  },
+  {
+    method: "post",
+    path: "/v1/findings/:id/promote",
+    summary: "Promote a finding to a note (client-side)",
+    description:
+      "Always returns 400 with guidance — promote-to-note runs on the client. The API never mutates user-owned content.",
+    auth: true,
+    response: { status: 400, description: "Client-side action required", schema: "Error" },
+  },
+  {
+    method: "delete",
+    path: "/v1/briefs/:id",
+    summary: "Delete a brief and its findings",
+    description: "Hard delete (no soft-delete column on briefs).",
+    auth: true,
+    response: { status: 200, description: "Deleted", schema: "Ok" },
   },
   {
     method: "post",
@@ -310,7 +372,95 @@ const SCHEMAS: Record<string, unknown> = {
     },
     required: ["items"],
   },
-  FindingList: { type: "array", items: { type: "object" } },
+  FindingList: {
+    type: "object",
+    properties: {
+      items: { type: "array", items: { type: "object" } },
+      cursor: { type: "string", nullable: true },
+    },
+    required: ["items"],
+  },
+  FindingSnoozeRequest: {
+    type: "object",
+    properties: { until: { type: "string", format: "date-time" } },
+    required: ["until"],
+  },
+  VaultSnapshot: {
+    type: "object",
+    description:
+      "Client-built snapshot of the user's local index — notes, embeddings (base64-float32), and wikilinks.",
+    properties: {
+      schema: { type: "integer", const: 1 },
+      vault_id: { type: "string" },
+      created_at: { type: "string", format: "date-time" },
+      today: { type: "string", description: "ISO date the engine should treat as today." },
+      notes: {
+        type: "array",
+        items: {
+          type: "object",
+          properties: {
+            rel_path: { type: "string" },
+            stem: { type: "string" },
+            title: { type: "string" },
+            created: { type: "string", nullable: true },
+            updated: { type: "string", nullable: true },
+            word_count: { type: "integer", minimum: 0 },
+            content: { type: "string" },
+            content_hash: { type: "string" },
+            tags: { type: "array", items: { type: "string" } },
+          },
+          required: ["rel_path", "stem", "title", "word_count", "content", "content_hash", "tags"],
+        },
+      },
+      embeddings: {
+        type: "array",
+        items: {
+          type: "object",
+          properties: {
+            rel_path: { type: "string" },
+            model: { type: "string" },
+            dim: { type: "integer", minimum: 1 },
+            vec_b64: { type: "string", description: "Base64-encoded little-endian float32." },
+          },
+          required: ["rel_path", "model", "dim", "vec_b64"],
+        },
+      },
+      links: {
+        type: "array",
+        items: {
+          type: "object",
+          properties: {
+            from_rel_path: { type: "string" },
+            target: { type: "string" },
+          },
+          required: ["from_rel_path", "target"],
+        },
+      },
+    },
+    required: ["schema", "vault_id", "created_at", "notes", "embeddings", "links"],
+  },
+  VaultSnapshotAck: {
+    type: "object",
+    properties: {
+      ok: { type: "boolean" },
+      vault_id: { type: "string" },
+      note_count: { type: "integer" },
+      embedding_count: { type: "integer" },
+      link_count: { type: "integer" },
+      bytes: { type: "integer" },
+    },
+    required: ["ok", "vault_id", "note_count", "embedding_count", "link_count", "bytes"],
+  },
+  SnapshotMeta: {
+    type: "object",
+    properties: {
+      key: { type: "string" },
+      uploaded_at: { type: "string", format: "date-time" },
+      size: { type: "integer" },
+      metadata: { type: "object", additionalProperties: { type: "string" } },
+    },
+    required: ["key", "size"],
+  },
   BillingCheckoutRequest: {
     type: "object",
     properties: {
