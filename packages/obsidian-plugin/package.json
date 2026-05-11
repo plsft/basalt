@@ -12,9 +12,11 @@
     "test": "echo \"@basalt/obsidian-plugin: tests run from root via 'bun run test'\" && exit 0"
   },
   "dependencies": {
-    "@basalt/core": "workspace:*"
+    "@basalt/core": "workspace:*",
+    "sql.js": "^1.13.0"
   },
   "devDependencies": {
+    "@types/sql.js": "^1.4.9",
     "esbuild": "^0.25.0",
     "obsidian": "^1.7.2"
   }

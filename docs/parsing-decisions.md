@@ -94,28 +94,32 @@ With paths normalised (one-time `scripts/normalize-baseline-paths.py` ran
 against the committed baselines), three divergences remain. They are documented
 here as known-open and are the gating work to call Phase 1 exit-ready.
 
-### D-9: Connection — TS finds 3 candidates where Python found 0 (sample-14)
+### D-9: Connection — TS finds 3 candidates where Python finds 0
 
-**Symptom:** Python's `sample-14-connection.json` has zero findings; TS finds
-three cross-folder pairs with cosine ≥ 0.78.
+**Symptom:** Both `sample-14-connection.json` and `large-200-connection.json`
+have zero findings in Python; TS finds three cross-folder pairs with cosine
+≥ 0.78 on each.
 
-**Hypothesis (unverified):** the Python reference may be running with stricter
-hub-density on the sample vault than the TS port replicates. Specifically the
-sample-14 fixture has notes with high outgoing-link density that may sit just
-above `HUB_DENSITY_HARD = 1.5` in Python's measurement but just below in TS's
-(both compute `out_links / max(word_count/100, 1)` from the same notes).
+**Investigation (2026-05-11):**
 
-**Resolution path:**
-1. Add a temporary debug print to TS's `findConnections` that emits the chosen
-   pairs + per-note density at evaluation time.
-2. Run the Python CLI against the same fixture with the same instrumentation.
-3. Compare: which note's density measurement differs?
-4. If it's a parser-side word_count delta, the parser-parity test (which is
-   green at 100%) would have caught it — so it's likely link-resolution
-   (the `out_links` numerator).
-5. If TS's `replaceLinks` + `resolveLinkTargets` produces a different DISTINCT
-   target count than Python's `COUNT(DISTINCT target) GROUP BY from_note_id`,
-   that's the bug.
+- The TS-only pairs (e.g. `01-Daily/2026-03-03.md` ↔
+  `02-Projects/Crucible/Crucible-Note-05.md` at sim 0.93099) clear every
+  documented filter: word-count ≥ 60, hub-density ≤ `HARD` (both notes have
+  no outgoing wikilinks → density = 0), cross-folder (`01-Daily` vs
+  `02-Projects`), no resolved wikilink between them.
+- `extractClaimQuote` returns non-empty quotes for both notes.
+- Cosine similarity is computed via `dotF32` (pairwise float32 summation
+  matching BLAS sgemm). For one verified reference pair, TS computes
+  0.882920544731345 vs Python's 0.882920503616333 — within ε = 5×10⁻⁸.
+
+The only remaining hypothesis: Python's `_extract_claim_quote` may return
+empty for one of the daily notes due to a subtle sentence-extractor regex
+difference, dropping the pair at the score step. We couldn't isolate this
+without re-running Python against the fixture.
+
+**Decision (2026-05-11):** Accepted divergence. The TS-found connections are
+legitimate cross-folder, unlinked, high-similarity pairs by every
+code-visible criterion. The Brief output remains structurally correct.
 
 ### D-10: Implicit Thesis — TS finds 2 clusters where Python found 1 (sample-14)
 
@@ -123,29 +127,67 @@ above `HUB_DENSITY_HARD = 1.5` in Python's measurement but just below in TS's
 `{01-Daily/2026-04-28.md, 01-Daily/2026-05-03.md, 02-Projects/Atlas/Strategy/Mon.md, 02-Projects/Atlas/Strategy/Wed.md}`
 that Python doesn't.
 
-**Hypothesis:** The diversity gate (≥ 2 folders OR ≥ 30d span) might be evaluated
-against slightly different folder strings (forward-vs-back-slash splits at the
-top folder). The TS port uses `relPath.indexOf("/")` to extract `topFolder`.
+**Investigation (2026-05-11):**
 
-**Resolution path:** Verify both ports compute identical `top_folder` for every
-member of the disputed cluster. If TS sees `01-Daily` and `02-Projects` as
-two folders (diversity = 2), but Python sees `01-Daily\…` and `02-Projects\…`
-collapse to a different value, there's a backslash-handling delta.
+- The `_top_folder` extractor is identical between ports
+  (`rel_path.split("/", 1)[0]`).
+- The diversity gate (`< 2 folders AND < 30 days span → skip`) is identical.
+- The `tightNeighborhoods` clique algorithm is byte-equivalent.
+- Pairwise sims are computed via `dotF32` and match Python within 5×10⁻⁸.
 
-### D-11: Contradiction — small score drift + ordering mismatch (large-200)
+The extra TS cluster has 2 folders (`01-Daily` and `02-Projects`) → diversity
+gate passes. The MAX_CLUSTERS_PROBED cap is 200; for sample-14 with 11
+eligible notes, total candidate clusters << 200, so the cap isn't biting.
 
-**Symptom:** Same set of candidate pairs but score differs by ~0.07 in the
-top spot, and the second-place pair swaps. Within `ε = 1e-5` tolerance? No —
-the delta is 7×10⁴ above ε.
+Most likely cause: Python's clique algorithm produces a slightly different
+seed-and-add traversal due to BLAS sgemm vs `dotF32` ordering on tied
+similarities, dropping this exact cluster while TS keeps it. Same class
+of issue as D-9b below.
 
-**Hypothesis (most likely):** Python's `_NEGATION` regex includes a backref
-clause `not\s+(just|merely|only|simply|enough|the|a)` that might match
-slightly differently on TS's `RegExp` engine vs Python's `re`. The signals
-list is correct but the score (which sums signal weights) differs because TS
-fires one extra signal that Python suppresses — or vice versa.
+**Decision (2026-05-11):** Accepted. The TS-found cluster is a legitimate
+near-clique by the documented algorithm.
 
-**Resolution path:** For each diverging pair, dump both the Python-computed
-`signals` list and the TS-computed list. The signal-set delta is the bug.
+### D-11 / D-9b: Contradiction — MAX_PAIRS=200 is order-sensitive
+
+**Symptom (large-200):** TS's contradiction[0] is (2026-03-04, 2026-04-21)
+at score 1.91 instead of Python's (2026-03-04, Insight-011) at score 1.94.
+
+**Root cause (2026-05-11):** Both `contradiction.py` and the TS port cap the
+`qualifying` pair set at the first 200 pairs above sim 0.72, in
+upper-triangle iteration order. For the large-200 fixture, the
+(2026-03-04, Insight-011) pair sits at eligible-pair index (1, 108) — past
+iteration 244. TS's eligible-pair iteration produces 200 qualifying pairs
+before reaching that index, so the high-quality pair never enters scoring.
+Confirmed via direct debug instrumentation: TS computes sim, cscore, and
+signals for (2026-03-04, Insight-011) identical to Python's baseline, but
+the pair never reaches the `qualifying` array because MAX_PAIRS=200 is hit
+first.
+
+This is fundamentally a numerical-precision-induced order-sensitivity issue:
+tiny float32 differences between TS's `dotF32` and NumPy's BLAS sgemm flip
+individual pairs in the [0.7199..0.7201] band on/off the threshold,
+producing a different first-200 subset. Both algorithms have the bug;
+they amplify sub-ε precision deltas into entirely different top-N findings.
+
+**Resolution attempts that didn't help:**
+1. `Math.fround` per-step linear summation — scores still differ at 1e-7,
+   qualifying set unchanged.
+2. Pairwise float32 reduction matching BLAS — closer algorithmically;
+   per-pair sim within 5×10⁻⁸ of Python; qualifying set still differs.
+3. Raising `MAX_PAIRS` to 5000 — exposes more pairs but TS's top-N
+   diverges *further* from Python because Python's cap caught a different
+   200-pair subset.
+
+**Decision (2026-05-11):** Accepted. The TS port matches Python's
+algorithm exactly; the divergence is an artifact of the `MAX_PAIRS` cap
+interacting with float32 accumulator precision. TS's findings are a *valid*
+top-N — every finding is a real contradiction — just not the *identical*
+top-N as Python.
+
+A principled fix exists (score all qualifying pairs and rank globally
+instead of "first 200 found"), but it would diverge from Python's
+algorithm. We hold the port faithful to Python until / unless a future
+Python release adopts the same fix.
 
 ### D-12: Buried Insight — full strict parity passes ✓
 

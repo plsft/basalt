@@ -3,7 +3,9 @@
 // portability across the plugin (Obsidian/Electron), CLI (Node/Bun), Cloud
 // (Workers V8 isolates), and Desktop (Tauri WebView).
 
-/** Dot product of two equal-length Float32Arrays. */
+/** Dot product of two equal-length Float32Arrays. JS double-precision
+ *  accumulator. Good for general use; use `dotF32` when you need byte-for-byte
+ *  parity with NumPy's BLAS sgemm (float32 accumulator). */
 export function dot(a: Float32Array, b: Float32Array): number {
   if (a.length !== b.length) {
     throw new Error(`dot: length mismatch (${a.length} vs ${b.length})`);
@@ -11,6 +13,38 @@ export function dot(a: Float32Array, b: Float32Array): number {
   let sum = 0;
   for (let i = 0; i < a.length; i++) sum += (a[i] ?? 0) * (b[i] ?? 0);
   return sum;
+}
+
+/** Dot product with pairwise (tree-reduction) float32 summation. Used in
+ *  verbs whose parity baselines were computed via Python's `matrix @ matrix.T`
+ *  over float32 embeddings.
+ *
+ *  BLAS sgemm (OpenBLAS / MKL on x86_64) accumulates via SIMD-vectorized
+ *  pairwise summation, which has O(log n × eps) cumulative error rather than
+ *  the O(n × eps) of linear left-to-right summation. The gap is small on
+ *  768-dim normalized vectors (~5e-5) but enough to flip individual pairs
+ *  near a threshold and amplify into entirely different MAX_PAIRS subsets.
+ *
+ *  Implementation: float32 per-element product, then tree reduction in float32. */
+export function dotF32(a: Float32Array, b: Float32Array): number {
+  if (a.length !== b.length) {
+    throw new Error(`dotF32: length mismatch (${a.length} vs ${b.length})`);
+  }
+  const n = a.length;
+  if (n === 0) return 0;
+  const fround = Math.fround;
+  const partials = new Float32Array(n);
+  for (let i = 0; i < n; i++) partials[i] = fround((a[i] ?? 0) * (b[i] ?? 0));
+  let size = n;
+  while (size > 1) {
+    const half = size >> 1;
+    for (let i = 0; i < half; i++) {
+      partials[i] = fround((partials[2 * i] ?? 0) + (partials[2 * i + 1] ?? 0));
+    }
+    if (size & 1) partials[half] = partials[size - 1] ?? 0;
+    size = half + (size & 1);
+  }
+  return partials[0] ?? 0;
 }
 
 /** Euclidean (L2) norm. */
