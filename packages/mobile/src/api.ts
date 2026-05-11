@@ -30,10 +30,10 @@ export function loadSettings(): MobileSettings {
   if (typeof localStorage === "undefined") return { apiUrl: "", apiToken: "" };
   try {
     const raw = localStorage.getItem(KEY);
-    if (!raw) return { apiUrl: "https://api.basalt.dev", apiToken: "" };
-    return { apiUrl: "https://api.basalt.dev", apiToken: "", ...JSON.parse(raw) };
+    if (!raw) return { apiUrl: "https://api.basalted.com", apiToken: "" };
+    return { apiUrl: "https://api.basalted.com", apiToken: "", ...JSON.parse(raw) };
   } catch {
-    return { apiUrl: "https://api.basalt.dev", apiToken: "" };
+    return { apiUrl: "https://api.basalted.com", apiToken: "" };
   }
 }
 

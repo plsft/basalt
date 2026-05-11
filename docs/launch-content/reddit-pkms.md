@@ -21,7 +21,7 @@ desktop app, and a hosted web cockpit. All five run the same engine.
 
 Local-first. MIT-licensed. Read-only on your vault.
 
-basalt.dev
+basalted.com
 
 What I'd love to know from this community:
 - Where does the "compile my brain" framing break down for you?

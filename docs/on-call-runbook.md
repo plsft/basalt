@@ -11,7 +11,7 @@
 - Cloudflare Pages deploy notifications
 - Stripe webhook failure emails
 - GitHub Actions failure emails
-- Uptime check on `https://basalt.dev/`, `https://api.basalt.dev/v1/health`
+- Uptime check on `https://basalted.com/`, `https://api.basalted.com/v1/health`
 
 ## Alert → action map
 

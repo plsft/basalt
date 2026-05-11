@@ -46,15 +46,15 @@ All require an active session cookie.
 
 ```sh
 # Inspect what's stored (has_key only — never the key itself):
-curl https://api.basalt.dev/v1/byok -H "Cookie: basalt_session=..."
+curl https://api.basalted.com/v1/byok -H "Cookie: basalt_session=..."
 
 # Store / rotate a key:
-curl -X PUT https://api.basalt.dev/v1/byok \
+curl -X PUT https://api.basalted.com/v1/byok \
   -H "Cookie: basalt_session=..." \
   -d '{"provider":"openai","api_key":"sk-..."}'
 
 # Delete:
-curl -X DELETE https://api.basalt.dev/v1/byok/openai \
+curl -X DELETE https://api.basalted.com/v1/byok/openai \
   -H "Cookie: basalt_session=..."
 ```
 

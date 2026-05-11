@@ -44,7 +44,7 @@ export function defaultConfig(): CliConfig {
     dbPath: defaultDbPath(),
     llmProvider: "none",
     llmModel: "",
-    apiUrl: "https://api.basalt.dev",
+    apiUrl: "https://api.basalted.com",
     apiToken: "",
     apiVaultId: "",
   };

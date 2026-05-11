@@ -10,6 +10,9 @@
     "staging": {
       "name": "basalt-api-staging",
       "vars": { "ENVIRONMENT": "staging" },
+      "routes": [
+        { "pattern": "api-staging.basalted.com", "custom_domain": true }
+      ],
       "d1_databases": [
         {
           "binding": "DB",
@@ -47,6 +50,9 @@
     "production": {
       "name": "basalt-api",
       "vars": { "ENVIRONMENT": "production" },
+      "routes": [
+        { "pattern": "api.basalted.com", "custom_domain": true }
+      ],
       "d1_databases": [
         {
           "binding": "DB",

@@ -139,6 +139,6 @@ basalt init
 basalt brief
 ```
 
-basalt.dev · github.com/plsft/basalt · docs.basalt.dev
+basalted.com · github.com/plsft/basalt · docs.basalted.com
 
 — George

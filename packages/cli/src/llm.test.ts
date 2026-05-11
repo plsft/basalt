@@ -12,7 +12,7 @@ function cfg(overrides: Partial<CliConfig> = {}): CliConfig {
     dbPath: "/db",
     llmProvider: "none",
     llmModel: "",
-    apiUrl: "https://api.basalt.dev",
+    apiUrl: "https://api.basalted.com",
     apiToken: "",
     apiVaultId: "",
     ...overrides,

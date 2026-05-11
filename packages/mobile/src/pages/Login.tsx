@@ -29,7 +29,7 @@ export function Login() {
           type="url"
           value={apiUrl}
           onChange={(e) => setApiUrl(e.target.value)}
-          placeholder="https://api.basalt.dev"
+          placeholder="https://api.basalted.com"
         />
       </label>
       <label style={{ display: "block" }}>
@@ -45,7 +45,7 @@ export function Login() {
         Save & continue
       </button>
       <p className="muted" style={{ fontSize: "0.85rem", margin: 0 }}>
-        Find the token: open <span className="mono">app.basalt.dev</span> in a desktop browser →
+        Find the token: open <span className="mono">app.basalted.com</span> in a desktop browser →
         DevTools → Application → Cookies → copy the value of{" "}
         <span className="mono">basalt_session</span>.
       </p>

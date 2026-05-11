@@ -682,11 +682,11 @@ function buildDocument(): Record<string, unknown> {
       description:
         "Pro-tier hosted backend for Basalt. Runs on Cloudflare Workers; Open-tier surfaces (CLI, plugin, MCP, desktop) do not call this API.",
       license: { name: "MIT", url: "https://github.com/plsft/basalt/blob/main/LICENSE" },
-      contact: { name: "Basalt", url: "https://basalt.dev" },
+      contact: { name: "Basalt", url: "https://basalted.com" },
     },
     servers: [
-      { url: "https://api.basalt.dev", description: "Production" },
-      { url: "https://api-staging.basalt.dev", description: "Staging" },
+      { url: "https://api.basalted.com", description: "Production" },
+      { url: "https://api-staging.basalted.com", description: "Staging" },
     ],
     components: {
       schemas: SCHEMAS,

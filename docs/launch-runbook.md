@@ -8,10 +8,10 @@
 
 - [ ] All `phases/PHASE-6.md` tasks merged
 - [ ] `scripts/release.sh --dry-run v1.0.0` clean
-- [ ] Marketing site live at `basalt.dev`, Lighthouse ≥ 95
-- [ ] Docs site live at `docs.basalt.dev`
-- [ ] API live at `api.basalt.dev`, `/v1/health` returns 200
-- [ ] Web cockpit live at `app.basalt.dev`
+- [ ] Marketing site live at `basalted.com`, Lighthouse ≥ 95
+- [ ] Docs site live at `docs.basalted.com`
+- [ ] API live at `api.basalted.com`, `/v1/health` returns 200
+- [ ] Web cockpit live at `app.basalted.com`
 - [ ] Stripe live mode keys deployed (verify via test purchase + refund)
 - [ ] OAuth apps configured (GitHub, Google) with prod redirect URIs
 - [ ] Obsidian plugin pending in community marketplace
@@ -21,9 +21,9 @@
 
 ## T-2h — Final checks
 
-- [ ] `curl -I https://basalt.dev` → 200
-- [ ] `curl -I https://docs.basalt.dev` → 200
-- [ ] `curl -s https://api.basalt.dev/v1/health` → `{"status":"ok"}`
+- [ ] `curl -I https://basalted.com` → 200
+- [ ] `curl -I https://docs.basalted.com` → 200
+- [ ] `curl -s https://api.basalted.com/v1/health` → `{"status":"ok"}`
 - [ ] Fresh-VM install: `npm i -g basalted && basalt init && basalt brief` → green
 - [ ] HN post drafted in tab, ready to submit
 - [ ] X thread queued

@@ -1,7 +1,7 @@
 # basalted-docs
 
 Basalt docs site — Astro + Starlight, deployed to Cloudflare Pages at
-`docs.basalt.dev`.
+`docs.basalted.com`.
 
 ```sh
 bun install

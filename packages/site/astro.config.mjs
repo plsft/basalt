@@ -3,7 +3,7 @@ import sitemap from "@astrojs/sitemap";
 import { defineConfig } from "astro/config";
 
 export default defineConfig({
-  site: "https://basalt.dev",
+  site: "https://basalted.com",
   trailingSlash: "never",
   build: { format: "file" },
   integrations: [mdx(), sitemap()],

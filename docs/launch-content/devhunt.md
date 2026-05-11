@@ -23,6 +23,6 @@ Astro, optional Ollama.
   not a convention.
 
 **Links:**
-- Site: basalt.dev
+- Site: basalted.com
 - GitHub: github.com/plsft/basalt
-- Docs: docs.basalt.dev
+- Docs: docs.basalted.com

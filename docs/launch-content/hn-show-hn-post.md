@@ -33,8 +33,8 @@ First 200 Founders get lifetime Pro for $240.
 Built in TypeScript, ports a Python prototype byte-for-byte. Runs on Bun.
 Desktop is Tauri 2.
 
-- Site: https://basalt.dev
-- Docs: https://docs.basalt.dev
+- Site: https://basalted.com
+- Docs: https://docs.basalted.com
 - GitHub: https://github.com/plsft/basalt
 
 I'll be here for the next four hours — happy to answer anything.

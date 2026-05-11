@@ -28,6 +28,6 @@ Basalt is:
 If you're a writer, a strategist, a researcher, or anyone who maintains a
 substantial Markdown vault — try it.
 
-basalt.dev
+basalted.com
 
 — George

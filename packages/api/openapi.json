@@ -10,16 +10,16 @@
     },
     "contact": {
       "name": "Basalt",
-      "url": "https://basalt.dev"
+      "url": "https://basalted.com"
     }
   },
   "servers": [
     {
-      "url": "https://api.basalt.dev",
+      "url": "https://api.basalted.com",
       "description": "Production"
     },
     {
-      "url": "https://api-staging.basalt.dev",
+      "url": "https://api-staging.basalted.com",
       "description": "Staging"
     }
   ],

@@ -6,7 +6,7 @@ tells you what you're really working on.
 
 Five verbs. One Brief, weekly. Local-first. MIT.
 
-basalt.dev
+basalted.com
 
 **2/**
 Not search. Not chat-with-your-notes. Basalt *compiles* your vault — the
@@ -68,7 +68,7 @@ github.com/plsft/basalt/releases
 
 **10/**
 HN: news.ycombinator.com/...
-Docs: docs.basalt.dev
+Docs: docs.basalted.com
 Source: github.com/plsft/basalt
 
 Built by @gerios — happy to answer anything in the replies.

@@ -8,9 +8,9 @@ import Default from "../layouts/Default.astro";
     <h1>Hosted surface status.</h1>
     <p>
       The Open tier (CLI, plugin, MCP, desktop) does not depend on our
-      infrastructure. This page covers <code>api.basalt.dev</code> (Pro brief
-      generation), <code>app.basalt.dev</code> (web cockpit), and
-      <code>docs.basalt.dev</code> (documentation).
+      infrastructure. This page covers <code>api.basalted.com</code> (Pro brief
+      generation), <code>app.basalted.com</code> (web cockpit), and
+      <code>docs.basalted.com</code> (documentation).
     </p>
     <div id="status-grid">
       <p class="muted mono">Loading…</p>
@@ -19,12 +19,12 @@ import Default from "../layouts/Default.astro";
 </Default>
 
 <script>
-  const apiBase = "https://api.basalt.dev";
+  const apiBase = "https://api.basalted.com";
   const surfaces = [
     { id: "api", name: "API", url: `${apiBase}/v1/status` },
-    { id: "site", name: "Marketing", url: "https://basalt.dev/" },
-    { id: "docs", name: "Docs", url: "https://docs.basalt.dev/" },
-    { id: "app", name: "Web cockpit", url: "https://app.basalt.dev/" },
+    { id: "site", name: "Marketing", url: "https://basalted.com/" },
+    { id: "docs", name: "Docs", url: "https://docs.basalted.com/" },
+    { id: "app", name: "Web cockpit", url: "https://app.basalted.com/" },
   ];
   const grid = document.getElementById("status-grid");
   if (grid) {

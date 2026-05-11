@@ -93,11 +93,51 @@ basalt brief --llm openai --llm-model gpt-4o-mini</code></pre>
     </div>
 
     <!-- ───────────── Obsidian plugin ───────────── -->
-    <h2 id="obsidian">Obsidian plugin</h2>
+    <h2 id="obsidian">Obsidian plugin <span class="badge badge--beta">beta</span></h2>
     <p>
-      Open Obsidian → Settings → Community Plugins → Browse → search for
-      <code>basalt</code>. The plugin reads your active vault and writes
-      briefs into a configurable folder.
+      Reads your active vault and writes briefs into a configurable folder.
+      Three install paths during the open beta.
+    </p>
+
+    <h3>1. Manual install (recommended)</h3>
+    <ol>
+      <li>
+        Download from the latest release:
+        <a href={`${LATEST}/download/manifest.json`}><code>manifest.json</code></a> ·
+        <a href={`${LATEST}/download/main.js`}><code>main.js</code></a> ·
+        <a href={`${LATEST}/download/styles.css`}><code>styles.css</code></a> ·
+        <a href={`${LATEST}/download/sql-wasm.wasm`}><code>sql-wasm.wasm</code></a>
+      </li>
+      <li>
+        Create the plugin folder in your vault:
+        <pre><code>&lt;your-vault&gt;/.obsidian/plugins/basalt/</code></pre>
+      </li>
+      <li>Drop all four files into that folder.</li>
+      <li>
+        In Obsidian: <em>Settings → Community plugins → Installed plugins →
+        Refresh</em>, then enable <strong>Basalt</strong>.
+      </li>
+    </ol>
+    <p class="muted">
+      Prefer one download? Grab
+      <a href={`${LATEST}/download/basalt-obsidian-plugin.zip`}><code>basalt-obsidian-plugin.zip</code></a>
+      from the same release and unzip into the plugin folder.
+    </p>
+
+    <h3>2. BRAT (auto-updating beta)</h3>
+    <p>
+      Install the
+      <a href="https://github.com/TfTHacker/obsidian42-brat">BRAT plugin</a>
+      from the community store, then in BRAT settings click
+      "Add beta plugin" and paste:
+    </p>
+<pre><code>plsft/basalt</code></pre>
+    <p>BRAT will auto-update Basalt every time a new release is tagged.</p>
+
+    <h3>3. Community store</h3>
+    <p class="muted">
+      Pending review by the Obsidian team. Once approved, the plugin shows
+      up in Settings → Community plugins → Browse → <code>basalt</code>.
     </p>
 
     <!-- ───────────── MCP ───────────── -->
@@ -112,7 +152,7 @@ basalt brief --llm openai --llm-model gpt-4o-mini</code></pre>
     <!-- ───────────── Web ───────────── -->
     <h2 id="web">Web cockpit</h2>
     <p>
-      <a href="https://app.basalt.dev">app.basalt.dev</a> — Pro tier. Sign in
+      <a href="https://app.basalted.com">app.basalted.com</a> — Pro tier. Sign in
       with GitHub or Google, register a vault, generate briefs against your
       indexed corpus.
     </p>

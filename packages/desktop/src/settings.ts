@@ -25,7 +25,7 @@ export function defaultSettings(): DesktopSettings {
     llmModel: "",
     llmApiKey: "",
     promoteFolder: "Basalt",
-    apiUrl: "https://api.basalt.dev",
+    apiUrl: "https://api.basalted.com",
     apiToken: "",
     apiVaultId: "",
   };

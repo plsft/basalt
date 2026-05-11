@@ -31,6 +31,14 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
+          set -euo pipefail
+          # Auto-creates the Pages project on first run.
           bunx wrangler@latest pages deploy packages/site/dist \
             --project-name=basalt-site \
             --branch=main
+          # Attach custom domains (idempotent — exits non-zero with
+          # "already in use" if the domain is already attached).
+          for d in basalted.com www.basalted.com; do
+            bunx wrangler@latest pages domain add "$d" \
+              --project-name=basalt-site || true
+          done

@@ -2,7 +2,7 @@ import starlight from "@astrojs/starlight";
 import { defineConfig } from "astro/config";
 
 export default defineConfig({
-  site: "https://docs.basalt.dev",
+  site: "https://docs.basalted.com",
   integrations: [
     starlight({
       title: "Basalt",
