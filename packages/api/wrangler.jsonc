@@ -1,0 +1,91 @@
+{
+  "$schema": "https://wrangler-schema.cf-workers.com",
+  "name": "basalt-api",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-04-15",
+  "compatibility_flags": ["nodejs_compat"],
+  "account_id": "7509d166af8dbf52b9a7d78604255d09",
+  "observability": { "enabled": true },
+  "env": {
+    "staging": {
+      "name": "basalt-api-staging",
+      "vars": { "ENVIRONMENT": "staging" },
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "basalt-staging-db",
+          "database_id": "535ef44f-a030-44f3-af8a-3d647816e4b2"
+        }
+      ],
+      "kv_namespaces": [
+        {
+          "binding": "SESSIONS",
+          "id": "56d8947927cc422c9edff8ea970a0fd7",
+          "preview_id": "ab01c610b3c74404ae376396b99a613f"
+        },
+        {
+          "binding": "RATE_LIMITS",
+          "id": "5269eaa3ea94407cac5250ca43751c68",
+          "preview_id": "e02f222b7bd34b948caad147853ecd58"
+        },
+        {
+          "binding": "BYOK_KEYS",
+          "id": "04762a717e75451fa4d1c97f521de59a",
+          "preview_id": "f04534a98ddb48ec8b68ee7f320313da"
+        }
+      ],
+      "r2_buckets": [
+        { "binding": "BRIEFS_BUCKET", "bucket_name": "basalt-briefs" },
+        { "binding": "VAULT_SYNC_BUCKET", "bucket_name": "basalt-vault-sync" }
+      ],
+      "vectorize": [{ "binding": "VECTORIZE", "index_name": "basalt-prod-vectors" }],
+      "queues": {
+        "producers": [{ "binding": "INDEX_QUEUE", "queue": "basalt-index-jobs" }]
+      },
+      "ai": { "binding": "AI" }
+    },
+    "production": {
+      "name": "basalt-api",
+      "vars": { "ENVIRONMENT": "production" },
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "basalt-prod-db",
+          "database_id": "99c43229-689a-4f97-ad75-2b5cea4b0676"
+        }
+      ],
+      "kv_namespaces": [
+        {
+          "binding": "SESSIONS",
+          "id": "56d8947927cc422c9edff8ea970a0fd7"
+        },
+        {
+          "binding": "RATE_LIMITS",
+          "id": "5269eaa3ea94407cac5250ca43751c68"
+        },
+        {
+          "binding": "BYOK_KEYS",
+          "id": "04762a717e75451fa4d1c97f521de59a"
+        }
+      ],
+      "r2_buckets": [
+        { "binding": "BRIEFS_BUCKET", "bucket_name": "basalt-briefs" },
+        { "binding": "VAULT_SYNC_BUCKET", "bucket_name": "basalt-vault-sync" }
+      ],
+      "vectorize": [{ "binding": "VECTORIZE", "index_name": "basalt-prod-vectors" }],
+      "queues": {
+        "producers": [{ "binding": "INDEX_QUEUE", "queue": "basalt-index-jobs" }]
+      },
+      "ai": { "binding": "AI" },
+      "triggers": {
+        "crons": ["0 23 * * 0"]
+      }
+    }
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_classes": []
+    }
+  ]
+}
