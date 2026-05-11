@@ -9,7 +9,7 @@
 
 import { open, readdir, readFile, stat } from "node:fs/promises";
 import { dirname, join, normalize } from "node:path";
-import type { FilesystemAdapter, VaultEntry } from "@basalt/core";
+import type { FilesystemAdapter, VaultEntry } from "basalted-core";
 
 const DEFAULT_EXCLUDE: ReadonlySet<string> = new Set([
   ".git",

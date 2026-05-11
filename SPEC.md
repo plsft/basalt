@@ -1085,7 +1085,7 @@ Schema validation: each JSON's top-level `schema` must equal `1`; each finding u
 
 ## 15. TypeScript public surface
 
-The `@basalt/core` package exports the following types (PRD §3.2). Each maps to a verb's output shape above.
+The `basalted-core` package exports the following types (PRD §3.2). Each maps to a verb's output shape above.
 
 ```ts
 export type Verb =
@@ -1114,7 +1114,7 @@ export interface Brief {
 }
 ```
 
-Note the **snake_case to camelCase boundary**: the wire schema (this document's interfaces) is snake_case for parity with the Python serializer. Inside the TS engine, types are camelCase by convention; the I/O boundary in `@basalt/core/brief/render.ts` (per PRD §3.2 layout) handles the transformation. The parity tests compare wire-format JSON, not in-memory structures.
+Note the **snake_case to camelCase boundary**: the wire schema (this document's interfaces) is snake_case for parity with the Python serializer. Inside the TS engine, types are camelCase by convention; the I/O boundary in `basalted-core/brief/render.ts` (per PRD §3.2 layout) handles the transformation. The parity tests compare wire-format JSON, not in-memory structures.
 
 ---
 

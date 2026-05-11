@@ -1,7 +1,7 @@
 // tests/parity/ts.test.ts
 //
 // The TS-vs-Python parity test entry point. In Phase 1 this file imports
-// `@basalt/core`, runs each verb against the parity fixtures, and compares
+// `basalted-core`, runs each verb against the parity fixtures, and compares
 // the output to the frozen JSON baselines under `baseline/`.
 //
 // In Phase 0 the TS verbs don't exist yet; this file's job is to:
@@ -84,7 +84,7 @@ describe("parity baselines — schema validation", () => {
 
 // Phase 1: replace the placeholder with TS-vs-baseline runs.
 //
-// import { Engine } from "@basalt/core";
+// import { Engine } from "basalted-core";
 // describe("parity: TS engine ↔ Python baselines", () => {
 //   for (const prefix of FIXTURE_PREFIXES) {
 //     it(`${prefix}: brief matches baseline`, async () => {

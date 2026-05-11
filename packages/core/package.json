@@ -1,5 +1,5 @@
 {
-  "name": "@basalt/core",
+  "name": "basalted-core",
   "version": "0.0.0",
   "description": "Basalt's runtime-agnostic engine: parser, graph, verbs, brief composer.",
   "license": "MIT",
@@ -55,8 +55,8 @@
     "build": "tsc -p tsconfig.json",
     "build:watch": "tsc -p tsconfig.json --watch",
     "typecheck": "tsc --noEmit -p tsconfig.json",
-    "test": "echo \"@basalt/core: tests run from root via 'bun run test' (vitest discovers packages/*/src/**/*.test.ts)\" && exit 0",
-    "test:watch": "echo \"@basalt/core: use root 'bun run test:watch'\" && exit 0",
+    "test": "echo \"basalted-core: tests run from root via 'bun run test' (vitest discovers packages/*/src/**/*.test.ts)\" && exit 0",
+    "test:watch": "echo \"basalted-core: use root 'bun run test:watch'\" && exit 0",
     "dev": "tsc -p tsconfig.json --watch"
   },
   "dependencies": {

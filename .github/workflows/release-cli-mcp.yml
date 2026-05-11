@@ -39,7 +39,7 @@ jobs:
           bun-version: ${{ env.BUN_VERSION }}
       - name: Install
         run: bun install --frozen-lockfile
-      - name: Build @basalt/core
+      - name: Build basalted-core
         run: bun run --cwd packages/core build
       - name: Compile basalt-cli (${{ matrix.target }})
         run: bun run --cwd packages/cli compile:${{ matrix.target }}
@@ -110,7 +110,8 @@ jobs:
     name: npm publish
     needs: binaries
     runs-on: ubuntu-latest
-    if: ${{ !contains(github.ref_name, '-rc') && !contains(github.ref_name, '-beta') }}
+    # Only publish on real tag pushes; skip pre-release tags.
+    if: ${{ startsWith(github.ref, 'refs/tags/') && !contains(github.ref_name, '-rc') && !contains(github.ref_name, '-beta') }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -129,27 +130,52 @@ jobs:
           bun run --cwd packages/core build
           bun run --cwd packages/cli build
           bun run --cwd packages/mcp build
-      - name: Publish @basalt/core
-        if: ${{ env.NPM_TOKEN != '' }}
+      - name: Stamp version + rewrite workspace deps
+        # Tag is `vX.Y.Z`; strip the leading `v`. Rewrite each published
+        # package.json to (a) carry the tag version and (b) replace
+        # `workspace:*` deps with the same exact version — npm rejects
+        # the `workspace:` protocol on publish.
+        run: |
+          set -euo pipefail
+          TAG="${GITHUB_REF#refs/tags/v}"
+          echo "Publishing version: ${TAG}"
+          for pkg in packages/core packages/cli packages/mcp; do
+            node -e "
+              const fs = require('fs');
+              const path = '$pkg/package.json';
+              const j = JSON.parse(fs.readFileSync(path, 'utf8'));
+              j.version = '${TAG}';
+              for (const k of ['dependencies','devDependencies','peerDependencies','optionalDependencies']) {
+                if (!j[k]) continue;
+                for (const name of Object.keys(j[k])) {
+                  if (typeof j[k][name] === 'string' && j[k][name].startsWith('workspace:')) {
+                    j[k][name] = '${TAG}';
+                  }
+                }
+              }
+              fs.writeFileSync(path, JSON.stringify(j, null, 2) + '\n');
+            "
+            echo "--- $pkg/package.json ---"
+            cat "$pkg/package.json"
+          done
+      - name: Publish basalted-core
         env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
+          set -euo pipefail
           cd packages/core
-          npm publish --access public --provenance || echo "publish failed; continuing"
-      - name: Publish @basalt/cli
-        if: ${{ env.NPM_TOKEN != '' }}
+          npm publish --access public
+      - name: Publish basalted
         env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
+          set -euo pipefail
           cd packages/cli
-          npm publish --access public --provenance || echo "publish failed; continuing"
-      - name: Publish @basalt/mcp
-        if: ${{ env.NPM_TOKEN != '' }}
+          npm publish --access public
+      - name: Publish basalted-mcp
         env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
+          set -euo pipefail
           cd packages/mcp
-          npm publish --access public --provenance || echo "publish failed; continuing"
+          npm publish --access public

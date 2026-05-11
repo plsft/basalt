@@ -1,8 +1,8 @@
-# @basalt/core
+# basalted-core
 
 > Runtime-agnostic engine for Basalt. Vault parser, link graph, embedding pipeline, five verbs, brief composition, calibration layer.
 
-This package is the source of truth for verb behavior. Every other surface — Obsidian plugin, CLI, MCP server, desktop app, cloud API — is a thin view over this engine. Per PRD §3.2, `@basalt/core` has no Node APIs, no `fs`, no `process`. Everything filesystem- or environment-specific is behind an adapter interface.
+This package is the source of truth for verb behavior. Every other surface — Obsidian plugin, CLI, MCP server, desktop app, cloud API — is a thin view over this engine. Per PRD §3.2, `basalted-core` has no Node APIs, no `fs`, no `process`. Everything filesystem- or environment-specific is behind an adapter interface.
 
 ## Status
 
@@ -25,17 +25,17 @@ import {
   type EmbeddingAdapter,
   type FilesystemAdapter,
   type AIAdapter,
-} from "@basalt/core";
+} from "basalted-core";
 ```
 
 Sub-path imports for tooling that wants only one slice:
 
 ```ts
-import { extractClaimQuote } from "@basalt/core/parser";
-import { hubDensity, HUB_DENSITY_HARD } from "@basalt/core/graph";
-import { cosine, l2Normalize } from "@basalt/core/math";
-import { findBuriedInsights } from "@basalt/core/verbs";
-import { composeBrief, renderBrief } from "@basalt/core/brief";
+import { extractClaimQuote } from "basalted-core/parser";
+import { hubDensity, HUB_DENSITY_HARD } from "basalted-core/graph";
+import { cosine, l2Normalize } from "basalted-core/math";
+import { findBuriedInsights } from "basalted-core/verbs";
+import { composeBrief, renderBrief } from "basalted-core/brief";
 ```
 
 ## Adapters

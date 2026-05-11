@@ -1,8 +1,8 @@
 // packages/mcp/src/tools.ts
 // MCP tool definitions. Each tool: name + description + JSON Schema + handler.
 
-import type { Verb } from "@basalt/core";
-import { renderBrief } from "@basalt/core";
+import type { Verb } from "basalted-core";
+import { renderBrief } from "basalted-core";
 import { z } from "zod";
 import type { VaultContext } from "./vault-context";
 

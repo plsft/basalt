@@ -18,12 +18,12 @@ const LATEST = `${RELEASES}/latest`;
     <h2 id="cli">CLI — from npm <span class="badge">stable</span></h2>
     <p>
       The CLI is published to the public npm registry as
-      <a href="https://www.npmjs.com/package/@basalt/cli"><code>@basalt/cli</code></a>.
+      <a href="https://www.npmjs.com/package/basalted"><code>basalted</code></a>.
       Node 22+ or Bun 1.3+ is required.
     </p>
-<pre><code>npm install -g @basalt/cli
+<pre><code>npm install -g basalted
 # or:
-bun add -g @basalt/cli
+bun add -g basalted
 
 basalt init        # walks the vault, builds the index
 basalt brief       # writes today's brief into the vault
@@ -32,7 +32,7 @@ basalt about       # prints version + bindings</code></pre>
     <p>
       Pin a version if you want reproducible installs:
     </p>
-<pre><code>npm install -g @basalt/cli@1.4.0</code></pre>
+<pre><code>npm install -g basalted@1.4.0</code></pre>
 
     <p>
       <strong>LLM augmentation (v1.1.0+).</strong> Pass
@@ -103,7 +103,7 @@ basalt brief --llm openai --llm-model gpt-4o-mini</code></pre>
     <!-- ───────────── MCP ───────────── -->
     <h2 id="mcp">MCP server — from npm</h2>
     <p>For Claude Desktop, Cursor, and anything else that speaks MCP:</p>
-<pre><code>claude mcp add basalt -- npx -y @basalt/mcp</code></pre>
+<pre><code>claude mcp add basalt -- npx -y basalted-mcp</code></pre>
     <p>
       Exposes six read-only verbs. Promote-to-note is intentionally absent —
       agents can describe a finding; only humans turn it into a vault file.

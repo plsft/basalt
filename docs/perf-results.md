@@ -34,7 +34,7 @@ release runbook updates them per tagged release.
 
 | Target                          | Median  | Min     | Max     | Budget |
 | ------------------------------- | ------: | ------: | ------: | ----: |
-| `@basalt/core` import + create  |   36 ms |   34 ms |   37 ms |   N/A |
+| `basalted-core` import + create  |   36 ms |   34 ms |   37 ms |   N/A |
 | `basalt about` (CLI)            |  334 ms |  324 ms |  345 ms | 1,500 ms |
 
 The PRD §6.4 desktop cold-start budget (< 800 ms median) is measured

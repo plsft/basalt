@@ -1,6 +1,6 @@
 # Phase 3 — Cloudflare API + Web Cockpit
 
-> **Goal:** Stand up the Pro tier. Ship the Cloudflare API (`@basalt/api`) backed by D1, R2, KV, Vectorize, Workers AI, Workflows, Queues, and Cron Triggers. Ship the web cockpit (`@basalt/web`) where users see their Briefs, history, drift over time, and manage billing.
+> **Goal:** Stand up the Pro tier. Ship the Cloudflare API (`basalted-api`) backed by D1, R2, KV, Vectorize, Workers AI, Workflows, Queues, and Cron Triggers. Ship the web cockpit (`basalted-web`) where users see their Briefs, history, drift over time, and manage billing.
 >
 > **Target tag:** `v0.3.0`
 >
@@ -40,7 +40,7 @@ packages/api/docs/INFRASTRUCTURE.md
 
 ---
 
-## TASK-3.2 — Scaffold `@basalt/api`
+## TASK-3.2 — Scaffold `basalted-api`
 
 **Spec:**
 - Set up `packages/api/` for Cloudflare Workers
@@ -153,10 +153,10 @@ docs/security.md                     # key hierarchy
 **Spec:**
 - Implement the `IndexVault` Workflow in `src/workflows/IndexVault.ts`:
   - Step 1: Download vault tarball from R2 (if sync is enabled) OR pull from a registered git remote (future option, stub for now)
-  - Step 2: Walk vault, parse markdown using `@basalt/core` adapters
+  - Step 2: Walk vault, parse markdown using `basalted-core` adapters
   - Step 3: Compute embeddings via Workers AI (`@cf/baai/bge-m3`)
   - Step 4: Upsert into D1 + Vectorize
-  - Step 5: Run all five verbs via `@basalt/core` Engine
+  - Step 5: Run all five verbs via `basalted-core` Engine
   - Step 6: Persist Brief in D1, render artifacts to R2 (`basalt-briefs` bucket)
   - Step 7: Notify user via email or push (later phase; for now, no-op)
 - Each step is durable; Workflow retries on failure
@@ -308,11 +308,11 @@ packages/api/src/crons/weekly-brief.ts
 
 ---
 
-## TASK-3.11 — Scaffold `@basalt/web`
+## TASK-3.11 — Scaffold `basalted-web`
 
 **Spec:**
 - Set up `packages/web/` with Vite + React + Tailwind v4
-- Install `@basalt/ui` (shared components — built incrementally; create stubs for Brief renderer, ElementTile, etc.)
+- Install `basalted-ui` (shared components — built incrementally; create stubs for Brief renderer, ElementTile, etc.)
 - Install `react-router-dom`, `@tanstack/react-query`, `@hookform/resolvers`, `zod`
 - Configure Vite for Cloudflare Pages deploy (`wrangler pages publish dist`)
 - Create `src/main.tsx` entry, `src/App.tsx` with router shell
@@ -339,7 +339,7 @@ packages/web/
 │   │   ├── Timeline.tsx
 │   │   ├── Vaults.tsx
 │   │   └── Settings.tsx
-│   ├── components/             # uses @basalt/ui where shared
+│   ├── components/             # uses basalted-ui where shared
 │   └── i18n/en.json
 └── README.md
 
@@ -380,7 +380,7 @@ packages/ui/
 - `/vaults`: list, register new, manage sync
 - `/settings`: account info, BYOK keys (add/remove with provider dropdown), billing portal link, privacy preferences
 
-All views use `@basalt/ui` components for visual consistency with desktop and marketing site.
+All views use `basalted-ui` components for visual consistency with desktop and marketing site.
 
 **Files created/modified:**
 ```
@@ -400,7 +400,7 @@ packages/ui/src/components/...
 ## TASK-3.13 — Deploy to Cloudflare Pages + connect API
 
 **Spec:**
-- Configure Cloudflare Pages project for `@basalt/web`
+- Configure Cloudflare Pages project for `basalted-web`
 - Configure custom domain (TBD per PRD §10 open decisions; placeholder `app.basalt-staging.<your-domain>` for staging)
 - Configure Pages Functions OR direct API CORS to allow auth callback
 - Set up CI workflow `.github/workflows/deploy-web-staging.yml` that builds and deploys on push to `main`

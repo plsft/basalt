@@ -1,11 +1,11 @@
-# @basalt/mcp
+# basalted-mcp
 
 Basalt MCP server. Exposes Brief, verbs, and audit as MCP tools so Claude Desktop / Cursor / Cline / Zed / VS Code Copilot can run them against your vault.
 
 ## Install
 
 ```sh
-npm install -g @basalt/mcp
+npm install -g basalted-mcp
 ```
 
 Or grab the standalone binary from the [GitHub release](https://github.com/plsft/basalt/releases) — `basalt-mcp-{linux,darwin,windows}-{x64,arm64}`.

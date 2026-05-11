@@ -2,8 +2,8 @@
 // the user opted out / hasn't configured one). Keeps every command's
 // "do I have an LLM?" branch identical.
 
-import type { AIAdapter } from "@basalt/core";
-import { AnthropicAI, OllamaAI, OpenAIAI } from "@basalt/core";
+import type { AIAdapter } from "basalted-core";
+import { AnthropicAI, OllamaAI, OpenAIAI } from "basalted-core";
 import type { CliConfig } from "./config";
 
 export interface LlmOverrides {

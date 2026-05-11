@@ -15,7 +15,7 @@ import {
   findContradictionsV1,
   findImplicitThesesV1,
   WorkersAI,
-} from "@basalt/core";
+} from "basalted-core";
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import { z } from "zod";
@@ -121,7 +121,7 @@ briefsRoutes.post(
       .run();
 
     // Persist findings — one row per finding so /v1/findings can list +
-    // filter. The finding_key matches @basalt/core's calibration key.
+    // filter. The finding_key matches basalted-core's calibration key.
     const findingInserts: Array<Promise<unknown>> = [];
     for (const [bucket, arr] of Object.entries(brief.findings)) {
       if (!arr) continue;
@@ -226,8 +226,8 @@ briefsRoutes.delete("/:id", async (c) => {
 });
 
 /** Stable per-finding key for idempotency + status tracking. Mirrors
- *  @basalt/core's `findingKey` in audit/calibration.ts. */
-function findingKey(f: import("@basalt/core").Finding): string {
+ *  basalted-core's `findingKey` in audit/calibration.ts. */
+function findingKey(f: import("basalted-core").Finding): string {
   const parts: string[] = [f.verb];
   if ("note_a" in f && f.note_a) parts.push(f.note_a.rel_path);
   if ("note_b" in f && f.note_b) parts.push(f.note_b.rel_path);

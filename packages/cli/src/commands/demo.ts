@@ -4,8 +4,8 @@
 
 import { existsSync } from "node:fs";
 import { resolve } from "node:path";
-import { Engine, MemoryFilesystem, MemoryStorage, MockEmbedder, renderBrief } from "@basalt/core";
-import "@basalt/core/verbs"; // side-effect: register all five verbs
+import { Engine, MemoryFilesystem, MemoryStorage, MockEmbedder, renderBrief } from "basalted-core";
+import "basalted-core/verbs"; // side-effect: register all five verbs
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import kleur from "kleur";

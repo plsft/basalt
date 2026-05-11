@@ -12,12 +12,12 @@
       },
     },
     "packages/api": {
-      "name": "@basalt/api",
+      "name": "basalted-api",
       "version": "0.0.0",
       "dependencies": {
-        "@basalt/core": "workspace:*",
         "@hono/node-server": "^1.13.7",
         "@hono/zod-validator": "^0.4.2",
+        "basalted-core": "workspace:*",
         "hono": "^4.6.0",
         "zod": "^3.24.0",
       },
@@ -31,15 +31,15 @@
       },
     },
     "packages/cli": {
-      "name": "@basalt/cli",
+      "name": "basalted",
       "version": "0.0.0",
       "bin": {
         "basalt": "./bin/basalt.js",
       },
       "dependencies": {
-        "@basalt/core": "workspace:*",
         "@iarna/toml": "^2.2.5",
         "@inquirer/prompts": "^7.3.0",
+        "basalted-core": "workspace:*",
         "commander": "^14.0.0",
         "env-paths": "^3.0.0",
         "kleur": "^4.1.5",
@@ -53,7 +53,7 @@
       },
     },
     "packages/core": {
-      "name": "@basalt/core",
+      "name": "basalted-core",
       "version": "0.0.0",
       "dependencies": {
         "graphology": "^0.26.0",
@@ -71,10 +71,9 @@
       },
     },
     "packages/desktop": {
-      "name": "@basalt/desktop",
+      "name": "basalted-desktop",
       "version": "0.0.0",
       "dependencies": {
-        "@basalt/core": "workspace:*",
         "@tanstack/react-query": "^5.62.0",
         "@tauri-apps/api": "^2.4.0",
         "@tauri-apps/plugin-dialog": "^2.2.0",
@@ -84,6 +83,7 @@
         "@tauri-apps/plugin-shell": "^2.2.0",
         "@tauri-apps/plugin-sql": "^2.2.0",
         "@tauri-apps/plugin-updater": "^2.4.0",
+        "basalted-core": "workspace:*",
         "react": "^19.0.0",
         "react-dom": "^19.0.0",
         "react-router-dom": "^7.0.0",
@@ -99,7 +99,7 @@
       },
     },
     "packages/docs": {
-      "name": "@basalt/docs",
+      "name": "basalted-docs",
       "version": "0.0.0",
       "dependencies": {
         "@astrojs/starlight": "^0.30.0",
@@ -112,21 +112,21 @@
       },
     },
     "packages/mcp": {
-      "name": "@basalt/mcp",
+      "name": "basalted-mcp",
       "version": "0.0.0",
       "bin": {
         "basalt-mcp": "./bin/basalt-mcp.js",
       },
       "dependencies": {
-        "@basalt/cli": "workspace:*",
-        "@basalt/core": "workspace:*",
         "@modelcontextprotocol/sdk": "^1.0.0",
+        "basalted": "workspace:*",
+        "basalted-core": "workspace:*",
         "commander": "^14.0.0",
         "zod": "^3.24.0",
       },
     },
     "packages/mobile": {
-      "name": "@basalt/mobile",
+      "name": "basalted-mobile",
       "version": "0.0.0",
       "dependencies": {
         "react": "^19.0.0",
@@ -143,10 +143,10 @@
       },
     },
     "packages/obsidian-plugin": {
-      "name": "@basalt/obsidian-plugin",
+      "name": "basalted-obsidian-plugin",
       "version": "0.0.0",
       "dependencies": {
-        "@basalt/core": "workspace:*",
+        "basalted-core": "workspace:*",
         "sql.js": "^1.13.0",
       },
       "devDependencies": {
@@ -156,13 +156,13 @@
       },
     },
     "packages/site": {
-      "name": "@basalt/site",
+      "name": "basalted-site",
       "version": "0.0.0",
       "dependencies": {
         "@astrojs/mdx": "^4.0.0",
         "@astrojs/sitemap": "^3.2.1",
-        "@basalt/ui": "workspace:*",
         "astro": "^5.0.0",
+        "basalted-ui": "workspace:*",
       },
       "devDependencies": {
         "@astrojs/check": "^0.9.4",
@@ -170,11 +170,11 @@
       },
     },
     "packages/ui": {
-      "name": "@basalt/ui",
+      "name": "basalted-ui",
       "version": "0.0.0",
     },
     "packages/web": {
-      "name": "@basalt/web",
+      "name": "basalted-web",
       "version": "0.0.0",
       "dependencies": {
         "@tanstack/react-query": "^5.62.0",
@@ -404,28 +404,6 @@
     "@babel/traverse": ["@babel/traverse@7.29.0", "", { "dependencies": { "@babel/code-frame": "^7.29.0", "@babel/generator": "^7.29.0", "@babel/helper-globals": "^7.28.0", "@babel/parser": "^7.29.0", "@babel/template": "^7.28.6", "@babel/types": "^7.29.0", "debug": "^4.3.1" } }, "sha512-4HPiQr0X7+waHfyXPZpWPfWL/J7dcN1mx9gL6WdQVMbPnF3+ZhSMs8tCxN7oHddJE9fhNE7+lxdnlyemKfJRuA=="],
 
     "@babel/types": ["@babel/types@7.29.0", "", { "dependencies": { "@babel/helper-string-parser": "^7.27.1", "@babel/helper-validator-identifier": "^7.28.5" } }, "sha512-LwdZHpScM4Qz8Xw2iKSzS+cfglZzJGvofQICy7W7v4caru4EaAmyUuO6BGrbyQ2mYV11W0U8j5mBhd14dd3B0A=="],
-
-    "@basalt/api": ["@basalt/api@workspace:packages/api"],
-
-    "@basalt/cli": ["@basalt/cli@workspace:packages/cli"],
-
-    "@basalt/core": ["@basalt/core@workspace:packages/core"],
-
-    "@basalt/desktop": ["@basalt/desktop@workspace:packages/desktop"],
-
-    "@basalt/docs": ["@basalt/docs@workspace:packages/docs"],
-
-    "@basalt/mcp": ["@basalt/mcp@workspace:packages/mcp"],
-
-    "@basalt/mobile": ["@basalt/mobile@workspace:packages/mobile"],
-
-    "@basalt/obsidian-plugin": ["@basalt/obsidian-plugin@workspace:packages/obsidian-plugin"],
-
-    "@basalt/site": ["@basalt/site@workspace:packages/site"],
-
-    "@basalt/ui": ["@basalt/ui@workspace:packages/ui"],
-
-    "@basalt/web": ["@basalt/web@workspace:packages/web"],
 
     "@biomejs/biome": ["@biomejs/biome@2.4.14", "", { "optionalDependencies": { "@biomejs/cli-darwin-arm64": "2.4.14", "@biomejs/cli-darwin-x64": "2.4.14", "@biomejs/cli-linux-arm64": "2.4.14", "@biomejs/cli-linux-arm64-musl": "2.4.14", "@biomejs/cli-linux-x64": "2.4.14", "@biomejs/cli-linux-x64-musl": "2.4.14", "@biomejs/cli-win32-arm64": "2.4.14", "@biomejs/cli-win32-x64": "2.4.14" }, "bin": { "biome": "bin/biome" } }, "sha512-TmAvxOEgrpLypzVGJ8FulIZnlyA9TxrO1hyqYrCz9r+bwma9xXxuLA5IuYnj55XQneFx460KjRbx6SWGLkg3bQ=="],
 
@@ -1026,6 +1004,28 @@
     "bail": ["bail@2.0.2", "", {}, "sha512-0xO6mYd7JB2YesxDKplafRpsiOzPt9V02ddPCLbY1xYGPOX24NTyN50qnUxgCPcSoYMhKpAuBTjQoRZCAkUDRw=="],
 
     "balanced-match": ["balanced-match@4.0.4", "", {}, "sha512-BLrgEcRTwX2o6gGxGOCNyMvGSp35YofuYzw9h1IMTRmKqttAZZVU67bdb9Pr2vUHA8+j3i2tJfjO6C6+4myGTA=="],
+
+    "basalted": ["basalted@workspace:packages/cli"],
+
+    "basalted-api": ["basalted-api@workspace:packages/api"],
+
+    "basalted-core": ["basalted-core@workspace:packages/core"],
+
+    "basalted-desktop": ["basalted-desktop@workspace:packages/desktop"],
+
+    "basalted-docs": ["basalted-docs@workspace:packages/docs"],
+
+    "basalted-mcp": ["basalted-mcp@workspace:packages/mcp"],
+
+    "basalted-mobile": ["basalted-mobile@workspace:packages/mobile"],
+
+    "basalted-obsidian-plugin": ["basalted-obsidian-plugin@workspace:packages/obsidian-plugin"],
+
+    "basalted-site": ["basalted-site@workspace:packages/site"],
+
+    "basalted-ui": ["basalted-ui@workspace:packages/ui"],
+
+    "basalted-web": ["basalted-web@workspace:packages/web"],
 
     "base-64": ["base-64@1.0.0", "", {}, "sha512-kwDPIFCGx0NZHog36dj+tHiwP4QMzsZ3AgMViUBKI0+V5n4U0ufTCUMhnQ04diaRI8EX/QcPfql7zlhZ7j4zgg=="],
 

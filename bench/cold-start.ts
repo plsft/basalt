@@ -1,8 +1,8 @@
 // bench/cold-start.ts
 //
 // Measures cold-start latency for surfaces that need to be fast on launch:
-//   1. @basalt/core module import + Engine.create
-//   2. @basalt/cli `basalt about` end-to-end (forks a child process)
+//   1. basalted-core module import + Engine.create
+//   2. basalted `basalt about` end-to-end (forks a child process)
 //
 // PRD §6.4 budget: desktop cold-start < 800ms median (measured separately
 // via the Tauri build); this script targets the engine + CLI portion that
@@ -75,7 +75,7 @@ async function main(): Promise<void> {
   );
   console.log("-".repeat(60));
   for (const [name, vals] of [
-    ["@basalt/core import + create", engineImport] as const,
+    ["basalted-core import + create", engineImport] as const,
     ["`basalt about` (CLI)", cliAbout] as const,
   ]) {
     if (vals.some(Number.isNaN)) {

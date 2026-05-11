@@ -5,7 +5,7 @@
 // Default model: @cf/baai/bge-base-en-v1.5 — 768-dim, ~33ms per query,
 // matches the Vectorize basalt-prod-vectors index dimensionality.
 
-import type { WorkersAIBinding } from "@basalt/core";
+import type { WorkersAIBinding } from "basalted-core";
 
 export const WORKERS_EMBEDDING_DEFAULT_MODEL = "@cf/baai/bge-base-en-v1.5";
 /** Conservative truncation — bge-base supports up to 512 tokens (~2000 chars). */

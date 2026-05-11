@@ -1,5 +1,5 @@
 {
-  "name": "@basalt/cli",
+  "name": "basalted",
   "version": "0.0.0",
   "description": "Basalt CLI — index, brief, audit your Markdown vault from the terminal.",
   "license": "MIT",
@@ -23,11 +23,11 @@
     "compile:darwin-arm64": "bun build src/index.ts --compile --target=bun-darwin-arm64 --outfile=bin/basalt-darwin-arm64",
     "compile:windows-x64": "bun build src/index.ts --compile --target=bun-windows-x64 --outfile=bin/basalt-windows-x64.exe",
     "typecheck": "tsc --noEmit -p tsconfig.json",
-    "test": "echo \"@basalt/cli: tests run from root via 'bun run test'\" && exit 0",
+    "test": "echo \"basalted: tests run from root via 'bun run test'\" && exit 0",
     "start": "bun src/index.ts"
   },
   "dependencies": {
-    "@basalt/core": "workspace:*",
+    "basalted-core": "workspace:*",
     "@iarna/toml": "^2.2.5",
     "@inquirer/prompts": "^7.3.0",
     "commander": "^14.0.0",

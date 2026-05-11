@@ -134,7 +134,7 @@ run against my own vault.
 If the wedge resonates — try it. The CLI installs in one line.
 
 ```sh
-npm install -g @basalt/cli
+npm install -g basalted
 basalt init
 basalt brief
 ```

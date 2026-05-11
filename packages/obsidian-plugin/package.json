@@ -1,5 +1,5 @@
 {
-  "name": "@basalt/obsidian-plugin",
+  "name": "basalted-obsidian-plugin",
   "version": "0.0.0",
   "description": "Basalt for Obsidian — generate weekly Briefs from your vault, in-vault, fully offline.",
   "license": "MIT",
@@ -9,10 +9,10 @@
     "build": "node esbuild.config.mjs production",
     "dev": "node esbuild.config.mjs",
     "typecheck": "tsc --noEmit",
-    "test": "echo \"@basalt/obsidian-plugin: tests run from root via 'bun run test'\" && exit 0"
+    "test": "echo \"basalted-obsidian-plugin: tests run from root via 'bun run test'\" && exit 0"
   },
   "dependencies": {
-    "@basalt/core": "workspace:*",
+    "basalted-core": "workspace:*",
     "sql.js": "^1.13.0"
   },
   "devDependencies": {

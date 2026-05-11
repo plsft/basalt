@@ -1,10 +1,10 @@
-# @basalt/desktop
+# basalted-desktop
 
 Basalt desktop app — Tauri 2 (Rust shell, system WebView) + React + Tailwind v4.
 
 ## Status
 
-**Phase 4, in progress.** Scaffold + Rust shell with `walk_vault`/`open_external` commands + React frontend that runs `@basalt/core` end-to-end via the `TauriFilesystem` adapter. macOS code signing wired in `.github/workflows/release-desktop.yml` (needs Apple Dev ID secrets).
+**Phase 4, in progress.** Scaffold + Rust shell with `walk_vault`/`open_external` commands + React frontend that runs `basalted-core` end-to-end via the `TauriFilesystem` adapter. macOS code signing wired in `.github/workflows/release-desktop.yml` (needs Apple Dev ID secrets).
 
 ## Performance budgets (PRD §6.4)
 

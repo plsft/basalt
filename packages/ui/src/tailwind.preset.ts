@@ -1,4 +1,4 @@
-// @basalt/ui — Tailwind v4 preset.
+// basalted-ui — Tailwind v4 preset.
 // Tailwind v4 reads tokens from CSS via the @theme block; this object is exposed
 // for surfaces that prefer to drive Tailwind from JS (Astro integrations,
 // tooling that does its own CSS injection).

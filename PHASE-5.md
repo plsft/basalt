@@ -1,6 +1,6 @@
 # Phase 5 — Marketing Site + Docs Site
 
-> **Goal:** Ship the marketing site (`@basalt/site`) and docs site (`@basalt/docs`) under whatever final domain has been chosen. Marketing carries forward Fernando's typographic, dignified design with the sodium/periodic-table layer. Docs is technical reference for every surface.
+> **Goal:** Ship the marketing site (`basalted-site`) and docs site (`basalted-docs`) under whatever final domain has been chosen. Marketing carries forward Fernando's typographic, dignified design with the sodium/periodic-table layer. Docs is technical reference for every surface.
 >
 > **Target tag:** `v0.5.0`
 >
@@ -47,16 +47,16 @@ docs/brand-decisions.md                       # rationale for any deltas
 **Definition of Done:** Standard DoD + visual comparison verified by George.
 
 **Notes:**
-- This task is foundational for both `@basalt/site` and `@basalt/docs`. It also retroactively informs `@basalt/web` and `@basalt/desktop` UI — when this lands, run a sweep across all surfaces to update them to the finalized tokens.
+- This task is foundational for both `basalted-site` and `basalted-docs`. It also retroactively informs `basalted-web` and `basalted-desktop` UI — when this lands, run a sweep across all surfaces to update them to the finalized tokens.
 
 ---
 
-## TASK-5.2 — Scaffold `@basalt/site` (Astro)
+## TASK-5.2 — Scaffold `basalted-site` (Astro)
 
 **Spec:**
 - Set up `packages/site/` with Astro + TypeScript
 - Install `@astrojs/tailwind`, `@astrojs/mdx`, `@astrojs/sitemap`, `@astrojs/rss`
-- Configure Tailwind to use `@basalt/ui`'s preset
+- Configure Tailwind to use `basalted-ui`'s preset
 - Create base layout `src/layouts/Default.astro` with:
   - `<head>` metadata: OG tags, Twitter card, favicon (Na-tile), preloaded fonts
   - Header: minimal nav (logo, Install, Pricing, Privacy, Docs)
@@ -164,7 +164,7 @@ packages/site/public/recordings/
 
 **Spec:**
 
-- **/install**: per-surface install instructions with copyable commands (`npm install -g @basalt/cli`, plugin marketplace link, MCP install command, desktop download links). Auto-detect OS for desktop CTA where possible. Include verification command for each (`basalt about`).
+- **/install**: per-surface install instructions with copyable commands (`npm install -g basalted`, plugin marketplace link, MCP install command, desktop download links). Auto-detect OS for desktop CTA where possible. Include verification command for each (`basalt about`).
 
 - **/pricing**: full pricing detail.
   - Open: features list, "$0 forever, MIT-licensed"
@@ -198,11 +198,11 @@ scripts/sync-changelog.ts                     # CHANGELOG.md → changelog.mdx
 
 ---
 
-## TASK-5.5 — Scaffold `@basalt/docs` (Astro + Starlight)
+## TASK-5.5 — Scaffold `basalted-docs` (Astro + Starlight)
 
 **Spec:**
 - Set up `packages/docs/` with Astro + Starlight
-- Configure Starlight with custom theme matching brand tokens (extends `@basalt/ui` preset)
+- Configure Starlight with custom theme matching brand tokens (extends `basalted-ui` preset)
 - Configure deploy to Cloudflare Pages at `docs.<domain>`
 - Set up CI workflow `.github/workflows/deploy-docs.yml`
 - Configure search (Starlight ships with Pagefind by default — confirm it's the right fit)
@@ -321,7 +321,7 @@ packages/docs/src/content/docs/
 ## TASK-5.7 — Auto-generate API reference
 
 **Spec:**
-- Script that introspects Hono routes in `@basalt/api` and produces an OpenAPI 3.1 spec
+- Script that introspects Hono routes in `basalted-api` and produces an OpenAPI 3.1 spec
 - Render the OpenAPI spec into Starlight using a plugin or custom integration (e.g. `@scalar/api-reference` or hand-rolled)
 - Auto-runs on every API change via CI; output checked into `packages/docs/src/content/docs/api/`
 

@@ -1,6 +1,6 @@
 # Phase 1 — Core Engine + Obsidian Plugin (the wedge)
 
-> **Goal:** Build `@basalt/core` with all five verbs at parity with the Python reference. Wrap in `@basalt/obsidian-plugin` — the wedge surface — and ship through BRAT plus the Obsidian community marketplace submission.
+> **Goal:** Build `basalted-core` with all five verbs at parity with the Python reference. Wrap in `basalted-obsidian-plugin` — the wedge surface — and ship through BRAT plus the Obsidian community marketplace submission.
 >
 > **Target tag:** `v0.1.0`
 >
@@ -12,7 +12,7 @@ Wedge-first ordering rationale: PRD §1, §4.1, §7. The plugin meets the audien
 
 ---
 
-## TASK-1.1 — Scaffold `@basalt/core`
+## TASK-1.1 — Scaffold `basalted-core`
 
 **Spec:**
 - Set up `packages/core/` with TypeScript build config
@@ -386,7 +386,7 @@ packages/core/src/promote/templates/*.test.ts
 
 ---
 
-## TASK-1.13 — Scaffold `@basalt/obsidian-plugin`
+## TASK-1.13 — Scaffold `basalted-obsidian-plugin`
 
 **Spec:**
 - Set up `packages/obsidian-plugin/` with TypeScript + esbuild
@@ -420,7 +420,7 @@ packages/obsidian-plugin/
 │   ├── adapters/
 │   │   ├── fs-obsidian.ts       # stub — TASK-1.14
 │   │   ├── storage-sqljs.ts     # stub — TASK-1.15
-│   │   └── embedding-ollama.ts  # re-export of @basalt/core's adapter
+│   │   └── embedding-ollama.ts  # re-export of basalted-core's adapter
 │   ├── views/
 │   │   └── BriefView.ts         # stub — TASK-1.16
 │   ├── settings.ts              # stub — TASK-1.17
@@ -444,7 +444,7 @@ packages/obsidian-plugin/
   - Use Obsidian's `Vault` API to walk and read markdown files
   - Convert Obsidian's relative paths to canonical absolute paths for citations
   - Respect Obsidian's `.obsidian/` and any user-configured ignore patterns (mirror SPEC.md §1.1's `EXCLUDE_DIRS`)
-  - Implement the `FilesystemAdapter` interface from `@basalt/core`
+  - Implement the `FilesystemAdapter` interface from `basalted-core`
   - Implement `createNoteFile(path, content)` strictly create-only — reject if target exists; do not modify any existing `.md` file. **Architectural test required.**
 - Use `MetadataCache` for fast frontmatter access where possible (perf optimization)
 
@@ -500,7 +500,7 @@ packages/obsidian-plugin/bench/storage-sqljs.bench.ts
 **Spec:**
 - Implement `src/views/BriefView.ts`:
   - Extends Obsidian's `ItemView`
-  - Renders the latest Brief using `@basalt/core`'s render pipeline
+  - Renders the latest Brief using `basalted-core`'s render pipeline
   - Click handlers on findings: Promote (calls `promoteFindingToNote` + `FilesystemAdapter.createNoteFile`), Snooze, Dismiss
   - "Open citation" links navigate to source notes via `app.workspace.openLinkText(...)`
 - Add ribbon icon: small Na-tile SVG in `styles.css`, click triggers Generate Brief

@@ -1,5 +1,5 @@
 {
-  "name": "@basalt/api",
+  "name": "basalted-api",
   "version": "0.0.0",
   "private": true,
   "description": "Basalt cloud API — Hono on Cloudflare Workers.",
@@ -14,10 +14,10 @@
     "deploy:prod": "wrangler deploy --env production",
     "migrate:staging": "wrangler d1 migrations apply basalt-staging-db --env staging --remote",
     "migrate:prod": "wrangler d1 migrations apply basalt-prod-db --env production --remote",
-    "test": "echo \"@basalt/api: tests run from root via 'bun run test'\" && exit 0"
+    "test": "echo \"basalted-api: tests run from root via 'bun run test'\" && exit 0"
   },
   "dependencies": {
-    "@basalt/core": "workspace:*",
+    "basalted-core": "workspace:*",
     "@hono/node-server": "^1.13.7",
     "@hono/zod-validator": "^0.4.2",
     "hono": "^4.6.0",

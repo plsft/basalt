@@ -2,7 +2,7 @@
 // The format mirrors packages/api/src/lib/snapshot.ts exactly — keep them in
 // lockstep.
 
-import type { Embedding, StorageAdapter } from "@basalt/core";
+import type { Embedding, StorageAdapter } from "basalted-core";
 
 export interface SnapshotPayload {
   schema: 1;

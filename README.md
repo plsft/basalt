@@ -48,16 +48,16 @@ basalt/
 ├── CLAUDE.md              # operating manual for Claude Code
 ├── SPEC.md                # algorithmic contract (produced in TASK-0.3)
 ├── packages/              # workspace packages
-│   ├── core/              # @basalt/core — runtime-agnostic engine
-│   ├── cli/               # @basalt/cli — Bun-compiled binary
-│   ├── obsidian-plugin/   # @basalt/obsidian-plugin
-│   ├── mcp/               # @basalt/mcp
-│   ├── api/               # @basalt/api — Cloudflare Workers + Hono
-│   ├── web/               # @basalt/web — React + Tailwind v4
-│   ├── desktop/           # @basalt/desktop — Tauri 2
-│   ├── site/              # @basalt/site — marketing
-│   ├── docs/              # @basalt/docs — Starlight
-│   └── ui/                # @basalt/ui — shared components
+│   ├── core/              # basalted-core — runtime-agnostic engine
+│   ├── cli/               # basalted — Bun-compiled binary
+│   ├── obsidian-plugin/   # basalted-obsidian-plugin
+│   ├── mcp/               # basalted-mcp
+│   ├── api/               # basalted-api — Cloudflare Workers + Hono
+│   ├── web/               # basalted-web — React + Tailwind v4
+│   ├── desktop/           # basalted-desktop — Tauri 2
+│   ├── site/              # basalted-site — marketing
+│   ├── docs/              # basalted-docs — Starlight
+│   └── ui/                # basalted-ui — shared components
 ├── tests/parity/          # Python ↔ TS golden output tests
 ├── tests/e2e/             # cross-surface end-to-end tests
 └── scripts/               # build + release automation

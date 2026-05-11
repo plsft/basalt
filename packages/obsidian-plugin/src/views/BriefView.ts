@@ -1,10 +1,10 @@
 // BriefView — Obsidian ItemView that renders the latest Brief and
 // (when invoked) drives an end-to-end indexing + brief-generation cycle
-// against @basalt/core. The view talks to the engine through the bridge
+// against basalted-core. The view talks to the engine through the bridge
 // installed on the plugin in onload(); see main.ts.
 
-import type { Brief, Engine } from "@basalt/core";
-import { renderBrief } from "@basalt/core";
+import type { Brief, Engine } from "basalted-core";
+import { renderBrief } from "basalted-core";
 import { ItemView } from "obsidian";
 
 export const BRIEF_VIEW_TYPE = "basalt-brief";

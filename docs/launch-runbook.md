@@ -24,7 +24,7 @@
 - [ ] `curl -I https://basalt.dev` → 200
 - [ ] `curl -I https://docs.basalt.dev` → 200
 - [ ] `curl -s https://api.basalt.dev/v1/health` → `{"status":"ok"}`
-- [ ] Fresh-VM install: `npm i -g @basalt/cli && basalt init && basalt brief` → green
+- [ ] Fresh-VM install: `npm i -g basalted && basalt init && basalt brief` → green
 - [ ] HN post drafted in tab, ready to submit
 - [ ] X thread queued
 - [ ] LinkedIn post queued

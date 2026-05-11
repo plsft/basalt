@@ -6,17 +6,17 @@
 >
 > **Estimated duration:** 4–6 weeks
 
-The desktop app is the only surface that has a Rust component. Keep Rust thin: it exists to give the React frontend filesystem, OS, SQLite, and process-spawning primitives, nothing more. All product logic stays in `@basalt/core` running in the WebView.
+The desktop app is the only surface that has a Rust component. Keep Rust thin: it exists to give the React frontend filesystem, OS, SQLite, and process-spawning primitives, nothing more. All product logic stays in `basalted-core` running in the WebView.
 
 ---
 
-## TASK-4.1 — Scaffold `@basalt/desktop` (Tauri 2)
+## TASK-4.1 — Scaffold `basalted-desktop` (Tauri 2)
 
 **Spec:**
 - Run `bun create tauri-app` (or manual setup) inside `packages/desktop/`
 - Configure as Tauri 2 (not 1.x — confirm with `cargo tauri --version` ≥ 2.0)
 - Frontend: Vite + React + Tailwind v4 + TypeScript
-- Reuse `@basalt/core` and `@basalt/ui` from the monorepo
+- Reuse `basalted-core` and `basalted-ui` from the monorepo
 - Configure `tauri.conf.json`:
   - `productName`: "Basalt"
   - `identifier`: TBD per Phase 0 brand decision (placeholder `app.basalt.desktop`)
@@ -37,7 +37,7 @@ packages/desktop/
 │   ├── main.tsx
 │   ├── App.tsx
 │   ├── lib/
-│   │   └── basalt-core.ts          # imports @basalt/core
+│   │   └── basalt-core.ts          # imports basalted-core
 │   ├── adapters/                   # Tauri-specific adapter implementations
 │   ├── views/
 │   │   ├── Onboarding.tsx
@@ -206,7 +206,7 @@ Two views drive the desktop UX:
   - Skippable steps land on a "Resume later" action that persists progress
 
 - **BriefView** (the main view after onboarding):
-  - Reuses `<Brief>` and `<FindingCard>` from `@basalt/ui` (shared with web cockpit)
+  - Reuses `<Brief>` and `<FindingCard>` from `basalted-ui` (shared with web cockpit)
   - Periodic-table tile sidebar showing which verbs found findings this week
   - "Generate new Brief" button in the title bar
   - Findings have inline actions: Promote, Snooze, Dismiss (calls Engine.audit)

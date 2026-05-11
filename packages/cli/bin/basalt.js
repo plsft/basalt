@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // packages/cli/bin/basalt.js
-// Thin entry for `npm install -g @basalt/cli`. The compiled single-binary
+// Thin entry for `npm install -g basalted`. The compiled single-binary
 // (bun build --compile) skips this and bundles src/index.ts directly.
 
 import("../dist/index.js").catch((err) => {

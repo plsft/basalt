@@ -58,7 +58,7 @@ jobs:
       - name: Install JS deps
         run: bun install --frozen-lockfile
 
-      - name: Build @basalt/core
+      - name: Build basalted-core
         run: bun run --cwd packages/core build
 
       - name: Build Tauri app (with macOS signing if configured)

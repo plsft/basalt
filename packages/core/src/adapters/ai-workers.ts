@@ -3,7 +3,7 @@
 //
 // The Ai binding is shaped as `env.AI.run(modelId, { messages })` returning
 // `{ response: string }`. We type it loosely (the official @cloudflare/workers-types
-// `Ai` type covers it but we keep this adapter standalone so @basalt/core
+// `Ai` type covers it but we keep this adapter standalone so basalted-core
 // has zero Workers-types dep — the API package supplies the binding).
 
 import type { AIAdapter, CompletionRequest, CompletionResponse } from "./ai";

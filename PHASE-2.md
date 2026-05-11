@@ -1,6 +1,6 @@
 # Phase 2 — CLI + MCP Server (credibility)
 
-> **Goal:** Ship the credibility surfaces over the same `@basalt/core` engine validated in Phase 1: a Bun-compiled CLI for the HN/Show HN/dev-tools audience, and an MCP server distributed into Claude Desktop / Cursor / Cline / Zed / VS Code Copilot.
+> **Goal:** Ship the credibility surfaces over the same `basalted-core` engine validated in Phase 1: a Bun-compiled CLI for the HN/Show HN/dev-tools audience, and an MCP server distributed into Claude Desktop / Cursor / Cline / Zed / VS Code Copilot.
 >
 > **Target tag:** `v0.2.0`
 >
@@ -12,7 +12,7 @@ Sequencing rationale (PRD §7): credibility surfaces follow the wedge. Phase 1 p
 
 ---
 
-## TASK-2.1 — Scaffold `@basalt/cli`
+## TASK-2.1 — Scaffold `basalted`
 
 **Spec:**
 - Set up `packages/cli/` with TypeScript + Bun build
@@ -60,7 +60,7 @@ packages/cli/
   - Embedding column stores Float32Array as binary blob (per SPEC.md §2.1)
   - WAL mode enabled for concurrency
   - Indexes on `rel_path`, `updated`, `created` (per the canonical schema)
-- The CLI re-exports `embedding-ollama` from `@basalt/core` (defined in TASK-1.4); no new embedding adapter needed
+- The CLI re-exports `embedding-ollama` from `basalted-core` (defined in TASK-1.4); no new embedding adapter needed
 
 **Files created:**
 ```
@@ -88,7 +88,7 @@ packages/cli/src/adapters/{fs-node,storage-sqlite}.test.ts
   - `index`: progress reporting via stderr, writes index DB
   - `brief`: runs Engine.brief, renders to stdout (Markdown by default; `--format json` for JSON; `--format html` available)
   - `thesis | drift | connection | contradiction | buried`: convenience wrappers around `brief --section X`
-  - `promote <finding-id> [--out PATH]`: renders the promoted note via `@basalt/core/promote` and writes via `fs-node.createNoteFile` (refuses to overwrite)
+  - `promote <finding-id> [--out PATH]`: renders the promoted note via `basalted-core/promote` and writes via `fs-node.createNoteFile` (refuses to overwrite)
   - `audit`: runs Engine.audit, prints calibration summary
   - `demo`: runs against bundled `tests/parity/fixtures/sample-vault-14/`
   - `about`: ASCII periodic-table animation (small Na tile rendering) + version + schema
@@ -118,7 +118,7 @@ packages/cli/src/commands/*.ts
   - Upload binaries to GitHub release as assets
 - Configure npm publish:
   - `npm publish --access public` from CI on tag push
-  - Publish `@basalt/cli` (verify the scope is registered or claim it; collision check per PRD §10 #2 / brand collision risk in §9)
+  - Publish `basalted` (verify the scope is registered or claim it; collision check per PRD §10 #2 / brand collision risk in §9)
   - Document install paths in `packages/cli/README.md` and root `README.md`
 
 **Files created/modified:**
@@ -130,7 +130,7 @@ README.md                         # Install section
 
 **Tests:**
 - Tag a pre-release `v0.2.0-rc1` and verify CI produces all expected binaries
-- Manual: `npm install -g @basalt/cli` on a fresh machine works
+- Manual: `npm install -g basalted` on a fresh machine works
 - Manual: download a Linux binary and run on a test VM
 - Manual: confirm Python-CLI users can point the TS CLI at their existing `~/.basalt/basalt.db` and `basalt brief` works without re-indexing (schema-compat smoke test)
 
@@ -138,12 +138,12 @@ README.md                         # Install section
 
 ---
 
-## TASK-2.5 — Scaffold `@basalt/mcp`
+## TASK-2.5 — Scaffold `basalted-mcp`
 
 **Spec:**
 - Set up `packages/mcp/` with TypeScript + Bun build
 - Install `@modelcontextprotocol/sdk` (Anthropic's TS SDK)
-- Reuse `@basalt/core` plus the same adapters as the CLI (`fs-node`, `embedding-ollama`, `storage-sqlite`)
+- Reuse `basalted-core` plus the same adapters as the CLI (`fs-node`, `embedding-ollama`, `storage-sqlite`)
 - Create `src/index.ts` entry point that initializes the MCP server
 - Create `src/tools.ts` with tool definitions for: `basalt_brief`, `basalt_connection`, `basalt_contradiction`, `basalt_drift`, `basalt_audit`
 - **Promote-to-note is intentionally NOT exposed via MCP** (PRD §4.3) — file creation belongs to a surface where the user can see the result, not a tool that returns text to a chat.
@@ -227,14 +227,14 @@ packages/mcp/src/tools/*.ts
 - Manual test: install MCP server globally, configure Claude Desktop, ask Claude "run a Basalt brief on my vault" and verify all five tools resolve
 - Capture screenshots/transcript for the docs site (Phase 5 will reference these)
 - Add `examples/claude-desktop-config.json` and `examples/cursor-config.json` (Cursor MCP integration if available)
-- Configure npm publish for `@basalt/mcp` (added to the same release workflow as the CLI in TASK-2.4)
+- Configure npm publish for `basalted-mcp` (added to the same release workflow as the CLI in TASK-2.4)
 
 **Files created:**
 ```
 packages/mcp/README.md
 packages/mcp/examples/{claude-desktop-config,cursor-config}.json
 docs/integration-screenshots/    # for Phase 5 docs site
-.github/workflows/release-cli.yml  # extended to also publish @basalt/mcp
+.github/workflows/release-cli.yml  # extended to also publish basalted-mcp
 ```
 
 **Tests:**
@@ -248,7 +248,7 @@ docs/integration-screenshots/    # for Phase 5 docs site
 ## Phase 2 Exit Criteria
 
 - [ ] All TASK-2.* merged
-- [ ] CLI installable via `npm install -g @basalt/cli` and as a single binary
+- [ ] CLI installable via `npm install -g basalted` and as a single binary
 - [ ] CLI's `basalt promote` creates new files only — no path overwrites or modifies an existing file (architectural test passes)
 - [ ] CLI schema is byte-compatible with Python's; Python users can swap to the TS CLI without re-indexing
 - [ ] MCP server installable globally and integrates with Claude Desktop end-to-end

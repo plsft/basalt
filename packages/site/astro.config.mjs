@@ -8,6 +8,6 @@ export default defineConfig({
   build: { format: "file" },
   integrations: [mdx(), sitemap()],
   vite: {
-    ssr: { noExternal: ["@basalt/ui"] },
+    ssr: { noExternal: ["basalted-ui"] },
   },
 });

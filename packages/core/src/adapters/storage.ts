@@ -1,12 +1,12 @@
 // StorageAdapter interface — runtime-agnostic. Implementations:
 //   - storage-memory.ts (in core, sql.js :memory: for tests; TASK-1.4)
-//   - storage-sqljs.ts (in @basalt/obsidian-plugin; TASK-1.15)
-//   - storage-sqlite.ts (in @basalt/cli, better-sqlite3; Phase 2 / TASK-2.2)
-//   - storage-tauri-sql.ts (in @basalt/desktop; Phase 4)
-//   - storage-d1.ts (in @basalt/api; Phase 3)
+//   - storage-sqljs.ts (in basalted-obsidian-plugin; TASK-1.15)
+//   - storage-sqlite.ts (in basalted, better-sqlite3; Phase 2 / TASK-2.2)
+//   - storage-tauri-sql.ts (in basalted-desktop; Phase 4)
+//   - storage-d1.ts (in basalted-api; Phase 3)
 //
 // All implementations consume the canonical migrations under
-// `@basalt/core/src/migrations/` (seeded in TASK-1.4) so the on-disk schema
+// `basalted-core/src/migrations/` (seeded in TASK-1.4) so the on-disk schema
 // is byte-equivalent to the Python reference's (SPEC.md §2.1).
 
 import type { Embedding, Note } from "../types";

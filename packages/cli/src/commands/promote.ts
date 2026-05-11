@@ -2,7 +2,7 @@
 // Promote a finding (by its finding_key OR numeric id) to a new vault note.
 // Full impl lands in TASK-2.3; today is a working sketch.
 
-import { promoteFindingToNote } from "@basalt/core";
+import { promoteFindingToNote } from "basalted-core";
 import kleur from "kleur";
 import { loadConfig } from "../config";
 import { runEngine } from "../runtime";

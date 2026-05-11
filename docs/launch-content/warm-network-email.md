@@ -16,7 +16,7 @@ launch — Show HN posted, X thread up, ProductHunt listing live.
 Two asks:
 
 1) If the idea resonates, try it: basalt.dev — the Open tier is free and
-   MIT-licensed; one-line install: `npm i -g @basalt/cli && basalt init && basalt brief`.
+   MIT-licensed; one-line install: `npm i -g basalted && basalt init && basalt brief`.
 
 2) If you have 5 minutes, drop a comment on the HN post — even a critical one
    is helpful. Link: {{hn_url}}

@@ -1,4 +1,4 @@
-// @basalt/ui — brand tokens.
+// basalted-ui — brand tokens.
 // Source of truth: PRD §2.5. Mirrors the @theme block in packages/web/src/index.css
 // and packages/desktop/src/index.css. When these drift, this file is authoritative.
 

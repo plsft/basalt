@@ -1,10 +1,10 @@
 // FilesystemAdapter interface — read-only on the user's vault by design.
 // Implementations:
 //   - filesystem-memory.ts (in core, for tests; TASK-1.3)
-//   - fs-obsidian.ts (in @basalt/obsidian-plugin, Vault API; TASK-1.14)
-//   - fs-node.ts (in @basalt/cli, fs/promises; Phase 2 / TASK-2.2)
-//   - fs-tauri.ts (in @basalt/desktop, Tauri plugin-fs; Phase 4)
-//   - fs-r2.ts (in @basalt/api, R2 vault sync; Phase 3, opt-in)
+//   - fs-obsidian.ts (in basalted-obsidian-plugin, Vault API; TASK-1.14)
+//   - fs-node.ts (in basalted, fs/promises; Phase 2 / TASK-2.2)
+//   - fs-tauri.ts (in basalted-desktop, Tauri plugin-fs; Phase 4)
+//   - fs-r2.ts (in basalted-api, R2 vault sync; Phase 3, opt-in)
 //
 // `createNoteFile` is the only mutation primitive. It is strictly create-only.
 // Implementations MUST reject if the target path exists. PRD §2.1, §3.3.

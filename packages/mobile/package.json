@@ -1,5 +1,5 @@
 {
-  "name": "@basalt/mobile",
+  "name": "basalted-mobile",
   "version": "0.0.0",
   "private": true,
   "description": "Basalt mobile — installable PWA read-only Brief reader.",
@@ -10,7 +10,7 @@
     "dev": "vite",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "preview": "vite preview",
-    "test": "echo \"@basalt/mobile: tests run from root via 'bun run test'\" && exit 0"
+    "test": "echo \"basalted-mobile: tests run from root via 'bun run test'\" && exit 0"
   },
   "dependencies": {
     "react": "^19.0.0",

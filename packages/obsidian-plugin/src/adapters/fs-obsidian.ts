@@ -9,7 +9,7 @@
 // greps the source for forbidden Vault APIs (`Vault.modify`, `.modifyBinary`,
 // `.rename`, `.delete`, `.trash`, `.process`) — any reference fails CI.
 
-import type { FilesystemAdapter, VaultEntry } from "@basalt/core";
+import type { FilesystemAdapter, VaultEntry } from "basalted-core";
 import type { App, TFile, Vault } from "obsidian";
 
 export interface ObsidianFilesystemOptions {

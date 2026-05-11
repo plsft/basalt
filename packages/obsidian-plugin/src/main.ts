@@ -15,7 +15,7 @@ import {
   OpenAIAI,
   promoteFindingToNote,
   renderBrief,
-} from "@basalt/core";
+} from "basalted-core";
 import { Notice, Plugin, type WorkspaceLeaf } from "obsidian";
 import { ObsidianFilesystem } from "./adapters/fs-obsidian";
 import { SqlJsStorage } from "./adapters/storage-sqljs";
@@ -250,7 +250,7 @@ export default class BasaltPlugin extends Plugin {
   }
 
   /**
-   * Promote a single finding to a new note. Pure function from @basalt/core;
+   * Promote a single finding to a new note. Pure function from basalted-core;
    * file creation happens here via the architecturally-blessed createNoteFile.
    */
   async promoteFindingToVault(findingIndex: number): Promise<string | null> {
@@ -288,8 +288,8 @@ export default class BasaltPlugin extends Plugin {
   }
 }
 
-function collectFindings(brief: Brief): import("@basalt/core").Finding[] {
-  const out: import("@basalt/core").Finding[] = [];
+function collectFindings(brief: Brief): import("basalted-core").Finding[] {
+  const out: import("basalted-core").Finding[] = [];
   for (const arr of Object.values(brief.findings)) {
     if (arr) out.push(...arr);
   }

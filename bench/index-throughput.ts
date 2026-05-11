@@ -1,6 +1,6 @@
 // bench/index-throughput.ts
 //
-// Measures @basalt/core indexing throughput against generated vaults of
+// Measures basalted-core indexing throughput against generated vaults of
 // size N. Reports notes/sec for parse + graph build + (mock) embed. PRD §6.4
 // budgets: 1k-note vault indexes in < 30s on commodity hardware.
 //

@@ -1,4 +1,4 @@
-// @basalt/core — runtime-agnostic engine.
+// basalted-core — runtime-agnostic engine.
 // Public surface per PRD §3.2.
 
 export type {

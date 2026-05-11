@@ -1,4 +1,4 @@
-// Public types for @basalt/core. Mirrors SPEC.md §3, §5–9 + §15.
+// Public types for basalted-core. Mirrors SPEC.md §3, §5–9 + §15.
 //
 // These types are the engine's public contract. Per-verb finding shapes are
 // kept under verbs/types.ts; this module re-exports the union for convenience.

@@ -1,4 +1,4 @@
-import type { Finding } from "@basalt/core";
+import type { Finding } from "basalted-core";
 import { useMutation } from "@tanstack/react-query";
 import { open } from "@tauri-apps/plugin-dialog";
 import { useState } from "react";

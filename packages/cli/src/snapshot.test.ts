@@ -1,4 +1,4 @@
-import { MemoryStorage } from "@basalt/core";
+import { MemoryStorage } from "basalted-core";
 import { describe, expect, it } from "vitest";
 import { buildSnapshot, encodeFloat32LE } from "./snapshot";
 

@@ -1,5 +1,5 @@
 // packages/desktop/src/engine-bridge.ts
-// Runs @basalt/core's Engine inside the Tauri WebView. Adapters:
+// Runs basalted-core's Engine inside the Tauri WebView. Adapters:
 //   - filesystem: TauriFilesystem (uses @tauri-apps/plugin-fs + the Rust
 //     `walk_vault` custom command for fast directory walking)
 //   - storage: in-memory (Tauri-SQL persistence lands in a follow-up)
@@ -23,8 +23,8 @@ import {
   promoteFindingToNote,
   renderBrief,
   type VaultEntry,
-} from "@basalt/core";
-import "@basalt/core/verbs";
+} from "basalted-core";
+import "basalted-core/verbs";
 import { invoke } from "@tauri-apps/api/core";
 import { exists as fsExists, mkdir, readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
 import type { DesktopSettings } from "./settings";

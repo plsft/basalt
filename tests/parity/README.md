@@ -110,7 +110,7 @@ The layout (rough — exact counts come from the generator's per-category caps):
 `ts.test.ts` will:
 
 1. Load each `baseline/<prefix>-<verb>.json`.
-2. Run the same verb against the same fixture using `@basalt/core`.
+2. Run the same verb against the same fixture using `basalted-core`.
 3. Compare via `compareFindings` (in `utils.ts`):
    - Same set of `rel_path` keys.
    - Same ordering (after the verb's deterministic tie-break).

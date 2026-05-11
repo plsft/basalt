@@ -1,6 +1,6 @@
 // scripts/generate-openapi.ts
 //
-// Generate an OpenAPI 3.1 document for the @basalt/api Hono application.
+// Generate an OpenAPI 3.1 document for the basalted-api Hono application.
 // Strategy: introspect the routes by static analysis (regex grep + zod schema
 // inspection rather than runtime Hono introspection — Hono doesn't ship a
 // public route registry, and the Workers runtime can't be booted from Node

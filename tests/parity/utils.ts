@@ -5,10 +5,10 @@
 // unit tests (utils.test.ts) and by ts.test.ts which loads + schema-validates
 // each baseline JSON.
 //
-// The full Finding / Brief types live in @basalt/core (lands in Phase 1). The
+// The full Finding / Brief types live in basalted-core (lands in Phase 1). The
 // minimal shapes here mirror SPEC.md §3, §5–9 and are sufficient for the
 // runtime validation done in this directory. The `import` side switches over
-// to @basalt/core once the package's public surface stabilises.
+// to basalted-core once the package's public surface stabilises.
 
 import { existsSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";

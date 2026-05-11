@@ -1,6 +1,6 @@
 // SQLite StorageAdapter for Node/Bun via a runtime-detecting driver:
 // bun:sqlite when available, better-sqlite3 otherwise. Same migrations as
-// the plugin's sql.js adapter (single source of truth: @basalt/core/migrations).
+// the plugin's sql.js adapter (single source of truth: basalted-core/migrations).
 // Schema is byte-compatible with Python's ~/.basalt/basalt.db so Python-CLI
 // users can swap to this CLI without re-indexing.
 
@@ -14,7 +14,7 @@ import {
   type NoteRecord,
   type PersistedFinding,
   type StorageAdapter,
-} from "@basalt/core";
+} from "basalted-core";
 import { type Db, openDatabase } from "./sqlite-driver";
 
 export class SqliteStorage implements StorageAdapter {

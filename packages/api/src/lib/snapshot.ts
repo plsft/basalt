@@ -1,4 +1,4 @@
-// Vault snapshot — the on-the-wire format that lets the API run @basalt/core
+// Vault snapshot — the on-the-wire format that lets the API run basalted-core
 // over a user's vault without ever touching their filesystem.
 //
 // The client (CLI / plugin / desktop / cockpit) serializes its local index
@@ -14,7 +14,7 @@
 
 import { z } from "zod";
 
-/** A single note record on the wire. Mirrors NoteRecord from @basalt/core
+/** A single note record on the wire. Mirrors NoteRecord from basalted-core
  *  with explicit JSON-safe types (Float32Array → base64 string for the
  *  embedding payload). */
 export const SnapshotNote = z.object({

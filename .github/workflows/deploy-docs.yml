@@ -15,7 +15,7 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    name: Deploy @basalt/docs to Cloudflare Pages
+    name: Deploy basalted-docs to Cloudflare Pages
     steps:
       - uses: actions/checkout@v4
         with:

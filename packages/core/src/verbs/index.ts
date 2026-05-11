@@ -1,6 +1,6 @@
 // Verb registry. Each verb's body lands in TASK-1.6 through TASK-1.10.
 // Side-effect: importing this module registers every implemented verb in
-// the engine's registry. Importing `@basalt/core` (which re-exports from
+// the engine's registry. Importing `basalted-core` (which re-exports from
 // here) is therefore enough to wire the engine end-to-end.
 
 import { registerVerb } from "../engine";
@@ -55,7 +55,7 @@ export const verbs = [
 ] as const;
 
 // Side-effect registrations. All five verbs are wired as of TASK-1.10.
-// Importing `@basalt/core` (which re-exports from this module) gives a
+// Importing `basalted-core` (which re-exports from this module) gives a
 // fully-functional Engine that runs every verb in canonical render order
 // (SPEC.md §3) and composes a complete Brief.
 registerVerb("buried-insight", findBuriedInsights);

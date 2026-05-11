@@ -1,4 +1,4 @@
-import { AnthropicAI, OllamaAI, OpenAIAI } from "@basalt/core";
+import { AnthropicAI, OllamaAI, OpenAIAI } from "basalted-core";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import type { CliConfig } from "./config";
 import { resolveLlm } from "./llm";

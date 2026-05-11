@@ -2,13 +2,13 @@
 // Resolves vault path + adapters per call. Priority:
 //   1. CLI args at server startup
 //   2. Tool input parameter on each call (resolved per-tool, not here)
-//   3. Defaults from ~/.basalt/config.toml (shared with @basalt/cli)
+//   3. Defaults from ~/.basalt/config.toml (shared with basalted)
 
-import { NodeFilesystem } from "@basalt/cli/src/adapters/fs-node";
-import { SqliteStorage } from "@basalt/cli/src/adapters/storage-sqlite";
-import { loadConfig } from "@basalt/cli/src/config";
-import { Engine, OllamaEmbedder } from "@basalt/core";
-import "@basalt/core/verbs";
+import { NodeFilesystem } from "basalted/src/adapters/fs-node";
+import { SqliteStorage } from "basalted/src/adapters/storage-sqlite";
+import { loadConfig } from "basalted/src/config";
+import { Engine, OllamaEmbedder } from "basalted-core";
+import "basalted-core/verbs";
 
 export interface VaultContextOptions {
   vault?: string | undefined;

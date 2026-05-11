@@ -38,7 +38,7 @@ circling for 8 months without naming.
 
 **6/**
 Built in TypeScript. Runs on Bun. Single engine across:
-— CLI (`npm i -g @basalt/cli`)
+— CLI (`npm i -g basalted`)
 — Obsidian plugin
 — MCP server (works with Claude Desktop, Cursor)
 — Native desktop (Tauri 2, macOS/Linux/Windows)
@@ -60,7 +60,7 @@ Basalt is that artifact, repeatable, weekly.
 Install in one line:
 
 ```
-npm i -g @basalt/cli && basalt init && basalt brief
+npm i -g basalted && basalt init && basalt brief
 ```
 
 Or grab the desktop:

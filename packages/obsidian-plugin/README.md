@@ -1,4 +1,4 @@
-# @basalt/obsidian-plugin
+# basalted-obsidian-plugin
 
 Basalt for Obsidian — generate weekly Briefs from your vault, in-vault, fully offline.
 
@@ -8,11 +8,11 @@ Basalt for Obsidian — generate weekly Briefs from your vault, in-vault, fully 
 
 ## Architecture
 
-The plugin is a thin surface over `@basalt/core`. Indexing, verbs, brief composition, and audit calibration all live in core. The plugin provides three Obsidian-specific implementations of core's adapter interfaces:
+The plugin is a thin surface over `basalted-core`. Indexing, verbs, brief composition, and audit calibration all live in core. The plugin provides three Obsidian-specific implementations of core's adapter interfaces:
 
 - **`fs-obsidian.ts`** (`FilesystemAdapter`) — uses Obsidian's `Vault` API to walk and read `.md` files. `createNoteFile` is strictly create-only; an architectural test verifies the adapter never modifies an existing file.
-- **`storage-sqljs.ts`** (`StorageAdapter`) — wraps sql.js (SQLite compiled to WASM) since `better-sqlite3` requires native modules unavailable in Obsidian's Electron sandbox. Database file at `<vault>/.basalt/basalt.db`. Same migrations as the CLI's `better-sqlite3` adapter (single source of truth in `@basalt/core/src/migrations/`).
-- The HTTP `OllamaEmbedder` is reused directly from `@basalt/core` — Ollama works the same in Electron as it does in Node.
+- **`storage-sqljs.ts`** (`StorageAdapter`) — wraps sql.js (SQLite compiled to WASM) since `better-sqlite3` requires native modules unavailable in Obsidian's Electron sandbox. Database file at `<vault>/.basalt/basalt.db`. Same migrations as the CLI's `better-sqlite3` adapter (single source of truth in `basalted-core/src/migrations/`).
+- The HTTP `OllamaEmbedder` is reused directly from `basalted-core` — Ollama works the same in Electron as it does in Node.
 
 ## Build
 

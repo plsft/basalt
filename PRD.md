@@ -225,16 +225,16 @@ basalt/
 │   └── PHASE-6.md
 │
 ├── packages/
-│   ├── core/                   # @basalt/core — runtime-agnostic engine
-│   ├── obsidian-plugin/        # @basalt/obsidian-plugin
-│   ├── cli/                    # @basalt/cli — Bun-compiled binary
-│   ├── mcp/                    # @basalt/mcp
-│   ├── api/                    # @basalt/api — Cloudflare Workers + Hono
-│   ├── web/                    # @basalt/web — React + Tailwind v4 on Pages
-│   ├── desktop/                # @basalt/desktop — Tauri 2 + React + Tailwind v4
-│   ├── site/                   # @basalt/site — marketing site (Astro)
-│   ├── docs/                   # @basalt/docs — docs site (Astro + Starlight)
-│   └── ui/                     # @basalt/ui — shared React components, brand tokens
+│   ├── core/                   # basalted-core — runtime-agnostic engine
+│   ├── obsidian-plugin/        # basalted-obsidian-plugin
+│   ├── cli/                    # basalted — Bun-compiled binary
+│   ├── mcp/                    # basalted-mcp
+│   ├── api/                    # basalted-api — Cloudflare Workers + Hono
+│   ├── web/                    # basalted-web — React + Tailwind v4 on Pages
+│   ├── desktop/                # basalted-desktop — Tauri 2 + React + Tailwind v4
+│   ├── site/                   # basalted-site — marketing site (Astro)
+│   ├── docs/                   # basalted-docs — docs site (Astro + Starlight)
+│   └── ui/                     # basalted-ui — shared React components, brand tokens
 │
 ├── tests/
 │   ├── parity/                 # Python ↔ TS golden output tests
@@ -250,7 +250,7 @@ basalt/
     └── release.sh              # orchestrates phase-tag releases
 ```
 
-### 3.2 Core Engine — `@basalt/core`
+### 3.2 Core Engine — `basalted-core`
 
 The single source of truth. Runtime-agnostic. No Node APIs. No `fs`, no `process`. Everything filesystem- or environment-specific is behind an adapter interface.
 
@@ -377,7 +377,7 @@ export interface AIAdapter {
 | API framework | Hono | Cloudflare-native, edge-friendly |
 | React build | Vite | Fast dev, Tauri-aligned |
 | Styling | Tailwind v4 + brand-tokens preset | Consistent across surfaces |
-| Component library | Custom in `@basalt/ui` | Brand too specific for off-the-shelf |
+| Component library | Custom in `basalted-ui` | Brand too specific for off-the-shelf |
 | Auth (cloud) | better-auth + Google/GitHub OAuth | Cloud-tier only |
 | Billing | Stripe Checkout | Standard, low integration cost |
 | Desktop shell | Tauri 2 + system WebView (Rust) | Fastest cold start, lowest idle memory; mac/Linux/Windows day one; aligns with Workjet |
@@ -389,11 +389,11 @@ export interface AIAdapter {
 
 Order below reflects v1 ship order (Phase 1 → Phase 5).
 
-### 4.1 Obsidian Plugin — `@basalt/obsidian-plugin`
+### 4.1 Obsidian Plugin — `basalted-obsidian-plugin`
 
 **Purpose:** First public surface and primary distribution wedge. The audience that has the pain lives inside Obsidian; meet them there.
 
-**Architecture:** Thin surface over `@basalt/core`. Engine runs in-process inside Obsidian's Electron host. Storage: Obsidian `Vault` API for read + `sql.js` (WASM SQLite) for write. The plugin's `FilesystemAdapter` implementation calls `createNoteFile` (and only `createNoteFile`) when the user clicks Promote.
+**Architecture:** Thin surface over `basalted-core`. Engine runs in-process inside Obsidian's Electron host. Storage: Obsidian `Vault` API for read + `sql.js` (WASM SQLite) for write. The plugin's `FilesystemAdapter` implementation calls `createNoteFile` (and only `createNoteFile`) when the user clicks Promote.
 
 **UI:**
 - Custom view: "Basalt Brief" (full-pane)
@@ -410,11 +410,11 @@ Order below reflects v1 ship order (Phase 1 → Phase 5).
 
 **Distribution:** PR to `obsidian-releases` for community marketplace; pre-marketplace distribution via BRAT (Beta Reviewers Auto-update Tool) for early access.
 
-### 4.2 CLI — `@basalt/cli`
+### 4.2 CLI — `basalted`
 
 **Purpose:** Open-source credibility artifact for the HN/Show HN/dev-tools audience. Replaces Fernando's Python CLI as the open-source flagship.
 
-**Distribution:** `npm install -g @basalt/cli`; single-binary builds for macOS/Linux/Windows via `bun build --compile`; Homebrew formula post-launch.
+**Distribution:** `npm install -g basalted`; single-binary builds for macOS/Linux/Windows via `bun build --compile`; Homebrew formula post-launch.
 
 **Commands (mirror Fernando's Python surface):**
 
@@ -431,15 +431,15 @@ basalt about
 
 **Configuration:** `~/.basalt/config.toml` (cross-platform via `env-paths`).
 
-### 4.3 MCP Server — `@basalt/mcp`
+### 4.3 MCP Server — `basalted-mcp`
 
 **Purpose:** Distribution into Claude Desktop, Cursor, Cline, Zed, VS Code Copilot.
 
 **Tools exposed:** `basalt_brief`, `basalt_connection`, `basalt_contradiction`, `basalt_drift`, `basalt_audit`. Read-only on vault. Promote is intentionally not exposed via MCP — file creation belongs to a surface where the user can see the result, not a tool that returns text to a chat.
 
-**Distribution:** `npm install -g @basalt/mcp` + Claude Desktop config snippet at the docs site.
+**Distribution:** `npm install -g basalted-mcp` + Claude Desktop config snippet at the docs site.
 
-### 4.4 Cloud API — `@basalt/api`
+### 4.4 Cloud API — `basalted-api`
 
 **Purpose:** Pro tier backend. Cloud-side indexing, scheduled brief generation, BYOK pass-through, Basalt-AI inference, billing.
 
@@ -479,9 +479,9 @@ DELETE /v1/keys/:provider
 
 **Privacy posture:** Pro-tier raw notes processed in-memory in Workers; only derived index data and finding metadata persist. Raw Markdown never durably stored unless user opts into "vault sync" — separate, opt-in, never default.
 
-### 4.5 Web Cockpit — `@basalt/web`
+### 4.5 Web Cockpit — `basalted-web`
 
-**Stack:** React + Tailwind v4 + Vite. Deploys to Cloudflare Pages. Talks to `@basalt/api`.
+**Stack:** React + Tailwind v4 + Vite. Deploys to Cloudflare Pages. Talks to `basalted-api`.
 
 | Route | Purpose |
 | --- | --- |
@@ -492,9 +492,9 @@ DELETE /v1/keys/:provider
 | `/vaults` | Multi-vault management |
 | `/settings` | Account, BYOK, billing, privacy |
 
-Brief renderer must be visually consistent with plugin and desktop (shared `@basalt/ui`).
+Brief renderer must be visually consistent with plugin and desktop (shared `basalted-ui`).
 
-### 4.6 Desktop App — `@basalt/desktop` (Tauri 2)
+### 4.6 Desktop App — `basalted-desktop` (Tauri 2)
 
 **Purpose:** Standalone app for users who don't use Obsidian but have a folder of markdown.
 
@@ -535,7 +535,7 @@ These targets drove the framework selection. Electron and CEF-bundled options we
 - Linux: `.deb`, `.rpm`, AppImage
 - Auto-update via Tauri updater pointing at a release manifest hosted on R2
 
-### 4.7 Marketing Site — `@basalt/site`
+### 4.7 Marketing Site — `basalted-site`
 
 **Stack:** Astro, deployed to Cloudflare Pages.
 
@@ -552,7 +552,7 @@ These targets drove the framework selection. Electron and CEF-bundled options we
 
 Visual fidelity confirmed against Fernando's CSS in TASK-5.1.
 
-### 4.8 Docs Site — `@basalt/docs`
+### 4.8 Docs Site — `basalted-docs`
 
 **Stack:** Astro + Starlight, Cloudflare Pages, `docs.<domain>`.
 
@@ -625,7 +625,7 @@ Curated prompts in `packages/api/src/prompts/`, versioned with the API.
 - Parity tests in `tests/parity/`, compare TS output to Python baseline
 - Integration tests in each package's `__tests__/integration/`
 - E2E tests in `tests/e2e/`
-- Coverage: 85%+ on `@basalt/core`, 70%+ elsewhere
+- Coverage: 85%+ on `basalted-core`, 70%+ elsewhere
 - Every bug fix gets a regression test before the fix
 
 ### 6.3 Git Workflow

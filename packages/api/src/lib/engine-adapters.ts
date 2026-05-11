@@ -1,4 +1,4 @@
-// Adapter bridge — hydrates @basalt/core's adapters from a VaultSnapshot
+// Adapter bridge — hydrates basalted-core's adapters from a VaultSnapshot
 // living in R2. The verbs are pure TS and run inside the Workers isolate
 // directly; no additional native deps.
 
@@ -11,9 +11,9 @@ import {
   MemoryFilesystem,
   MemoryStorage,
   MockEmbedder,
-} from "@basalt/core";
+} from "basalted-core";
 // Side-effect: registers every verb so Engine.brief({ section: "all" }) sees them.
-import "@basalt/core/verbs";
+import "basalted-core/verbs";
 import { decodeFloat32LE, type VaultSnapshot } from "./snapshot";
 
 export interface BuildEngineResult {

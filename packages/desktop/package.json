@@ -1,5 +1,5 @@
 {
-  "name": "@basalt/desktop",
+  "name": "basalted-desktop",
   "version": "0.0.0",
   "private": true,
   "description": "Basalt desktop app — Tauri 2 (Rust shell, system WebView) + React + Tailwind v4.",
@@ -15,10 +15,10 @@
     "tauri:build:linux": "tauri build --target x86_64-unknown-linux-gnu",
     "tauri:build:windows": "tauri build --target x86_64-pc-windows-msvc",
     "typecheck": "tsc --noEmit -p tsconfig.json",
-    "test": "echo \"@basalt/desktop: tests run from root via 'bun run test'\" && exit 0"
+    "test": "echo \"basalted-desktop: tests run from root via 'bun run test'\" && exit 0"
   },
   "dependencies": {
-    "@basalt/core": "workspace:*",
+    "basalted-core": "workspace:*",
     "@tanstack/react-query": "^5.62.0",
     "@tauri-apps/api": "^2.4.0",
     "@tauri-apps/plugin-dialog": "^2.2.0",

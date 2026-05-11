@@ -4,8 +4,8 @@
 // (named_thesis on Implicit Thesis; verdict on Contradiction). v0 findings
 // always ship; v1 fields are nullable so failures degrade gracefully.
 
-import type { ContradictionFinding, Finding, ImplicitThesisFinding, Verb } from "@basalt/core";
-import { findContradictionsV1, findImplicitThesesV1, renderBrief } from "@basalt/core";
+import type { ContradictionFinding, Finding, ImplicitThesisFinding, Verb } from "basalted-core";
+import { findContradictionsV1, findImplicitThesesV1, renderBrief } from "basalted-core";
 import kleur from "kleur";
 import { loadConfig } from "../config";
 import { resolveLlm } from "../llm";

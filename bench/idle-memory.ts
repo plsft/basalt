@@ -1,6 +1,6 @@
 // bench/idle-memory.ts
 //
-// Measures idle resident memory for the @basalt/core engine after a fresh
+// Measures idle resident memory for the basalted-core engine after a fresh
 // init, indexing a small vault, and sitting idle. PRD §6.4 desktop budget:
 // idle memory < 100 MB.
 //

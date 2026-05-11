@@ -1,5 +1,5 @@
 {
-  "name": "@basalt/mcp",
+  "name": "basalted-mcp",
   "version": "0.0.0",
   "description": "Basalt MCP server — exposes Brief, verbs, and audit as MCP tools.",
   "license": "MIT",
@@ -24,12 +24,12 @@
     "compile:darwin-arm64": "bun build src/index.ts --compile --target=bun-darwin-arm64 --outfile=bin/basalt-mcp-darwin-arm64",
     "compile:windows-x64": "bun build src/index.ts --compile --target=bun-windows-x64 --outfile=bin/basalt-mcp-windows-x64.exe",
     "typecheck": "tsc --noEmit -p tsconfig.json",
-    "test": "echo \"@basalt/mcp: tests run from root via 'bun run test'\" && exit 0",
+    "test": "echo \"basalted-mcp: tests run from root via 'bun run test'\" && exit 0",
     "start": "bun src/index.ts"
   },
   "dependencies": {
-    "@basalt/cli": "workspace:*",
-    "@basalt/core": "workspace:*",
+    "basalted": "workspace:*",
+    "basalted-core": "workspace:*",
     "@modelcontextprotocol/sdk": "^1.0.0",
     "commander": "^14.0.0",
     "zod": "^3.24.0"

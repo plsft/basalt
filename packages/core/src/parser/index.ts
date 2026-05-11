@@ -1,5 +1,5 @@
 // Parser surface — concrete impls land in TASK-1.2.
-// Re-exported for use as `@basalt/core/parser`.
+// Re-exported for use as `basalted-core/parser`.
 
 export { parseFrontmatter } from "./frontmatter";
 export type { ParsedNote } from "./markdown";

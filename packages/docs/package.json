@@ -1,5 +1,5 @@
 {
-  "name": "@basalt/docs",
+  "name": "basalted-docs",
   "version": "0.0.0",
   "private": true,
   "description": "Basalt docs site — Astro + Starlight, Cloudflare Pages.",
@@ -10,7 +10,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "typecheck": "astro check",
-    "test": "echo \"@basalt/docs: no tests yet\" && exit 0"
+    "test": "echo \"basalted-docs: no tests yet\" && exit 0"
   },
   "dependencies": {
     "astro": "^5.0.0",

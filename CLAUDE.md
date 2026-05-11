@@ -88,7 +88,7 @@ These run at every commit. If any fails, the task is not done.
 - `tsc --noEmit` produces zero errors. Warnings count as errors for CI.
 - `"strict": true`, `"noUncheckedIndexedAccess": true`, `"exactOptionalPropertyTypes": true` are set in `tsconfig.base.json` and not weakened per-package.
 - **Forbidden:** `any`, `as any`, `as unknown as X`, `// @ts-ignore`, `// @ts-expect-error` without a comment line *immediately above* explaining why and a TODO with a date.
-- All public functions in `@basalt/*` packages have explicit return types. Don't rely on inference for the API surface.
+- All public functions in `basalted-*` packages have explicit return types. Don't rely on inference for the API surface.
 - No default exports in libraries. Named exports only.
 
 ### Tests
@@ -97,7 +97,7 @@ These run at every commit. If any fails, the task is not done.
 - Parity tests run after *every* verb-touching change. Run them locally before commit; do not rely on CI to discover divergence.
 - Bug fixes get a regression test **before** the fix. Verify the test fails on the broken code before you change anything.
 - Forbidden inside committed code: `.skip(`, `.only(`, `.todo(`, `xit(`, `xdescribe(`. If you need work-in-progress, leave it on a non-pushed branch.
-- Coverage on `@basalt/core` ≥ 85%. Other packages ≥ 70%. Don't game it (e.g. testing trivial getters); hit it with real coverage.
+- Coverage on `basalted-core` ≥ 85%. Other packages ≥ 70%. Don't game it (e.g. testing trivial getters); hit it with real coverage.
 
 ### Lint / Format
 
@@ -113,7 +113,7 @@ These run at every commit. If any fails, the task is not done.
 
 ### Documentation
 
-- Every exported symbol in `@basalt/core` has TSDoc.
+- Every exported symbol in `basalted-core` has TSDoc.
 - Every public function with non-obvious behavior has TSDoc with at least a `@example`.
 - CHANGELOG entry on every task. No exceptions.
 - If you make a non-trivial decision (algorithm choice, library choice, threshold tuning), write it to `docs/decisions/YYYY-MM-DD-<slug>.md` so the rationale survives the conversation.

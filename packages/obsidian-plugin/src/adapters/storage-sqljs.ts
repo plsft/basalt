@@ -1,7 +1,7 @@
 // sql.js StorageAdapter for the Obsidian sandbox.
 //
 // Mirrors packages/cli/src/adapters/storage-sqlite.ts byte-for-byte on schema
-// and SQL — both use MIGRATIONS from @basalt/core. The only differences are:
+// and SQL — both use MIGRATIONS from basalted-core. The only differences are:
 //
 //  - sql.js runs in-process via WASM; no native module, no fs path
 //  - the database file is persisted via Obsidian's DataAdapter (vault-relative
@@ -20,7 +20,7 @@ import {
   type NoteRecord,
   type PersistedFinding,
   type StorageAdapter,
-} from "@basalt/core";
+} from "basalted-core";
 import type { Vault } from "obsidian";
 import initSqlJs, { type Database, type SqlJsStatic } from "sql.js";
 

@@ -1,5 +1,5 @@
 {
-  "name": "@basalt/site",
+  "name": "basalted-site",
   "version": "0.0.0",
   "private": true,
   "description": "Basalt marketing site — Astro static, Cloudflare Pages.",
@@ -10,10 +10,10 @@
     "build": "astro build",
     "preview": "astro preview",
     "typecheck": "astro check",
-    "test": "echo \"@basalt/site: no tests yet\" && exit 0"
+    "test": "echo \"basalted-site: no tests yet\" && exit 0"
   },
   "dependencies": {
-    "@basalt/ui": "workspace:*",
+    "basalted-ui": "workspace:*",
     "astro": "^5.0.0",
     "@astrojs/mdx": "^4.0.0",
     "@astrojs/sitemap": "^3.2.1"

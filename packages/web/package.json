@@ -1,5 +1,5 @@
 {
-  "name": "@basalt/web",
+  "name": "basalted-web",
   "version": "0.0.0",
   "private": true,
   "description": "Basalt web cockpit — React + Tailwind v4, deployed to Cloudflare Pages.",
@@ -11,7 +11,7 @@
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "preview": "vite preview",
     "deploy": "wrangler pages deploy dist --project-name basalt-web",
-    "test": "echo \"@basalt/web: tests run from root via 'bun run test'\" && exit 0"
+    "test": "echo \"basalted-web: tests run from root via 'bun run test'\" && exit 0"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.62.0",

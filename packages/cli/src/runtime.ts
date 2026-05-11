@@ -1,9 +1,9 @@
 // packages/cli/src/runtime.ts
 // Shared engine bootstrap for every command. Wires the three CLI-side
-// adapters (fs-node, storage-sqlite, ollama-http) into @basalt/core's Engine.
+// adapters (fs-node, storage-sqlite, ollama-http) into basalted-core's Engine.
 
-import { Engine, OllamaEmbedder } from "@basalt/core";
-import "@basalt/core/verbs"; // side-effect: register all five verbs
+import { Engine, OllamaEmbedder } from "basalted-core";
+import "basalted-core/verbs"; // side-effect: register all five verbs
 import { NodeFilesystem } from "./adapters/fs-node";
 import { SqliteStorage } from "./adapters/storage-sqlite";
 

@@ -26,7 +26,7 @@ Three load-bearing properties:
 3. **No methodology imposed.** Your folder structure, your tags, your linking
    habits. Basalt does not care.
 
-Open-source CLI is MIT (`@basalt/cli`, `@basalt/mcp`, desktop, Obsidian plugin).
+Open-source CLI is MIT (`basalted`, `basalted-mcp`, desktop, Obsidian plugin).
 Pro tier is hosted brief generation + E2EE vault sync + a web cockpit, $12/mo.
 First 200 Founders get lifetime Pro for $240.
 
