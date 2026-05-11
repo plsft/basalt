@@ -13,7 +13,9 @@ export default defineConfig({
       customCss: ["./src/styles/custom.css"],
       sidebar: [
         { label: "Overview", link: "/" },
+        { label: "v1.4.0 — Self-hosting", link: "/v1.4.0-selfhost/" },
         { label: "v1.3.0 — Multi-vault search", link: "/v1.3.0-search/" },
+        { label: "v1.2.0 — Mobile (PWA)", link: "/v1.2.0-mobile/" },
         { label: "What's new in v1.1.0", link: "/v1.1.0/" },
         {
           label: "Getting Started",

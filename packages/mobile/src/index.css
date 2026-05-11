@@ -1,0 +1,237 @@
+:root {
+  --bg: #0e0d0c;
+  --bg-raised: #181613;
+  --ink: #f5f1e8;
+  --ink-dim: #a89f8e;
+  --rule: #2a2622;
+  --accent-na: #f2c75c;
+  --accent-cl: #7cc4a1;
+  --accent-hg: #9ca3af;
+  --accent-c: #5b6677;
+  --accent-au: #d4a857;
+  --danger: #c8553d;
+
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body: "Source Serif 4", Georgia, serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  color-scheme: dark;
+  font-size: 17px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+body {
+  /* iOS safe-area-aware padding so content doesn't sit under the notch. */
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+  min-height: 100vh;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+a {
+  color: var(--accent-na);
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+  border: 1px solid var(--rule);
+  background: var(--bg-raised);
+  color: var(--ink);
+  padding: 0.6rem 1rem;
+  border-radius: 4px;
+  min-height: 44px; /* iOS tap target */
+}
+
+button.primary {
+  background: var(--accent-na);
+  color: var(--bg);
+  border-color: transparent;
+  font-weight: 600;
+}
+
+input,
+select {
+  font: inherit;
+  background: var(--bg-raised);
+  border: 1px solid var(--rule);
+  color: var(--ink);
+  padding: 0.6rem 0.75rem;
+  border-radius: 4px;
+  width: 100%;
+  min-height: 44px;
+}
+
+input:focus,
+select:focus,
+button:focus {
+  outline: 2px solid var(--accent-na);
+  outline-offset: 1px;
+}
+
+.mono {
+  font-family: var(--font-mono);
+}
+
+.display {
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.muted {
+  color: var(--ink-dim);
+}
+
+.numeral {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+
+header.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--rule);
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+main {
+  flex: 1;
+  padding: 1rem 1rem 6rem;
+}
+
+footer.app-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-around;
+  padding: 0.5rem env(safe-area-inset-left) calc(0.5rem + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--rule);
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+footer.app-footer a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.5rem 1rem;
+  min-width: 44px;
+  min-height: 44px;
+  color: var(--ink-dim);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+}
+
+footer.app-footer a.active {
+  color: var(--ink);
+}
+
+footer.app-footer a .glyph {
+  font-size: 1.1rem;
+}
+
+pre.brief-body {
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  background: var(--bg-raised);
+  border: 1px solid var(--rule);
+  padding: 1rem;
+  border-radius: 4px;
+  overflow-x: auto;
+}
+
+.brief-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.brief-row {
+  background: var(--bg-raised);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 1rem;
+}
+
+.brief-row .row-date {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--ink-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.25rem;
+}
+
+.brief-row .row-title {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+}
+
+.banner-v1 {
+  background: color-mix(in srgb, var(--accent-na) 12%, transparent);
+  border-left: 3px solid var(--accent-na);
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  border-radius: 0 4px 4px 0;
+  font-size: 0.95rem;
+}
+
+.banner-v1 p {
+  margin: 0.25rem 0;
+}
+
+.empty {
+  color: var(--ink-dim);
+  text-align: center;
+  padding: 4rem 1rem;
+}
