@@ -10,6 +10,15 @@ description: Two notes that disagree with each other.
 Finds pairs of notes where you assert opposing positions — the kind of slow
 disagreement that only becomes visible across months.
 
+Two variants ship:
+
+- **v0** (default): heuristic pair-pre-filter on similarity + signal
+  detection (negation, reversal, polarity-pair). Output is the pair +
+  signals + score.
+- **v1** (with `--llm`): also calls the LLM to produce a verdict
+  (`proven` / `apparent` / `undetermined`) plus a short reason. The v0
+  pair always ships; v1 just decorates.
+
 ## Algorithm sketch
 
 1. Extract candidate claim sentences (sentences with a polarity-bearing verb)

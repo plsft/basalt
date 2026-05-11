@@ -29,11 +29,13 @@ with `nomic-embed-text` via Ollama, expect ~30 seconds.
 ## Common flags
 
 ```sh
-basalt brief --window 14d        # only consider notes touched in the last 14 days
-basalt brief --no-llm            # skip Implicit Thesis synthesis
-basalt brief --out brief.md      # explicit output path
-basalt thesis --top 3            # run a single verb
-basalt audit                     # falsification pass over recent findings
+basalt brief                      # generate the full brief
+basalt thesis --top 3             # run a single verb
+basalt brief --llm ollama         # add v1 LLM augmentation (named thesis + contradiction verdict)
+basalt brief --llm anthropic --llm-model claude-sonnet-4-6
+basalt audit                      # falsification pass over recent findings
+basalt audit --drift-v1           # also re-evaluate Drift findings against current window
+basalt snapshot push              # upload local index to the API as a VaultSnapshot
 ```
 
 ## Troubleshooting

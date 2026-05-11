@@ -1,0 +1,129 @@
+---
+title: What's new in v1.1.0 — LLM-augmented verbs
+description: Implicit Thesis v1, Contradiction v1, Drift v1, and four AIAdapter implementations.
+---
+
+`v1.1.0` is the first post-launch milestone. Three verbs gain LLM-augmented
+"v1" variants on top of their v0 heuristic implementations. The v0 output
+keeps shipping unchanged — v1 is strictly additive, and degrades gracefully
+when the LLM isn't reachable.
+
+## Implicit Thesis v1 — named thesis
+
+The v0 verb produces a *cluster*: a tight neighborhood of notes that share
+high pairwise similarity, with a centroid note and member quotes. The v1
+verb takes that cluster and asks the configured LLM to write a single
+English sentence naming the through-line — in the author's voice, not as a
+label.
+
+```markdown
+## I. Implicit Thesis (named)
+> The work I keep returning to is interpretability of agent behavior
+> at the level of artifacts — not benchmarks, not activations, but the
+> durable text agents leave behind.
+
+_model: openai/gpt-4o-mini_
+```
+
+The system prompt is anchored to the author's voice: it instructs the
+model to use the author's own words, never to start with "The author…",
+and to write at most one sentence.
+
+## Contradiction v1 — proven vs apparent
+
+The v0 verb finds pairs of quotes with lexical signals of disagreement
+(negation, reversal markers, polarity pairs). The v1 verb wraps each pair
+with an LLM verdict:
+
+- **`proven`** — the pair really is a contradiction: the author has
+  changed position, taken opposing stances, or contradicted themselves.
+- **`apparent`** — overlapping topic but no actual disagreement
+  (rhetorical framing, partial scope, different context).
+- **`undetermined`** — the LLM declined or its output didn't parse.
+
+Each verdict ships with a short reason. The v0 pair always ships
+regardless of the verdict — v1 just decorates.
+
+## Drift v1 — auto-audit
+
+`basalt audit --drift-v1` re-runs Drift on the current 30-day window and
+tags each historical Drift finding with an `auto_verdict`:
+
+- **`confirmed`** — the project is still over/under-worked at ≥ same
+  magnitude
+- **`softened`** — drift_pct has moved back toward zero by more than half
+- **`reversed`** — sign flipped; the project moved past zero in the
+  opposite direction
+- **`vanished`** — the project no longer meets the mention floor
+
+Unlike Thesis v1 / Contradiction v1, Drift v1 does **not** call an LLM —
+it's a pure re-evaluation. The "v1" name is just the PRD's phrasing for
+the audit step.
+
+## LLM provider support
+
+Four AIAdapter implementations ship in `@basalt/core`:
+
+| Adapter        | Notes                                                       |
+| -------------- | ----------------------------------------------------------- |
+| `OllamaAI`     | Local. Default model `llama3.2:3b`. No API key.             |
+| `OpenAIAI`     | Chat Completions; also works against any OpenAI-compatible endpoint via `baseUrl` (Groq, Together, etc.). |
+| `AnthropicAI`  | Messages API. Splits `system` role out of `messages[]`.     |
+| `WorkersAI`    | Cloudflare Workers AI binding. No API key; the binding is the credential. |
+
+## How to enable LLM augmentation
+
+### CLI
+
+```sh
+# One-shot:
+basalt brief --llm ollama
+basalt thesis --llm anthropic
+basalt contradiction --llm openai --llm-model gpt-4o-mini
+
+# Or persist in ~/.basalt/config.toml:
+llmProvider = "anthropic"
+llmModel = "claude-sonnet-4-6"
+```
+
+Set `OPENAI_API_KEY` or `ANTHROPIC_API_KEY` in your shell env — Basalt
+reads them at process start, never from disk.
+
+### Desktop
+
+Open the Settings panel (top-right "settings" link), pick a provider,
+paste your API key (password-masked). The key persists in the app's
+LocalStorage; it never leaves your machine except to the provider you
+selected.
+
+### API
+
+`POST /v1/briefs/generate` runs the v1 augmentation pass automatically
+when Cloudflare's `c.env.AI` binding is bound. Pass `{ "llm": false }`
+in the request body to opt out.
+
+For per-user BYOK on hosted users:
+
+```sh
+curl -X PUT https://api.basalt.dev/v1/byok \
+  -H "Cookie: basalt_session=..." \
+  -d '{"provider":"anthropic","api_key":"sk-ant-..."}'
+```
+
+Keys are AES-GCM encrypted at rest in KV using a server-side master key
+(`BYOK_ENCRYPTION_KEY` wrangler secret).
+
+### Obsidian plugin
+
+The plugin currently uses Ollama only. Multi-provider BYOK lands in
+v1.2.0 alongside the mobile read-only Brief reader.
+
+## Failure modes
+
+LLM failures never block the Brief. v0 findings always ship:
+
+- `named_thesis: null` if synthesis fails or LLM unreachable
+- `verdict: "undetermined"` if the JSON response can't be parsed
+- The Brief's render falls back to plain v0 output
+
+This is by design — v1 is a *better* output, not a *required* one.

@@ -8,7 +8,13 @@ description: The through-line you keep returning to.
 ## What it does
 
 Implicit Thesis finds tight neighborhoods of notes that pull toward a single
-position — and (with LLM synthesis enabled) writes that position as a sentence.
+position. Two variants ship:
+
+- **v0** (default, no LLM): returns the cluster — member notes, a centroid
+  note, member quotes, a similarity score, and a folder-diversity gate.
+- **v1** (`--llm <provider>` on the CLI, configured-LLM on Desktop and
+  API): also calls the LLM to synthesize a one-sentence named thesis in
+  the author's voice. See [What's new in v1.1.0](/v1.1.0/).
 
 Not a cluster label. Not a tag. An actual thesis sentence in your voice.
 
