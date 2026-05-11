@@ -1,0 +1,436 @@
+[
+  {
+    "rel_path": "01-Daily/2026-03-20.md",
+    "stem": "2026-03-20",
+    "title": "2026-03-20",
+    "created": "2026-03-20",
+    "updated": "2026-03-20",
+    "tags": [
+      "daily"
+    ],
+    "wikilinks": [
+      "BACKTEST",
+      "Microstructure-Primer",
+      "Sarah",
+      "BACKTEST"
+    ],
+    "word_count": 54,
+    "content_hash": "44725a596c309cc4b696220ac1f1a9ab82af37d8aef5d76683ad27758a9497b3"
+  },
+  {
+    "rel_path": "01-Daily/2026-04-15.md",
+    "stem": "2026-04-15",
+    "title": "2026-04-15",
+    "created": "2026-04-15",
+    "updated": "2026-04-15",
+    "tags": [
+      "daily"
+    ],
+    "wikilinks": [
+      "BACKTEST",
+      "CALIBRATION",
+      "Microstructure-Primer",
+      "Strategy-Review"
+    ],
+    "word_count": 54,
+    "content_hash": "f274ab5ef610bee1ec126d3ed8c38ab7ae25a519ae31d5a4a8da100211083dc6"
+  },
+  {
+    "rel_path": "01-Daily/2026-04-25.md",
+    "stem": "2026-04-25",
+    "title": "2026-04-25",
+    "created": "2026-04-25",
+    "updated": "2026-04-25",
+    "tags": [
+      "daily"
+    ],
+    "wikilinks": [
+      "Wed",
+      "Mon",
+      "CALIBRATION",
+      "Carse-1986"
+    ],
+    "word_count": 121,
+    "content_hash": "dd67c8bbf8ed9adb77d438a1b68fe9df7af60e01b14d83be7d2166de5a4451a3"
+  },
+  {
+    "rel_path": "01-Daily/2026-04-28.md",
+    "stem": "2026-04-28",
+    "title": "2026-04-28",
+    "created": "2026-04-28",
+    "updated": "2026-04-28",
+    "tags": [
+      "daily"
+    ],
+    "wikilinks": [
+      "Wed"
+    ],
+    "word_count": 101,
+    "content_hash": "826686c97889bec766cfac5293dbf36153804c3205d9bb676a56a91e16fdd432"
+  },
+  {
+    "rel_path": "01-Daily/2026-05-01.md",
+    "stem": "2026-05-01",
+    "title": "2026-05-01",
+    "created": "2026-05-01",
+    "updated": "2026-05-01",
+    "tags": [
+      "daily"
+    ],
+    "wikilinks": [
+      "PRODUCTION-NOTES",
+      "HYPOTHESIS",
+      "OFI-Validation",
+      "Strategy-Review"
+    ],
+    "word_count": 63,
+    "content_hash": "254f6bfd1fa3d990aab377e56c93fc5b72b1b34f6f66dcaf9e1795f839383f0f"
+  },
+  {
+    "rel_path": "01-Daily/2026-05-03.md",
+    "stem": "2026-05-03",
+    "title": "2026-05-03",
+    "created": "2026-05-03",
+    "updated": "2026-05-03",
+    "tags": [
+      "daily"
+    ],
+    "wikilinks": [
+      "BACKTEST"
+    ],
+    "word_count": 126,
+    "content_hash": "ebe91ce2586511e93c8916ee968bb0432cc5f6ac79abec388da44bbac06890ea"
+  },
+  {
+    "rel_path": "02-Projects/Atlas/Atlas.md",
+    "stem": "Atlas",
+    "title": "Atlas",
+    "created": "2026-02-01",
+    "updated": "2026-04-30",
+    "tags": [
+      "atlas",
+      "project"
+    ],
+    "wikilinks": [
+      "HYPOTHESIS",
+      "Strategy/Mon",
+      "Strategy/Wed"
+    ],
+    "word_count": 77,
+    "content_hash": "fdc603e589ad45529ff32deef2a501b11a18e8aa48f256c44067ac43274f2314"
+  },
+  {
+    "rel_path": "02-Projects/Atlas/HYPOTHESIS.md",
+    "stem": "HYPOTHESIS",
+    "title": "Atlas — Original Hypothesis",
+    "created": "2026-02-04",
+    "updated": "2026-02-04",
+    "tags": [
+      "atlas",
+      "hypothesis"
+    ],
+    "wikilinks": [
+      "Atlas",
+      "Mentor"
+    ],
+    "word_count": 217,
+    "content_hash": "7427e18c21d18fbf1d13304778bbe222f23152d848d92c1c37b8720cab92923d"
+  },
+  {
+    "rel_path": "02-Projects/Atlas/Strategy/Mon.md",
+    "stem": "Mon",
+    "title": "Atlas — Launch Sequencing (Monday)",
+    "created": "2026-04-13",
+    "updated": "2026-04-13",
+    "tags": [
+      "atlas",
+      "strategy",
+      "launch"
+    ],
+    "wikilinks": [
+      "Mentor"
+    ],
+    "word_count": 110,
+    "content_hash": "d3da1f1ce2f566fc09d0c9e1d1c9bed4512dce4052ffe284a57e24a46cc71a51"
+  },
+  {
+    "rel_path": "02-Projects/Atlas/Strategy/Wed.md",
+    "stem": "Wed",
+    "title": "Atlas — Launch Sequencing (Wednesday, reversed)",
+    "created": "2026-04-15",
+    "updated": "2026-04-15",
+    "tags": [
+      "atlas",
+      "strategy",
+      "launch"
+    ],
+    "wikilinks": [
+      "Mon"
+    ],
+    "word_count": 175,
+    "content_hash": "53611439d826b508cf0bfc6948ff9cb1879f5aaf51c48bbf1d6bbe1d8bca3263"
+  },
+  {
+    "rel_path": "02-Projects/SignalBot/BACKTEST.md",
+    "stem": "BACKTEST",
+    "title": "SignalBot Backtest — Q1 2026",
+    "created": "2026-03-21",
+    "updated": "2026-04-05",
+    "tags": [
+      "signalbot",
+      "backtest",
+      "validation"
+    ],
+    "wikilinks": [
+      "PHASE2",
+      "HYPOTHESIS",
+      "HYPOTHESIS",
+      "HYPOTHESIS",
+      "PHASE2",
+      "CALIBRATION"
+    ],
+    "word_count": 118,
+    "content_hash": "08cce1a28dd394f7cb70034c66b1c4c108cee7bd3d14d4225e2e4511fc169efc"
+  },
+  {
+    "rel_path": "02-Projects/SignalBot/CALIBRATION.md",
+    "stem": "CALIBRATION",
+    "title": "SignalBot Calibration System",
+    "created": "2026-04-02",
+    "updated": "2026-04-15",
+    "tags": [
+      "signalbot",
+      "calibration",
+      "infrastructure"
+    ],
+    "wikilinks": [
+      "BACKTEST",
+      "HYPOTHESIS",
+      "HYPOTHESIS",
+      "BACKTEST",
+      "PRODUCTION-NOTES"
+    ],
+    "word_count": 121,
+    "content_hash": "6b340bd2eadd1259f94cb3b8af844482a78fc233c14f82a9b15a222286b79c18"
+  },
+  {
+    "rel_path": "02-Projects/SignalBot/HYPOTHESIS.md",
+    "stem": "HYPOTHESIS",
+    "title": "SignalBot — Original Hypothesis",
+    "created": "2025-09-12",
+    "updated": "2025-09-12",
+    "tags": [
+      "signalbot",
+      "microstructure",
+      "research"
+    ],
+    "wikilinks": [
+      "Microstructure-Primer",
+      "Mentor"
+    ],
+    "word_count": 177,
+    "content_hash": "9b542a04693e69788fb74df0d0679e37488fbddd79624f6f594ad58f379b06d9"
+  },
+  {
+    "rel_path": "02-Projects/SignalBot/PHASE2.md",
+    "stem": "PHASE2",
+    "title": "SignalBot Phase 2 — Multi-signal stack",
+    "created": "2026-03-14",
+    "updated": "2026-03-14",
+    "tags": [
+      "signalbot",
+      "phase2"
+    ],
+    "wikilinks": [
+      "HYPOTHESIS",
+      "HYPOTHESIS",
+      "HYPOTHESIS",
+      "BACKTEST",
+      "Microstructure-Primer"
+    ],
+    "word_count": 101,
+    "content_hash": "271ad0dc217ba869e42c90af2644580f47a4afbe47a10a2386ed9ad2bd0b9735"
+  },
+  {
+    "rel_path": "02-Projects/SignalBot/PRODUCTION-NOTES.md",
+    "stem": "PRODUCTION-NOTES",
+    "title": "SignalBot Production Notes",
+    "created": "2026-04-18",
+    "updated": "2026-05-02",
+    "tags": [
+      "signalbot",
+      "production",
+      "ops"
+    ],
+    "wikilinks": [
+      "HYPOTHESIS",
+      "BACKTEST",
+      "HYPOTHESIS",
+      "CALIBRATION",
+      "Microstructure-Primer",
+      "HYPOTHESIS",
+      "BACKTEST",
+      "CALIBRATION"
+    ],
+    "word_count": 121,
+    "content_hash": "232b6bf0c7ef2f54edcba1086c434365972c1fa33041be9366b48acd92fb949f"
+  },
+  {
+    "rel_path": "02-Projects/SignalBot/Tasks.md",
+    "stem": "Tasks",
+    "title": "SignalBot Tasks",
+    "created": "2026-02-20",
+    "updated": "2026-05-04",
+    "tags": [
+      "signalbot",
+      "tasks"
+    ],
+    "wikilinks": [
+      "PRODUCTION-NOTES",
+      "CALIBRATION",
+      "OFI-Validation",
+      "HYPOTHESIS",
+      "PHASE2",
+      "BACKTEST",
+      "CALIBRATION",
+      "HYPOTHESIS",
+      "PHASE2",
+      "BACKTEST",
+      "CALIBRATION",
+      "PRODUCTION-NOTES"
+    ],
+    "word_count": 84,
+    "content_hash": "24f46d84b220822f1239c795785fc6f00b5a8e485417103700d16c2433909762"
+  },
+  {
+    "rel_path": "03-People/Mentor.md",
+    "stem": "Mentor",
+    "title": "Mentor",
+    "created": "2025-09-05",
+    "updated": "2025-09-05",
+    "tags": [
+      "people"
+    ],
+    "wikilinks": [
+      "HYPOTHESIS"
+    ],
+    "word_count": 33,
+    "content_hash": "6f4c48c955ad14f806565d3b045d9623cf651ed16ed3729da4f7f07c0e8a771d"
+  },
+  {
+    "rel_path": "03-People/Sarah.md",
+    "stem": "Sarah",
+    "title": "Sarah Kim",
+    "created": "2026-02-08",
+    "updated": "2026-04-10",
+    "tags": [
+      "people",
+      "collaborator"
+    ],
+    "wikilinks": [
+      "BACKTEST",
+      "OFI-Validation",
+      "Strategy-Review"
+    ],
+    "word_count": 28,
+    "content_hash": "3806aa5cc2a7b246233757836322f8e80daed00906edc9dc565692353aa06dae"
+  },
+  {
+    "rel_path": "04-Reading/Carse-1986.md",
+    "stem": "Carse-1986",
+    "title": "Reading — James Carse, Finite and Infinite Games (1986)",
+    "created": "2026-03-08",
+    "updated": "2026-03-08",
+    "tags": [
+      "reading",
+      "philosophy"
+    ],
+    "wikilinks": [],
+    "word_count": 205,
+    "content_hash": "bc143668590d189c9e922e4d27deaa9aaf9c09a58374509a26262a084a6d2acc"
+  },
+  {
+    "rel_path": "04-Trading/Signals/OFI-Validation.md",
+    "stem": "OFI-Validation",
+    "title": "OFI Walk-Forward Validation",
+    "created": "2026-04-08",
+    "updated": "2026-04-08",
+    "tags": [
+      "signals",
+      "ofi",
+      "validation"
+    ],
+    "wikilinks": [],
+    "word_count": 115,
+    "content_hash": "34d515dcb08abf71dd617528ba1459b4914a7127d8eb16d0f24ef5d97bcc4621"
+  },
+  {
+    "rel_path": "06-Meetings/Strategy-Review.md",
+    "stem": "Strategy-Review",
+    "title": "Strategy Review — 2026-04-10",
+    "created": "2026-04-10",
+    "updated": "2026-04-10",
+    "tags": [
+      "meeting",
+      "strategy"
+    ],
+    "wikilinks": [
+      "BACKTEST",
+      "PRODUCTION-NOTES",
+      "HYPOTHESIS",
+      "OFI-Validation",
+      "Tasks",
+      "HYPOTHESIS",
+      "BACKTEST",
+      "Mentor"
+    ],
+    "word_count": 116,
+    "content_hash": "fc3d23e940caee1cb667d65f8d822627ad6bb1aedaf7fec50fefc9ed0d518533"
+  },
+  {
+    "rel_path": "07-Reference/Compounding-Patterns.md",
+    "stem": "Compounding-Patterns",
+    "title": "Reference — Compounding Patterns",
+    "created": "2026-03-22",
+    "updated": "2026-03-22",
+    "tags": [
+      "reference",
+      "compounding",
+      "work"
+    ],
+    "wikilinks": [],
+    "word_count": 259,
+    "content_hash": "b6c9fd73e742b35e5479102a956674ec2d3f0ec31ee0fa7a91f9233b276ca4ab"
+  },
+  {
+    "rel_path": "07-Reference/Microstructure-Primer.md",
+    "stem": "Microstructure-Primer",
+    "title": "Microstructure Primer",
+    "created": "2025-09-20",
+    "updated": "2025-09-20",
+    "tags": [
+      "reference",
+      "microstructure"
+    ],
+    "wikilinks": [
+      "HYPOTHESIS",
+      "HYPOTHESIS"
+    ],
+    "word_count": 102,
+    "content_hash": "9cfe21282f8c69a07d79b1bd4454d5cc8d69e53e23399a97b561238901048a13"
+  },
+  {
+    "rel_path": "07-Reference/RAG-Patterns.md",
+    "stem": "RAG-Patterns",
+    "title": "RAG Patterns — Reading Notes",
+    "created": "2026-03-08",
+    "updated": "2026-03-08",
+    "tags": [
+      "reference",
+      "ai"
+    ],
+    "wikilinks": [],
+    "word_count": 101,
+    "content_hash": "a456f6d74a4732dd5a3929e8903425d1db9df66819c7a821e6bdcfeea908de7a"
+  }
+]
