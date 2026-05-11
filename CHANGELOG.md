@@ -6,6 +6,8 @@ Phase boundaries get a release tag (`v0.<phase>.0`); public launch tags `v1.0.0`
 
 ## Unreleased
 
+## v1.3.0 — 2026-05-11
+
 ### Added — v1.3.0 work (multi-vault search)
 - `POST /v1/vaults/:id/reindex` — re-embeds the latest snapshot's notes
   via Workers AI's `@cf/baai/bge-base-en-v1.5` model and upserts vectors
