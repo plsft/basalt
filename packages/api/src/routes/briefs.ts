@@ -9,6 +9,13 @@
 // itself indexes 1k notes in ~250 ms (bench/index-throughput); verb passes
 // add ~500-1500 ms. R2 fetch + D1 writes round out the budget.
 
+import {
+  type AIAdapter,
+  type Finding,
+  findContradictionsV1,
+  findImplicitThesesV1,
+  WorkersAI,
+} from "@basalt/core";
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import { z } from "zod";
@@ -31,6 +38,8 @@ const GenerateInput = z.object({
     .enum(["all", "buried-insight", "connection", "contradiction", "implicit-thesis", "drift"])
     .default("all"),
   top: z.number().int().min(1).max(10).default(3),
+  /** If true and Workers AI is bound, run v1 verb augmentations. */
+  llm: z.boolean().optional().default(true),
 });
 
 briefsRoutes.post(
@@ -74,6 +83,33 @@ briefsRoutes.post(
     const t0 = Date.now();
     const { engine } = await buildEngineFromSnapshot(snapshot);
     const brief = await engine.brief({ section, top });
+
+    // v1 verb augmentation. Workers AI binding is the credential — no
+    // BYOK needed for hosted users. The `llm: false` request flag opts
+    // out (saves cost when the client only wants v0 output).
+    const body = c.req.valid("json");
+    let ai: AIAdapter | null = null;
+    if (body.llm !== false && c.env.AI) {
+      ai = new WorkersAI({ binding: c.env.AI });
+    }
+    if (ai && (section === "all" || section === "implicit-thesis")) {
+      try {
+        const ctx = await engine.verbContext(top);
+        const v1 = await findImplicitThesesV1(ctx, { ai, topN: top });
+        if (v1.length > 0) brief.findings.implicit_thesis = v1 as unknown as Finding[];
+      } catch (e) {
+        console.warn("thesis v1 augmentation failed:", e);
+      }
+    }
+    if (ai && (section === "all" || section === "contradiction")) {
+      try {
+        const ctx = await engine.verbContext(top);
+        const v1 = await findContradictionsV1(ctx, { ai });
+        if (v1.length > 0) brief.findings.contradiction = v1 as unknown as Finding[];
+      } catch (e) {
+        console.warn("contradiction v1 augmentation failed:", e);
+      }
+    }
     const elapsedMs = Date.now() - t0;
 
     const briefId = ulid();

@@ -8,6 +8,7 @@ import type { Bindings, Variables } from "./env";
 import { authRoutes } from "./routes/auth";
 import { billingRoutes } from "./routes/billing";
 import { briefsRoutes } from "./routes/briefs";
+import { byokRoutes } from "./routes/byok";
 import { findingsRoutes } from "./routes/findings";
 import { meRoutes } from "./routes/me";
 import { status } from "./routes/status";
@@ -47,6 +48,7 @@ app.route("/v1/vaults", vaultsRoutes);
 app.route("/v1/briefs", briefsRoutes);
 app.route("/v1/findings", findingsRoutes);
 app.route("/v1/billing", billingRoutes);
+app.route("/v1/byok", byokRoutes);
 app.route("/", status);
 
 app.notFound((c) => c.json({ error: "not_found", path: c.req.path }, 404));

@@ -224,6 +224,31 @@ const ROUTES: RouteEntry[] = [
     response: { status: 200, description: "Deleted", schema: "Ok" },
   },
   {
+    method: "get",
+    path: "/v1/byok",
+    summary: "List BYOK provider key status",
+    description: "Returns has_key per provider (openai, anthropic, google).",
+    auth: true,
+    response: { status: 200, description: "BYOK status", schema: "ByokStatusList" },
+  },
+  {
+    method: "put",
+    path: "/v1/byok",
+    summary: "Store or rotate a BYOK provider key",
+    description: "AES-GCM encrypted at rest in BYOK_KEYS KV. Server-side master key only.",
+    auth: true,
+    body: "ByokPutRequest",
+    response: { status: 200, description: "Stored", schema: "Ok" },
+  },
+  {
+    method: "delete",
+    path: "/v1/byok/:provider",
+    summary: "Delete a BYOK provider key",
+    description: "Removes the encrypted envelope from KV; logs an audit event.",
+    auth: true,
+    response: { status: 200, description: "Deleted", schema: "Ok" },
+  },
+  {
     method: "post",
     path: "/v1/billing/checkout",
     summary: "Create a Stripe Checkout session",
@@ -450,6 +475,31 @@ const SCHEMAS: Record<string, unknown> = {
       bytes: { type: "integer" },
     },
     required: ["ok", "vault_id", "note_count", "embedding_count", "link_count", "bytes"],
+  },
+  ByokPutRequest: {
+    type: "object",
+    properties: {
+      provider: { type: "string", enum: ["openai", "anthropic", "google"] },
+      api_key: { type: "string", minLength: 8, maxLength: 4096 },
+    },
+    required: ["provider", "api_key"],
+  },
+  ByokStatusList: {
+    type: "object",
+    properties: {
+      providers: {
+        type: "array",
+        items: {
+          type: "object",
+          properties: {
+            provider: { type: "string" },
+            has_key: { type: "boolean" },
+          },
+          required: ["provider", "has_key"],
+        },
+      },
+    },
+    required: ["providers"],
   },
   SnapshotMeta: {
     type: "object",
