@@ -41,16 +41,13 @@ export const verbs = [
 // registers itself. Stub verbs that throw "not yet implemented" are
 // intentionally NOT registered — Engine.brief emits an empty bucket for
 // any unregistered verb (see engine.ts), keeping briefs well-formed
-// while the remaining verbs port in TASK-1.7 through TASK-1.10.
+// while the remaining verbs port in TASK-1.8 through TASK-1.10.
 registerVerb("buried-insight", findBuriedInsights);
-// TASK-1.7: registerVerb("connection", findConnections);
+registerVerb("connection", findConnections);
 // TASK-1.8: registerVerb("drift", findDrift);
 // TASK-1.9: registerVerb("contradiction", findContradictions);
 // TASK-1.10: registerVerb("implicit-thesis", findImplicitTheses);
 
-// Reference the unregistered verb fns so the imports above aren't tree-
-// shaken; the registrations land verb-by-verb in TASK-1.7 through 1.10.
-void findConnections;
 void findContradictions;
 void findDrift;
 void findImplicitTheses;
