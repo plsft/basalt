@@ -76,7 +76,19 @@ jobs:
           # Windows Authenticode (optional)
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+        shell: bash
         run: |
+          # Tauri tries to use macOS code signing when APPLE_CERTIFICATE is
+          # present in the environment, even if it's an empty string. Unset
+          # the signing env vars on the unsigned path so the build produces
+          # an unsigned .app/.dmg instead of crashing on `security import`.
+          if [ -z "${APPLE_CERTIFICATE:-}" ]; then
+            unset APPLE_ID APPLE_PASSWORD APPLE_TEAM_ID APPLE_CERTIFICATE \
+                  APPLE_CERTIFICATE_PASSWORD APPLE_SIGNING_IDENTITY
+          fi
+          if [ -z "${TAURI_SIGNING_PRIVATE_KEY:-}" ]; then
+            unset TAURI_SIGNING_PRIVATE_KEY TAURI_SIGNING_PRIVATE_KEY_PASSWORD
+          fi
           cd packages/desktop
           bun run tauri build --target ${{ matrix.os.target }}
 
