@@ -6,6 +6,8 @@ Phase boundaries get a release tag (`v0.<phase>.0`); public launch tags `v1.0.0`
 
 ## Unreleased
 
+## v1.2.0 — 2026-05-11
+
 ### Added — v1.2.0 work (mobile PWA)
 - New `@basalt/mobile` package — installable Progressive Web App
   (read-only Brief reader) for iOS Safari and Android Chrome. React 19
