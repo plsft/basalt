@@ -32,6 +32,9 @@ jobs:
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: ${{ env.BUN_VERSION }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
       - run: bun install --frozen-lockfile
       - name: Wrangler dry-run (staging)
         run: bunx wrangler@latest deploy --dry-run --env staging --cwd packages/api
@@ -48,6 +51,9 @@ jobs:
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: ${{ env.BUN_VERSION }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
       - run: bun install --frozen-lockfile
       - name: Wrangler deploy (staging)
         if: ${{ env.CLOUDFLARE_API_TOKEN != '' }}
@@ -70,6 +76,9 @@ jobs:
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: ${{ env.BUN_VERSION }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
       - run: bun install --frozen-lockfile
       - name: Wrangler deploy (production)
         if: ${{ env.CLOUDFLARE_API_TOKEN != '' }}
