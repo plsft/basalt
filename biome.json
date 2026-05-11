@@ -16,7 +16,10 @@
       "!**/tests/parity/baseline",
       "!**/tests/parity/fixtures",
       "!**/bun.lockb",
-      "!**/*.lock"
+      "!**/*.lock",
+      "!**/main.js",
+      "!**/.venv*",
+      "!packages/obsidian-plugin/main.js"
     ]
   },
   "formatter": {
@@ -36,7 +39,9 @@
       "style": {
         "noDefaultExport": "error",
         "useImportType": "error",
-        "useExportType": "error"
+        "useExportType": "error",
+        "noNonNullAssertion": "off",
+        "useTemplate": "off"
       }
     }
   },
@@ -70,7 +75,8 @@
         "**/vite.config.ts",
         "**/vitest.workspace.ts",
         "**/astro.config.*",
-        "**/tailwind.config.*"
+        "**/tailwind.config.*",
+        "**/packages/obsidian-plugin/src/main.ts"
       ],
       "linter": {
         "rules": {

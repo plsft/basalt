@@ -1,0 +1,19 @@
+{
+  "plugin.name": "Basalt",
+  "ribbon.openBrief": "Open Basalt Brief",
+  "view.brief.title": "Basalt Brief",
+  "status.idle": "Basalt: idle",
+  "status.indexing": "Basalt: indexing…",
+  "status.briefing": "Basalt: generating brief…",
+  "settings.section.title": "Basalt",
+  "settings.ollamaUrl.name": "Ollama URL",
+  "settings.ollamaUrl.desc": "HTTP endpoint where Ollama is running.",
+  "settings.embeddingModel.name": "Embedding model",
+  "settings.embeddingModel.desc": "Default: nomic-embed-text. Also supported: bge-m3.",
+  "settings.promoteFolder.name": "Promote-to folder",
+  "settings.promoteFolder.desc": "Vault subfolder where promoted notes are created. Default: Basalt.",
+  "settings.cadence.name": "Brief cadence",
+  "settings.cadence.desc": "manual | weekly. Weekly auto-generates a brief once per week while Obsidian is open.",
+  "settings.privacy.name": "Privacy: opt out of non-essential network calls",
+  "settings.privacy.desc": "Default on. Off-by-default for the open tier; check Pro tier docs for the trade-offs."
+}
