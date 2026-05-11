@@ -39,6 +39,24 @@ jobs:
           bun-version: ${{ env.BUN_VERSION }}
       - name: Install
         run: bun install --frozen-lockfile
+      - name: Stamp version from tag
+        # Compiled binaries inline the version from package.json via
+        # `import pkg from "../package.json"`. Stamp it BEFORE compile so
+        # `basalt about` and the Commander `--version` report the real tag.
+        # On workflow_dispatch (no tag) we leave the version as 0.0.0.
+        if: ${{ startsWith(github.ref, 'refs/tags/') }}
+        run: |
+          set -euo pipefail
+          TAG="${GITHUB_REF#refs/tags/v}"
+          for pkg in packages/core packages/cli packages/mcp; do
+            node -e "
+              const fs = require('fs');
+              const p = '$pkg/package.json';
+              const j = JSON.parse(fs.readFileSync(p, 'utf8'));
+              j.version = '${TAG}';
+              fs.writeFileSync(p, JSON.stringify(j, null, 2) + '\n');
+            "
+          done
       - name: Build basalted-core
         run: bun run --cwd packages/core build
       - name: Compile basalt-cli (${{ matrix.target }})

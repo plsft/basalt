@@ -11,13 +11,14 @@ import { demoCommand } from "./commands/demo";
 import { indexCommand } from "./commands/index_";
 import { initCommand } from "./commands/init";
 import { promoteCommand } from "./commands/promote";
+import { VERSION } from "./version";
 
 const program = new Command();
 
 program
   .name("basalt")
   .description("Reads your vault and surfaces what you believe but never wrote down.")
-  .version("0.0.0");
+  .version(VERSION);
 
 program
   .command("init")

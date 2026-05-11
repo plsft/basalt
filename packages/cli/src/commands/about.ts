@@ -1,6 +1,7 @@
 // packages/cli/src/commands/about.ts
 
 import kleur from "kleur";
+import { VERSION } from "../version";
 
 const BANNER = [
   "       ___",
@@ -17,7 +18,7 @@ export function aboutCommand(): void {
     console.log(BANNER);
   }
   console.log("");
-  console.log(`  version  0.0.0`);
+  console.log(`  version  ${VERSION}`);
   console.log(`  schema   1`);
   console.log(`  source   https://github.com/plsft/basalt`);
   console.log(`  license  MIT (1556 Ventures LLC)`);

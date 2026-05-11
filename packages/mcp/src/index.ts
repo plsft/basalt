@@ -11,6 +11,7 @@ import { CallToolRequestSchema, ListToolsRequestSchema } from "@modelcontextprot
 import { Command } from "commander";
 import { registerTools } from "./tools";
 import { resolveVaultContext } from "./vault-context";
+import { VERSION } from "./version";
 
 async function main(): Promise<void> {
   const program = new Command();
@@ -39,7 +40,7 @@ async function main(): Promise<void> {
     allowWrite: cliOpts.allowWrite ?? false,
   });
 
-  const server = new Server({ name: "basalt", version: "0.0.0" }, { capabilities: { tools: {} } });
+  const server = new Server({ name: "basalt", version: VERSION }, { capabilities: { tools: {} } });
 
   const tools = registerTools(ctx);
   server.setRequestHandler(ListToolsRequestSchema, async () => ({
