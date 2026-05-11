@@ -5,7 +5,6 @@
 // Returns the strongest dormant-but-still-relevant note(s) in the vault.
 
 import type { VerbContext } from "../engine";
-import type { BuiltGraph } from "../graph/builder";
 import { HUB_DENSITY_HARD, hubDensity, hubPenalty } from "../graph/hub-penalty";
 import {
   computeVaultAgeDays,

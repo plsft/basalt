@@ -7,7 +7,6 @@ import type {
   ConnectionFinding,
   ContradictionFinding,
   DriftFinding,
-  Finding,
   ImplicitThesisFinding,
 } from "../verbs/types";
 import { promoteFindingToNote, sanitize } from "./index";

@@ -3,7 +3,6 @@ import { MockEmbedder } from "./adapters/embedding-mock";
 import { MemoryFilesystem } from "./adapters/filesystem-memory";
 import { MemoryStorage } from "./adapters/storage-memory";
 import { _clearVerbRegistryForTesting, Engine, registerVerb } from "./engine";
-import type { Verb } from "./types";
 import type { BuriedInsightFinding } from "./verbs/types";
 
 const VAULT = "/v";

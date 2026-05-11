@@ -4,7 +4,7 @@ import { buildLinkGraph, incomingResolved, outgoingResolved } from "./builder";
 
 const VAULT = "/v";
 
-function note(stem: string, body: string): [string, string] {
+function _note(stem: string, body: string): [string, string] {
   return [`${VAULT}/${stem}.md`, body];
 }
 

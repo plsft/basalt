@@ -71,7 +71,7 @@ describe("OllamaEmbedder.embed", () => {
   });
 
   it("preserves input order under concurrent dispatch", async () => {
-    const nextLabel = 0;
+    const _nextLabel = 0;
     const fetchImpl = makeFetchMock(async (req) => {
       const body = JSON.parse(await req.text()) as { prompt: string };
       // Mark each response with a deterministic label tied to the input.
