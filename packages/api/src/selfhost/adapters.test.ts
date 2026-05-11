@@ -69,6 +69,7 @@ describe("SelfhostR2", () => {
 describe("SelfhostD1", () => {
   it("executes DDL + simple queries", async () => {
     const d1 = new SelfhostD1(join(dir, "db.sqlite"));
+    await d1.init();
     d1.exec("CREATE TABLE notes (id INTEGER PRIMARY KEY, body TEXT);");
     await d1.prepare("INSERT INTO notes (body) VALUES (?)").bind("hello").run();
     const row = await d1.prepare("SELECT body FROM notes WHERE id = 1").first<{ body: string }>();
@@ -80,6 +81,7 @@ describe("SelfhostD1", () => {
 describe("SelfhostVectorize", () => {
   it("upserts + queries vectors with metadata filter", async () => {
     const v = new SelfhostVectorize(join(dir, "vectors.sqlite"));
+    await v.init();
     try {
       await v.upsert([
         {
@@ -112,6 +114,7 @@ describe("SelfhostVectorize", () => {
 
   it("$in filter matches multiple vault ids", async () => {
     const v = new SelfhostVectorize(join(dir, "vectors.sqlite"));
+    await v.init();
     try {
       await v.upsert([
         { id: "a", values: [1, 0], metadata: { user_id: "u", vault_id: "v1" } },
@@ -131,6 +134,7 @@ describe("SelfhostVectorize", () => {
 
   it("deleteByIds removes vectors", async () => {
     const v = new SelfhostVectorize(join(dir, "vectors.sqlite"));
+    await v.init();
     try {
       await v.upsert([{ id: "x", values: [1], metadata: { user_id: "u" } }]);
       await v.deleteByIds(["x"]);
@@ -143,6 +147,7 @@ describe("SelfhostVectorize", () => {
 
   it("upsert replaces existing vectors", async () => {
     const v = new SelfhostVectorize(join(dir, "vectors.sqlite"));
+    await v.init();
     try {
       await v.upsert([{ id: "x", values: [1, 0], metadata: { user_id: "u" } }]);
       await v.upsert([{ id: "x", values: [0, 1], metadata: { user_id: "u", updated: true } }]);

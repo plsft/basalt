@@ -76,9 +76,12 @@ export function loadSelfhostConfig(): SelfhostConfig {
   return { dataDir, port, ollamaUrl, environment, secrets };
 }
 
-export function buildSelfhostBindings(cfg: SelfhostConfig): Bindings {
+export async function buildSelfhostBindings(cfg: SelfhostConfig): Promise<Bindings> {
   const dataDir = cfg.dataDir;
   const db = new SelfhostD1(join(dataDir, "db.sqlite"));
+  await db.init();
+  const vectorize = new SelfhostVectorize(join(dataDir, "vectors.sqlite"));
+  await vectorize.init();
   const ai = new SelfhostAI({ ollamaUrl: cfg.ollamaUrl });
 
   const bindings = {
@@ -95,9 +98,7 @@ export function buildSelfhostBindings(cfg: SelfhostConfig): Bindings {
     VAULT_SYNC_BUCKET: new SelfhostR2(
       join(dataDir, "r2", "vault-sync"),
     ) as unknown as Bindings["VAULT_SYNC_BUCKET"],
-    VECTORIZE: new SelfhostVectorize(
-      join(dataDir, "vectors.sqlite"),
-    ) as unknown as Bindings["VECTORIZE"],
+    VECTORIZE: vectorize as unknown as Bindings["VECTORIZE"],
     INDEX_QUEUE: {
       send: async () => {
         /* no-op in self-host — queue work runs inline or via cron */
@@ -117,6 +118,7 @@ export async function applyMigrationsIfNeeded(cfg: SelfhostConfig): Promise<void
   }
   const sql = readFileSync(sqlPath, "utf-8");
   const db = new SelfhostD1(join(cfg.dataDir, "db.sqlite"));
+  await db.init();
   db.exec(sql);
   db.close();
 }

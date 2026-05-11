@@ -1,30 +1,30 @@
-// packages/cli/src/adapters/storage-sqlite.ts
-// better-sqlite3 StorageAdapter for Node/Bun. Same migrations as the
-// plugin's sql.js adapter (single source of truth: @basalt/core/migrations).
+// SQLite StorageAdapter for Node/Bun via a runtime-detecting driver:
+// bun:sqlite when available, better-sqlite3 otherwise. Same migrations as
+// the plugin's sql.js adapter (single source of truth: @basalt/core/migrations).
 // Schema is byte-compatible with Python's ~/.basalt/basalt.db so Python-CLI
 // users can swap to this CLI without re-indexing.
 
 import { mkdirSync } from "node:fs";
 import { dirname } from "node:path";
-import type {
-  Embedding,
-  ListFindingsOptions,
-  Note,
-  NoteRecord,
-  PersistedFinding,
-  StorageAdapter,
+import {
+  type Embedding,
+  type ListFindingsOptions,
+  MIGRATIONS,
+  type Note,
+  type NoteRecord,
+  type PersistedFinding,
+  type StorageAdapter,
 } from "@basalt/core";
-import { MIGRATIONS } from "@basalt/core";
-import Database from "better-sqlite3";
+import { type Db, openDatabase } from "./sqlite-driver";
 
 export class SqliteStorage implements StorageAdapter {
-  private db: Database.Database | null = null;
+  private db: Db | null = null;
 
   constructor(private readonly dbPath: string) {}
 
   async init(): Promise<void> {
     mkdirSync(dirname(this.dbPath), { recursive: true });
-    this.db = new Database(this.dbPath);
+    this.db = await openDatabase(this.dbPath);
     this.db.pragma("journal_mode = WAL");
     this.db.pragma("synchronous = NORMAL");
     this.db.pragma("foreign_keys = ON");
@@ -33,52 +33,51 @@ export class SqliteStorage implements StorageAdapter {
     }
   }
 
-  private requireDb(): Database.Database {
+  private requireDb(): Db {
     if (!this.db) throw new Error("SqliteStorage: init() not called");
     return this.db;
   }
 
   async upsertNote(note: Note): Promise<number> {
     const db = this.requireDb();
-    const stmt = db.prepare(`
-      INSERT INTO notes (rel_path, stem, title, created, updated, word_count, content, content_hash, tags)
-      VALUES (@rel_path, @stem, @title, @created, @updated, @word_count, @content, @content_hash, @tags)
-      ON CONFLICT(rel_path) DO UPDATE SET
-        stem=excluded.stem,
-        title=excluded.title,
-        created=COALESCE(notes.created, excluded.created),
-        updated=excluded.updated,
-        word_count=excluded.word_count,
-        content=excluded.content,
-        content_hash=excluded.content_hash,
-        tags=excluded.tags
-      RETURNING id
-    `);
-    const row = stmt.get({
-      rel_path: note.relPath,
-      stem: note.stem,
-      title: note.title,
-      created: note.created,
-      updated: note.updated,
-      word_count: note.wordCount,
-      content: note.content,
-      content_hash: note.contentHash,
-      tags: note.tags.join(","),
-    }) as { id: number };
-    return row.id;
+    const row = db
+      .prepare(`
+        INSERT INTO notes (rel_path, stem, title, created, updated, word_count, content, content_hash, tags)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ON CONFLICT(rel_path) DO UPDATE SET
+          stem=excluded.stem,
+          title=excluded.title,
+          created=COALESCE(notes.created, excluded.created),
+          updated=excluded.updated,
+          word_count=excluded.word_count,
+          content=excluded.content,
+          content_hash=excluded.content_hash,
+          tags=excluded.tags
+        RETURNING id
+      `)
+      .get<{ id: number }>(
+        note.relPath,
+        note.stem,
+        note.title,
+        note.created,
+        note.updated,
+        note.wordCount,
+        note.content,
+        note.contentHash,
+        note.tags.join(","),
+      );
+    return row?.id ?? 0;
   }
 
   async getNote(path: string): Promise<NoteRecord | null> {
     const db = this.requireDb();
-    const row = db.prepare("SELECT * FROM notes WHERE rel_path = ?").get(path) as
-      | RawNoteRow
-      | undefined;
+    const row = db.prepare("SELECT * FROM notes WHERE rel_path = ?").get<RawNoteRow>(path);
     return row ? rowToNote(row) : null;
   }
 
   async *listNotes(): AsyncIterable<NoteRecord> {
     const db = this.requireDb();
-    const rows = db.prepare("SELECT * FROM notes ORDER BY id").all() as RawNoteRow[];
+    const rows = db.prepare("SELECT * FROM notes ORDER BY id").all<RawNoteRow>();
     for (const row of rows) yield rowToNote(row);
   }
 
@@ -100,21 +99,19 @@ export class SqliteStorage implements StorageAdapter {
       embedding.model,
       embedding.contentHash,
       embedding.dim,
-      Buffer.from(embedding.vec.buffer, embedding.vec.byteOffset, embedding.vec.byteLength),
+      f32ToBytes(embedding.vec),
     );
   }
 
   async getEmbedding(noteId: number): Promise<Embedding | null> {
     const db = this.requireDb();
-    const row = db.prepare("SELECT * FROM embeddings WHERE note_id = ?").get(noteId) as
-      | RawEmbedRow
-      | undefined;
+    const row = db.prepare("SELECT * FROM embeddings WHERE note_id = ?").get<RawEmbedRow>(noteId);
     return row ? rowToEmbedding(row) : null;
   }
 
   async *listEmbeddings(): AsyncIterable<Embedding> {
     const db = this.requireDb();
-    const rows = db.prepare("SELECT * FROM embeddings ORDER BY note_id").all() as RawEmbedRow[];
+    const rows = db.prepare("SELECT * FROM embeddings ORDER BY note_id").all<RawEmbedRow>();
     for (const row of rows) yield rowToEmbedding(row);
   }
 
@@ -122,7 +119,9 @@ export class SqliteStorage implements StorageAdapter {
     const db = this.requireDb();
     const del = db.prepare("DELETE FROM links WHERE from_note_id = ?");
     const ins = db.prepare("INSERT INTO links (from_note_id, target) VALUES (?, ?)");
-    const tx = db.transaction((id: number, ts: string[]) => {
+    const tx = db.transaction((...args: unknown[]) => {
+      const id = args[0] as number;
+      const ts = args[1] as string[];
       del.run(id);
       for (const t of ts) ins.run(id, t);
     });
@@ -131,12 +130,12 @@ export class SqliteStorage implements StorageAdapter {
 
   async resolveLinkTargets(): Promise<number> {
     const db = this.requireDb();
-    const stems = db.prepare("SELECT id, stem FROM notes").all() as { id: number; stem: string }[];
+    const stems = db.prepare("SELECT id, stem FROM notes").all<{ id: number; stem: string }>();
     const stemToId = new Map<string, number>();
     for (const s of stems) stemToId.set(s.stem.toLowerCase(), s.id);
     const unresolved = db
       .prepare("SELECT rowid, target FROM links WHERE target_note_id IS NULL")
-      .all() as { rowid: number; target: string }[];
+      .all<{ rowid: number; target: string }>();
     const upd = db.prepare("UPDATE links SET target_note_id = ? WHERE rowid = ?");
     let resolved = 0;
     const tx = db.transaction(() => {
@@ -156,7 +155,7 @@ export class SqliteStorage implements StorageAdapter {
     const db = this.requireDb();
     const existing = db
       .prepare("SELECT id FROM briefs WHERE verb = ? AND finding_key = ? AND status = 'pending'")
-      .get(finding.verb, finding.finding_key) as { id: number } | undefined;
+      .get<{ id: number }>(finding.verb, finding.finding_key);
     if (existing) return null;
     const result = db
       .prepare(`
@@ -177,25 +176,25 @@ export class SqliteStorage implements StorageAdapter {
   async listFindings(opts?: ListFindingsOptions): Promise<PersistedFinding[]> {
     const db = this.requireDb();
     const clauses: string[] = [];
-    const params: Record<string, unknown> = {};
+    const params: unknown[] = [];
     if (opts?.verb !== undefined) {
-      clauses.push("verb = @verb");
-      params.verb = opts.verb;
+      clauses.push("verb = ?");
+      params.push(opts.verb);
     }
     if (opts?.status !== undefined) {
-      clauses.push("status = @status");
-      params.status = opts.status;
+      clauses.push("status = ?");
+      params.push(opts.status);
     }
     if (opts?.since !== undefined) {
-      clauses.push("created_at >= @since");
-      params.since = opts.since;
+      clauses.push("created_at >= ?");
+      params.push(opts.since);
     }
     const where = clauses.length > 0 ? `WHERE ${clauses.join(" AND ")}` : "";
-    const limit = opts?.limit !== undefined ? `LIMIT @limit` : "";
-    if (opts?.limit !== undefined) params.limit = opts.limit;
+    const limit = opts?.limit !== undefined ? "LIMIT ?" : "";
+    if (opts?.limit !== undefined) params.push(opts.limit);
     const rows = db
       .prepare(`SELECT * FROM briefs ${where} ORDER BY id ${limit}`)
-      .all(params) as RawBriefRow[];
+      .all<RawBriefRow>(...params);
     return rows.map(rowToBrief);
   }
 
@@ -211,10 +210,10 @@ export class SqliteStorage implements StorageAdapter {
   }
 
   async getMeta(key: string): Promise<string | null> {
-    const row = this.requireDb().prepare("SELECT value FROM meta WHERE key = ?").get(key) as
-      | { value: string }
-      | undefined;
-    return row ? row.value : null;
+    const row = this.requireDb()
+      .prepare("SELECT value FROM meta WHERE key = ?")
+      .get<{ value: string }>(key);
+    return row?.value ?? null;
   }
 
   async setMeta(key: string, value: string): Promise<void> {
@@ -249,7 +248,7 @@ interface RawEmbedRow {
   model: string;
   content_hash: string;
   dim: number;
-  vec: Buffer;
+  vec: Uint8Array | Buffer;
 }
 
 interface RawBriefRow {
@@ -282,11 +281,10 @@ function rowToNote(row: RawNoteRow): NoteRecord {
 }
 
 function rowToEmbedding(row: RawEmbedRow): Embedding {
-  const buf = row.vec;
-  const vec = new Float32Array(buf.byteLength / 4);
-  for (let i = 0; i < vec.length; i++) {
-    vec[i] = buf.readFloatLE(i * 4);
-  }
+  const u8 = row.vec instanceof Uint8Array ? row.vec : new Uint8Array(row.vec);
+  const vec = new Float32Array(u8.byteLength / 4);
+  const view = new DataView(u8.buffer, u8.byteOffset, u8.byteLength);
+  for (let i = 0; i < vec.length; i++) vec[i] = view.getFloat32(i * 4, true);
   return {
     noteId: row.note_id,
     model: row.model,
@@ -308,4 +306,8 @@ function rowToBrief(row: RawBriefRow): PersistedFinding {
     verdict_at: row.verdict_at,
     verdict_reason: row.verdict_reason,
   };
+}
+
+function f32ToBytes(v: Float32Array): Uint8Array {
+  return new Uint8Array(v.buffer, v.byteOffset, v.byteLength);
 }

@@ -17,7 +17,7 @@ async function main(): Promise<void> {
 
   await applyMigrationsIfNeeded(cfg);
 
-  const bindings = buildSelfhostBindings(cfg);
+  const bindings = await buildSelfhostBindings(cfg);
 
   // Hono's node-server adapter only passes (req) — we hand-thread the
   // env + a no-op ExecutionContext into app.fetch.
