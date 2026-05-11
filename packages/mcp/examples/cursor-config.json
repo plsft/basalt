@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "basalt": {
+      "command": "basalt-mcp",
+      "args": ["--vault", "/path/to/your/obsidian-vault", "--allow-write"]
+    }
+  }
+}
