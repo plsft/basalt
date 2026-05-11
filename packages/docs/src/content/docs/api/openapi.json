@@ -1,0 +1,1092 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Basalt API",
+    "version": "0.0.1",
+    "description": "Pro-tier hosted backend for Basalt. Runs on Cloudflare Workers; Open-tier surfaces (CLI, plugin, MCP, desktop) do not call this API.",
+    "license": {
+      "name": "MIT",
+      "url": "https://github.com/plsft/basalt/blob/main/LICENSE"
+    },
+    "contact": {
+      "name": "Basalt",
+      "url": "https://basalt.dev"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api.basalt.dev",
+      "description": "Production"
+    },
+    {
+      "url": "https://api-staging.basalt.dev",
+      "description": "Staging"
+    }
+  ],
+  "components": {
+    "schemas": {
+      "Health": {
+        "type": "object",
+        "properties": {
+          "ok": {
+            "type": "boolean"
+          },
+          "version": {
+            "type": "string"
+          },
+          "schema": {
+            "type": "integer"
+          },
+          "environment": {
+            "type": "string",
+            "enum": ["staging", "production"]
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": ["ok", "version", "schema", "timestamp"]
+      },
+      "Status": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": ["ok", "degraded"]
+          },
+          "time": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "checks": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "ok": {
+                  "type": "boolean"
+                },
+                "detail": {
+                  "type": "string"
+                }
+              },
+              "required": ["name", "ok"]
+            }
+          }
+        },
+        "required": ["status", "time", "checks"]
+      },
+      "Ok": {
+        "type": "object",
+        "properties": {
+          "ok": {
+            "type": "boolean"
+          }
+        },
+        "required": ["ok"]
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "tier": {
+            "type": "string",
+            "enum": ["free", "pro", "founder"]
+          }
+        },
+        "required": ["id", "email", "tier"]
+      },
+      "OAuthStartRequest": {
+        "type": "object",
+        "properties": {
+          "provider": {
+            "type": "string",
+            "enum": ["google", "github"]
+          },
+          "redirect_uri": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": ["provider", "redirect_uri"]
+      },
+      "OAuthStartResponse": {
+        "type": "object",
+        "properties": {
+          "state": {
+            "type": "string"
+          },
+          "authorize_url": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": ["state", "authorize_url"]
+      },
+      "OAuthCallbackRequest": {
+        "type": "object",
+        "properties": {
+          "provider": {
+            "type": "string",
+            "enum": ["google", "github"]
+          },
+          "code": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          }
+        },
+        "required": ["provider", "code", "state"]
+      },
+      "OAuthCallbackResponse": {
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "type": "string"
+          },
+          "tier": {
+            "type": "string",
+            "enum": ["free", "pro", "founder"]
+          }
+        },
+        "required": ["user_id", "tier"]
+      },
+      "Vault": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "user_id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "sync_enabled": {
+            "type": "boolean"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": ["id", "user_id", "name", "created_at", "updated_at"]
+      },
+      "VaultList": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Vault"
+        }
+      },
+      "VaultCreateRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string",
+            "enum": ["upload", "sync"]
+          }
+        },
+        "required": ["name"]
+      },
+      "BriefGenerateRequest": {
+        "type": "object",
+        "properties": {
+          "vault_id": {
+            "type": "string"
+          },
+          "window_days": {
+            "type": "integer",
+            "default": 30,
+            "minimum": 1,
+            "maximum": 365
+          },
+          "verbs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": ["buried-insight", "connection", "contradiction", "drift", "implicit-thesis"]
+            }
+          }
+        },
+        "required": ["vault_id"]
+      },
+      "Brief": {
+        "type": "object",
+        "properties": {
+          "schema": {
+            "type": "integer",
+            "const": 1
+          },
+          "section": {
+            "type": "string"
+          },
+          "track_record": {
+            "type": "object"
+          },
+          "findings": {
+            "type": "object"
+          }
+        },
+        "required": ["schema", "section", "findings"]
+      },
+      "BriefList": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Brief"
+            }
+          },
+          "cursor": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": ["items"]
+      },
+      "FindingList": {
+        "type": "array",
+        "items": {
+          "type": "object"
+        }
+      },
+      "BillingCheckoutRequest": {
+        "type": "object",
+        "properties": {
+          "plan": {
+            "type": "string",
+            "enum": ["pro", "founder"]
+          },
+          "success_url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "cancel_url": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": ["plan", "success_url", "cancel_url"]
+      },
+      "BillingCheckoutResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": ["id", "url"]
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": ["error"]
+      }
+    },
+    "securitySchemes": {
+      "session": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "basalt_session",
+        "description": "HttpOnly session cookie set by /v1/auth/oauth/callback."
+      }
+    }
+  },
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Worker health probe",
+        "description": "Returns the worker's deployed version, schema, and a UTC timestamp.",
+        "tags": ["System"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Health"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "5XX": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/health": {
+      "get": {
+        "summary": "Alias for /health",
+        "description": "Status-page-friendly path.",
+        "tags": ["System"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Health"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "5XX": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/status": {
+      "get": {
+        "summary": "Aggregated dependency status",
+        "description": "Probes D1 + KV, returns overall ok|degraded plus per-check detail.",
+        "tags": ["System"],
+        "responses": {
+          "200": {
+            "description": "OK or degraded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Status"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "5XX": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/auth/oauth/start": {
+      "post": {
+        "summary": "Begin OAuth login flow",
+        "description": "Generates a server-side state token + provider authorize_url.",
+        "tags": ["Auth"],
+        "responses": {
+          "200": {
+            "description": "Authorize URL",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthStartResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "5XX": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OAuthStartRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/auth/oauth/callback": {
+      "post": {
+        "summary": "Complete OAuth login",
+        "description": "Exchanges the OAuth code, fetches user info, upserts the user, issues a session cookie.",
+        "tags": ["Auth"],
+        "responses": {
+          "200": {
+            "description": "Session established",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthCallbackResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "5XX": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OAuthCallbackRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/auth/logout": {
+      "post": {
+        "summary": "End the current session",
+        "description": "Deletes the session in KV and clears the basalt_session cookie.",
+        "tags": ["Auth"],
+        "responses": {
+          "200": {
+            "description": "Logged out",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ok"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "5XX": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/me": {
+      "get": {
+        "summary": "Current user",
+        "description": "Returns the authenticated user's id, email, and tier.",
+        "tags": ["Identity"],
+        "responses": {
+          "200": {
+            "description": "User",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "5XX": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "session": []
+          }
+        ]
+      },
+      "delete": {
+        "summary": "Soft-delete the current user",
+        "description": "Sets deleted_at on the user row; data is purged after a 30-day grace window.",
+        "tags": ["Identity"],
+        "responses": {
+          "200": {
+            "description": "Deletion scheduled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ok"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "5XX": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "session": []
+          }
+        ]
+      }
+    },
+    "/v1/vaults": {
+      "get": {
+        "summary": "List the user's vaults",
+        "description": "Excludes soft-deleted vaults.",
+        "tags": ["Vaults"],
+        "responses": {
+          "200": {
+            "description": "Vault list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VaultList"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "5XX": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "session": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "Register a new vault",
+        "description": "Creates a vault row and enqueues an indexing job.",
+        "tags": ["Vaults"],
+        "responses": {
+          "201": {
+            "description": "Vault created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Vault"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "5XX": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VaultCreateRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/vaults/:id": {
+      "delete": {
+        "summary": "Soft-delete a vault",
+        "description": "30-day grace before hard purge.",
+        "tags": ["Vaults"],
+        "responses": {
+          "200": {
+            "description": "Deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ok"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "5XX": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "session": []
+          }
+        ]
+      }
+    },
+    "/v1/briefs/generate": {
+      "post": {
+        "summary": "Generate a brief",
+        "description": "Runs the indexer + verbs against the named vault. Pro-tier only. Rate limit 6/min.",
+        "tags": ["Briefs"],
+        "responses": {
+          "200": {
+            "description": "Brief",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Brief"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "5XX": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BriefGenerateRequest"
+              }
+            }
+          }
+        },
+        "x-rate-limit": {
+          "scope": "briefs",
+          "max": 6,
+          "window": 60
+        }
+      }
+    },
+    "/v1/briefs": {
+      "get": {
+        "summary": "List briefs for a vault",
+        "description": "Cursor-paginated.",
+        "tags": ["Briefs"],
+        "responses": {
+          "200": {
+            "description": "Brief list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BriefList"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "5XX": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "session": []
+          }
+        ]
+      }
+    },
+    "/v1/briefs/:id": {
+      "get": {
+        "summary": "Fetch a brief by id",
+        "description": "Returns the full Brief JSON.",
+        "tags": ["Briefs"],
+        "responses": {
+          "200": {
+            "description": "Brief",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Brief"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "5XX": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "session": []
+          }
+        ]
+      }
+    },
+    "/v1/findings": {
+      "get": {
+        "summary": "Cross-brief finding timeline",
+        "description": "Filterable by verb and vault_id.",
+        "tags": ["Findings"],
+        "responses": {
+          "200": {
+            "description": "Findings",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindingList"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "5XX": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "session": []
+          }
+        ]
+      }
+    },
+    "/v1/billing/checkout": {
+      "post": {
+        "summary": "Create a Stripe Checkout session",
+        "description": "Plan = pro | founder. Founder is capped at 200 lifetime seats.",
+        "tags": ["Billing"],
+        "responses": {
+          "200": {
+            "description": "Checkout URL",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BillingCheckoutResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "5XX": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BillingCheckoutRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/billing/webhook": {
+      "post": {
+        "summary": "Stripe webhook receiver",
+        "description": "HMAC-SHA256 verified. Handles checkout.session.completed and subscription events.",
+        "tags": ["Billing"],
+        "responses": {
+          "200": {
+            "description": "Acknowledged",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ok"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "5XX": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

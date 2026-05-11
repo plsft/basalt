@@ -24,8 +24,12 @@ export interface Bindings {
   // Secrets (set via `wrangler secret put`).
   STRIPE_SECRET_KEY?: string;
   STRIPE_WEBHOOK_SECRET?: string;
+  STRIPE_PRICE_PRO?: string;
+  STRIPE_PRICE_FOUNDER?: string;
   BYOK_ENCRYPTION_KEY?: string;
+  OAUTH_GOOGLE_CLIENT_ID?: string;
   OAUTH_GOOGLE_CLIENT_SECRET?: string;
+  OAUTH_GITHUB_CLIENT_ID?: string;
   OAUTH_GITHUB_CLIENT_SECRET?: string;
   JWT_SIGNING_KEY?: string;
 }

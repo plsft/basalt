@@ -23,7 +23,12 @@
     "ci": "biome ci .",
     "typecheck": "tsc --noEmit -p tsconfig.base.json",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "bench": "bun bench/index-throughput.ts && bun bench/cold-start.ts && bun bench/idle-memory.ts",
+    "bench:index": "bun bench/index-throughput.ts",
+    "bench:cold-start": "bun bench/cold-start.ts",
+    "bench:idle-memory": "bun bench/idle-memory.ts",
+    "openapi": "bun scripts/generate-openapi.ts"
   },
   "devDependencies": {
     "@biomejs/biome": "2.4.14",
