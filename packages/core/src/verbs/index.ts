@@ -44,10 +44,9 @@ export const verbs = [
 // while the remaining verbs port in TASK-1.8 through TASK-1.10.
 registerVerb("buried-insight", findBuriedInsights);
 registerVerb("connection", findConnections);
-// TASK-1.8: registerVerb("drift", findDrift);
+registerVerb("drift", findDrift);
 // TASK-1.9: registerVerb("contradiction", findContradictions);
 // TASK-1.10: registerVerb("implicit-thesis", findImplicitTheses);
 
 void findContradictions;
-void findDrift;
 void findImplicitTheses;
