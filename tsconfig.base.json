@@ -43,6 +43,11 @@
     ".basalt",
     "tests/parity/fixtures",
     "tests/parity/baseline",
-    ".venv-reference"
+    ".venv-reference",
+    "packages/obsidian-plugin",
+    "packages/web",
+    "packages/desktop",
+    "packages/site",
+    "packages/docs"
   ]
 }

@@ -1,0 +1,59 @@
+/* packages/obsidian-plugin/styles.css
+ * Basalt for Obsidian — base styles. Brand palette per PRD §2.5; per-verb
+ * accent colors are tied to the periodic-table identity (Na, Cl, Hg, C, Au).
+ */
+
+.basalt-brief {
+  --basalt-bg: #0e0d0c;
+  --basalt-bg-raised: #181613;
+  --basalt-ink: #f5f1e8;
+  --basalt-ink-dim: #a89f8e;
+  --basalt-rule: #2a2622;
+
+  --basalt-accent-na: #f2c75c; /* Sodium gold — Implicit Thesis */
+  --basalt-accent-cl: #7cc4a1; /* Chlorine green — Contradiction */
+  --basalt-accent-hg: #9ca3af; /* Mercury silver — Drift */
+  --basalt-accent-c: #5b6677; /* Carbon graphite — Connection */
+  --basalt-accent-au: #d4a857; /* Gold patina — Buried Insight */
+
+  font-family: var(--font-text, "Source Serif 4", Georgia, serif);
+  line-height: 1.6;
+  padding: 1.25rem 1.5rem;
+}
+
+.basalt-brief h1 {
+  font-family: var(--font-monospace, "JetBrains Mono", monospace);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  margin-bottom: 1rem;
+}
+
+.basalt-brief h2 {
+  font-family: var(--font-monospace, "JetBrains Mono", monospace);
+  font-weight: 500;
+  margin-top: 1.5rem;
+  border-bottom: 1px solid var(--basalt-rule);
+  padding-bottom: 0.25rem;
+}
+
+.basalt-brief blockquote {
+  border-left: 3px solid var(--basalt-accent-na);
+  padding-left: 1rem;
+  color: var(--basalt-ink-dim);
+}
+
+/* Ribbon icon: small periodic-table tile (Sodium / Na, atomic 11). */
+.basalt-ribbon-tile {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border: 1px solid var(--basalt-rule);
+  border-radius: 2px;
+  background: var(--basalt-bg-raised);
+  color: var(--basalt-accent-na);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 9px;
+  font-weight: 600;
+}

@@ -1,0 +1,11 @@
+{
+  "id": "basalt",
+  "name": "Basalt",
+  "version": "0.1.0",
+  "minAppVersion": "1.6.0",
+  "description": "A weekly Brief compiled from your notes. Reads what you've written and surfaces what you believe but never wrote down.",
+  "author": "1556 Ventures LLC",
+  "authorUrl": "https://virtuosoai.dev/basalt/",
+  "fundingUrl": "https://virtuosoai.dev/basalt/",
+  "isDesktopOnly": false
+}

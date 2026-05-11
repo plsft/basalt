@@ -1,12 +1,21 @@
 {
   "name": "@basalt/obsidian-plugin",
   "version": "0.0.0",
-  "description": "Basalt for Obsidian — Brief generation, promote-to-note, all in-vault.",
+  "description": "Basalt for Obsidian — generate weekly Briefs from your vault, in-vault, fully offline.",
   "license": "MIT",
   "type": "module",
+  "main": "main.js",
   "scripts": {
-    "build": "exit 0",
+    "build": "node esbuild.config.mjs production",
+    "dev": "node esbuild.config.mjs",
     "typecheck": "tsc --noEmit",
-    "test": "echo \"@basalt/obsidian-plugin: no tests yet\" && exit 0"
+    "test": "echo \"@basalt/obsidian-plugin: tests run from root via 'bun run test'\" && exit 0"
+  },
+  "dependencies": {
+    "@basalt/core": "workspace:*"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0",
+    "obsidian": "^1.7.2"
   }
 }
