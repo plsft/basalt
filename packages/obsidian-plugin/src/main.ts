@@ -1,11 +1,18 @@
 // Basalt — Obsidian plugin entry point.
 
 import {
+  type AIAdapter,
+  AnthropicAI,
   type Brief,
   type Engine,
   Engine as EngineCtor,
+  type Finding,
+  findContradictionsV1,
+  findImplicitThesesV1,
   MockEmbedder,
+  OllamaAI,
   OllamaEmbedder,
+  OpenAIAI,
   promoteFindingToNote,
   renderBrief,
 } from "@basalt/core";
@@ -173,8 +180,54 @@ export default class BasaltPlugin extends Plugin {
     await engine.index({ vault: "" });
     onProgress("Generating brief…");
     const brief = await engine.brief({ section: "all" });
+
+    // v1 verb augmentation — only fires when an LLM is configured.
+    const ai = this.resolveLlm();
+    if (ai) {
+      try {
+        const ctx = await engine.verbContext(3);
+        onProgress(`Synthesizing thesis via ${ai.modelId()}…`);
+        const thesisV1 = await findImplicitThesesV1(ctx, { ai, topN: 3 });
+        if (thesisV1.length > 0) brief.findings.implicit_thesis = thesisV1 as unknown as Finding[];
+        onProgress(`Contradiction verdicts via ${ai.modelId()}…`);
+        const contradictionV1 = await findContradictionsV1(ctx, { ai });
+        if (contradictionV1.length > 0)
+          brief.findings.contradiction = contradictionV1 as unknown as Finding[];
+      } catch (e) {
+        new Notice(
+          `Basalt: LLM augmentation failed: ${e instanceof Error ? e.message : String(e)}`,
+        );
+      }
+    }
     onProgress("Done.");
     return brief;
+  }
+
+  private resolveLlm(): AIAdapter | null {
+    const s = this.settings;
+    switch (s.llmProvider) {
+      case "none":
+        return null;
+      case "ollama":
+        return new OllamaAI({
+          url: s.ollamaUrl,
+          ...(s.llmModel ? { model: s.llmModel } : {}),
+        });
+      case "openai":
+        if (!s.llmApiKey) return null;
+        return new OpenAIAI({
+          apiKey: s.llmApiKey,
+          ...(s.llmModel ? { model: s.llmModel } : {}),
+        });
+      case "anthropic":
+        if (!s.llmApiKey) return null;
+        return new AnthropicAI({
+          apiKey: s.llmApiKey,
+          ...(s.llmModel ? { model: s.llmModel } : {}),
+        });
+      default:
+        return null;
+    }
   }
 
   async reindex(onProgress: (m: string) => void): Promise<void> {

@@ -63,6 +63,13 @@ export class BriefView extends ItemView {
 
     const body = container.createDiv({ cls: "basalt-brief-body" });
     if (this.currentBrief) {
+      // v1 augmentation summary banner — only renders if there's at least
+      // one named thesis or non-undetermined contradiction verdict.
+      const banner = collectV1Banner(this.currentBrief);
+      if (banner.length > 0) {
+        const bannerEl = body.createDiv({ cls: "basalt-brief-v1-banner" });
+        for (const line of banner) bannerEl.createEl("p", { text: line });
+      }
       body.createEl("pre", { text: renderBrief(this.currentBrief, "markdown") });
     } else {
       body.createEl("p", {
@@ -97,4 +104,24 @@ export class BriefView extends ItemView {
     const progress = container?.querySelector(".basalt-brief-progress") as HTMLElement | null;
     if (progress) progress.setText(msg);
   }
+}
+
+function collectV1Banner(brief: Brief): string[] {
+  const out: string[] = [];
+  for (const f of brief.findings.implicit_thesis ?? []) {
+    const named = (f as { named_thesis?: string | null }).named_thesis;
+    const model = (f as { named_thesis_model?: string | null }).named_thesis_model;
+    if (named && named.length > 0) {
+      out.push(`💡 Named thesis: ${named}`);
+      if (model) out.push(`   (model: ${model})`);
+    }
+  }
+  for (const f of brief.findings.contradiction ?? []) {
+    const verdict = (f as { verdict?: string }).verdict;
+    const reason = (f as { verdict_reason?: string }).verdict_reason;
+    if (verdict && verdict !== "undetermined") {
+      out.push(`⚖️ Contradiction verdict: ${verdict} — ${reason ?? ""}`);
+    }
+  }
+  return out;
 }
