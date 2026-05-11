@@ -62,6 +62,10 @@ jobs:
     name: GitHub release
     needs: binaries
     runs-on: ubuntu-latest
+    # Only create a GitHub Release on real tag pushes. workflow_dispatch
+    # runs on a branch and lacks a valid tag — binaries-job artifacts
+    # remain downloadable from the run page for validation.
+    if: ${{ startsWith(github.ref, 'refs/tags/') }}
     steps:
       - uses: actions/checkout@v4
         with:
