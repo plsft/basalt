@@ -1,0 +1,87 @@
+---
+title: v1.3.0 — Multi-vault search
+description: Cross-vault semantic search via Cloudflare Vectorize + Workers AI.
+---
+
+`v1.3.0` brings hosted cross-vault search. You can query any text and get
+ranked notes from across every vault you've uploaded a snapshot for.
+
+## How it works
+
+1. **Snapshot upload.** Your local CLI / Desktop pushes a `VaultSnapshot`
+   to `POST /v1/vaults/:id/snapshot` (see
+   [v1.1.0](/v1.1.0/) for the format).
+2. **Server-side reindex.** Call `POST /v1/vaults/:id/reindex` to re-embed
+   the snapshot's notes via Workers AI's `@cf/baai/bge-base-en-v1.5`
+   model and upsert vectors into the platform's Vectorize index.
+   This is *separate* from snapshot upload so clients can control when
+   the (potentially-slow) reindex happens.
+3. **Query.** `POST /v1/search` embeds your query under the same model
+   and queries Vectorize with metadata filters (`user_id` always; plus
+   optional `vault_ids`).
+
+Why re-embed server-side? Different local surfaces use different
+embedding models (CLI defaults to Ollama `nomic-embed-text`; desktop can
+fall back to `MockEmbedder`). To make cross-vault search work, every
+vector in the platform index must live in the **same** model space.
+
+## CLI
+
+```sh
+# Index a vault (after pushing its snapshot):
+curl -X POST https://api.basalt.dev/v1/vaults/$VID/reindex \
+  -H "Cookie: basalt_session=..."
+
+# Search across every vault:
+basalt search "interpretability of agent artifacts"
+
+# Scope to specific vaults:
+basalt search "audit trail" --vault-id $V1 --vault-id $V2 --top 5
+
+# Raw JSON for piping:
+basalt search "query" --json | jq '.hits'
+```
+
+The CLI reads `apiUrl` + `apiToken` from `~/.basalt/config.toml` (run
+`basalt init` to set these) or accepts `--api-url` / `--api-token`
+overrides. `BASALT_API_TOKEN` env also works.
+
+## Privacy
+
+- Vectors are namespaced by `user_id` + `vault_id` in metadata. Search
+  always filters on the caller's `user_id` — there is no code path that
+  surfaces another user's vector.
+- Vault delete (`DELETE /v1/vaults/:id`) fires a best-effort
+  `deleteByIds` against Vectorize for that vault's vectors so search
+  stops returning hits immediately.
+- The Open tier (CLI, plugin, MCP, desktop) never uses cross-vault
+  search — it requires the hosted API. Local single-vault similarity
+  search is available through the Connection verb.
+
+## Cost
+
+Workers AI `@cf/baai/bge-base-en-v1.5`:
+- Reindexing 1,000 notes (~500k tokens after truncation to 2k chars per
+  note): ~$0.005
+- Per-query embedding: ~$0.000001 (single 2k-char query)
+
+Vectorize queries: free for first 1M reads/month, $0.04 per 1M after.
+
+## Response shape
+
+```json
+{
+  "query": "interpretability of agent artifacts",
+  "elapsed_ms": 142,
+  "embedding_model": "@cf/baai/bge-base-en-v1.5",
+  "hits": [
+    {
+      "vault_id": "01HX…",
+      "rel_path": "agents/operating-manual.md",
+      "title": "Operating manual for myself",
+      "updated": "2026-04-12",
+      "score": 0.876
+    }
+  ]
+}
+```
