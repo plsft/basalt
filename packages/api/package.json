@@ -5,9 +5,24 @@
   "description": "Basalt cloud API — Hono on Cloudflare Workers.",
   "license": "MIT",
   "type": "module",
+  "main": "src/index.ts",
   "scripts": {
-    "build": "exit 0",
-    "typecheck": "tsc --noEmit",
-    "test": "echo \"@basalt/api: no tests yet\" && exit 0"
+    "build": "tsc --noEmit -p tsconfig.json",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "dev": "wrangler dev",
+    "deploy:staging": "wrangler deploy --env staging",
+    "deploy:prod": "wrangler deploy --env production",
+    "migrate:staging": "wrangler d1 migrations apply basalt-staging-db --env staging --remote",
+    "migrate:prod": "wrangler d1 migrations apply basalt-prod-db --env production --remote",
+    "test": "echo \"@basalt/api: tests run from root via 'bun run test'\" && exit 0"
+  },
+  "dependencies": {
+    "@hono/zod-validator": "^0.4.2",
+    "hono": "^4.6.0",
+    "zod": "^3.24.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250101.0",
+    "wrangler": "^4.0.0"
   }
 }

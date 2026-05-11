@@ -19,7 +19,8 @@
       "!**/*.lock",
       "!**/main.js",
       "!**/.venv*",
-      "!packages/obsidian-plugin/main.js"
+      "!packages/obsidian-plugin/main.js",
+      "!**/*.css"
     ]
   },
   "formatter": {
@@ -76,7 +77,8 @@
         "**/vitest.workspace.ts",
         "**/astro.config.*",
         "**/tailwind.config.*",
-        "**/packages/obsidian-plugin/src/main.ts"
+        "**/packages/obsidian-plugin/src/main.ts",
+        "**/packages/api/src/index.ts"
       ],
       "linter": {
         "rules": {
