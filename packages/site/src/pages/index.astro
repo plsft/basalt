@@ -175,7 +175,7 @@ wrote 2026-05-11-brief.md (1.4 KB)</pre>
     <h2>Run it wherever you already read.</h2>
     <div class="surfaces-grid">
       <article>
-        <h3>CLI</h3>
+        <h3>CLI <span class="tag">npm</span></h3>
         <pre><code>npm i -g @basalt/cli
 basalt init && basalt brief</code></pre>
       </article>
@@ -184,12 +184,15 @@ basalt init && basalt brief</code></pre>
         <p class="muted">Community Plugin: <code>basalt</code></p>
       </article>
       <article>
-        <h3>MCP server</h3>
+        <h3>MCP server <span class="tag">npm</span></h3>
         <pre><code>claude mcp add basalt -- npx -y @basalt/mcp</code></pre>
       </article>
       <article>
-        <h3>Desktop</h3>
-        <p>Tauri 2 build — macOS · Linux · Windows. <a href="/install">downloads</a></p>
+        <h3>Desktop <span class="tag tag--beta">beta</span></h3>
+        <p>macOS · Linux · Windows.</p>
+        <p>
+          <a href="https://github.com/plsft/basalt/releases/latest">Download latest →</a>
+        </p>
       </article>
       <article>
         <h3>Web cockpit</h3>
@@ -296,6 +299,21 @@ basalt init && basalt brief</code></pre>
     color: var(--color-basalt-ink-dim);
     text-transform: uppercase;
     letter-spacing: 0.1em;
+  }
+  .tag {
+    display: inline-block;
+    font-size: 0.6rem;
+    letter-spacing: 0.08em;
+    padding: 0.08rem 0.4rem;
+    margin-left: 0.4rem;
+    border: 1px solid var(--color-basalt-rule);
+    color: var(--color-basalt-ink-dim);
+    vertical-align: middle;
+  }
+  .tag--beta {
+    color: var(--color-basalt-bg);
+    background: var(--color-basalt-accent-na);
+    border-color: var(--color-basalt-accent-na);
   }
   .muted { color: var(--color-basalt-ink-dim); font-size: 0.95rem; }
   .tiers {

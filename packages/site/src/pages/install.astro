@@ -1,70 +1,200 @@
 ---
 import Default from "../layouts/Default.astro";
+
+const RELEASES = "https://github.com/plsft/basalt/releases";
+const LATEST = `${RELEASES}/latest`;
 ---
 
-<Default title="Install · Basalt" description="Install Basalt on every surface — CLI, plugin, MCP, desktop, web.">
+<Default title="Install · Basalt" description="Install Basalt on every surface — CLI from npm, desktop beta from GitHub releases, plugin, MCP, web.">
   <section class="container">
     <span class="numeral">Install</span>
     <h1>Pick the surface that already fits your day.</h1>
     <p>
-      Everything below installs the same engine. Run them side by side; they
-      share the index database at <code>~/.basalt/</code>.
+      Every surface ships the same engine and shares one index at
+      <code>~/.basalt/</code>. Run as many side by side as you like.
     </p>
 
-    <h2>CLI</h2>
-    <pre><code>npm install -g @basalt/cli
+    <!-- ───────────── CLI (npm) ───────────── -->
+    <h2 id="cli">CLI — from npm <span class="badge">stable</span></h2>
+    <p>
+      The CLI is published to the public npm registry as
+      <a href="https://www.npmjs.com/package/@basalt/cli"><code>@basalt/cli</code></a>.
+      Node 22+ or Bun 1.3+ is required.
+    </p>
+<pre><code>npm install -g @basalt/cli
+# or:
+bun add -g @basalt/cli
+
 basalt init        # walks the vault, builds the index
 basalt brief       # writes today's brief into the vault
 basalt about       # prints version + bindings</code></pre>
 
     <p>
-      <strong>v1.1.0 — LLM augmentation.</strong> Pass <code>--llm ollama</code>,
-      <code>--llm openai</code>, or <code>--llm anthropic</code> to any brief
-      command to get a synthesized one-sentence Implicit Thesis and an LLM
-      verdict (<code>proven</code> / <code>apparent</code>) on each
-      Contradiction. BYOK keys come from <code>OPENAI_API_KEY</code> /
+      Pin a version if you want reproducible installs:
+    </p>
+<pre><code>npm install -g @basalt/cli@1.4.0</code></pre>
+
+    <p>
+      <strong>LLM augmentation (v1.1.0+).</strong> Pass
+      <code>--llm ollama</code>, <code>--llm openai</code>, or
+      <code>--llm anthropic</code> to any brief command for a synthesized
+      one-sentence Implicit Thesis and an LLM verdict
+      (<code>proven</code> / <code>apparent</code>) on each Contradiction.
+      Keys come from <code>OPENAI_API_KEY</code> /
       <code>ANTHROPIC_API_KEY</code> environment variables — never on disk.
     </p>
-    <pre><code>basalt brief --llm ollama          # local; no key needed
-basalt thesis --llm anthropic       # uses claude-sonnet-4-6 by default
+<pre><code>basalt brief --llm ollama          # local; no key needed
+basalt thesis --llm anthropic       # claude-sonnet-4-6 by default
 basalt brief --llm openai --llm-model gpt-4o-mini</code></pre>
 
-    <h2>Obsidian plugin</h2>
+    <!-- ───────────── Desktop (beta) ───────────── -->
+    <h2 id="desktop">Desktop — beta <span class="badge badge--beta">beta</span></h2>
+    <p>
+      Single-binary Tauri 2 builds for macOS Universal, Linux x64, and
+      Windows x64. Downloads are attached to every GitHub release.
+    </p>
+
+    <div class="dl-grid">
+      <a class="dl-card" href={LATEST}>
+        <span class="dl-os">macOS</span>
+        <span class="dl-meta">Universal · <code>.dmg</code></span>
+        <span class="dl-cta">Download latest →</span>
+      </a>
+      <a class="dl-card" href={LATEST}>
+        <span class="dl-os">Linux</span>
+        <span class="dl-meta">x64 · <code>.deb</code> / <code>.AppImage</code></span>
+        <span class="dl-cta">Download latest →</span>
+      </a>
+      <a class="dl-card" href={LATEST}>
+        <span class="dl-os">Windows</span>
+        <span class="dl-meta">x64 · <code>.msi</code> / <code>-setup.exe</code></span>
+        <span class="dl-cta">Download latest →</span>
+      </a>
+    </div>
+
+    <p class="muted">
+      All releases: <a href={RELEASES}>{RELEASES.replace("https://", "")}</a>.
+      Past versions and checksums are listed there.
+    </p>
+
+    <div class="callout">
+      <p>
+        <strong>Beta status — read before installing.</strong> Desktop builds
+        are unsigned during the open beta. macOS will show a "developer cannot
+        be verified" warning on first launch — right-click the app → Open →
+        confirm. On Windows, SmartScreen may prompt "More info → Run anyway".
+        Signed installers ship at <code>v1.5.0</code>.
+      </p>
+      <p>
+        The desktop app is read-only against your vault. Promote-to-note
+        creates <em>new</em> files only; architectural tests in the codebase
+        enforce this.
+      </p>
+    </div>
+
+    <!-- ───────────── Obsidian plugin ───────────── -->
+    <h2 id="obsidian">Obsidian plugin</h2>
     <p>
       Open Obsidian → Settings → Community Plugins → Browse → search for
-      <code>basalt</code>. The plugin reads your active vault and writes briefs
-      into a configurable folder.
+      <code>basalt</code>. The plugin reads your active vault and writes
+      briefs into a configurable folder.
     </p>
 
-    <h2>MCP server</h2>
+    <!-- ───────────── MCP ───────────── -->
+    <h2 id="mcp">MCP server — from npm</h2>
     <p>For Claude Desktop, Cursor, and anything else that speaks MCP:</p>
-    <pre><code>claude mcp add basalt -- npx -y @basalt/mcp</code></pre>
+<pre><code>claude mcp add basalt -- npx -y @basalt/mcp</code></pre>
     <p>
-      The MCP exposes six read-only verbs. Promote-to-note is intentionally
-      absent from MCP — agents can describe a finding, but only humans turn it
-      into a vault file.
+      Exposes six read-only verbs. Promote-to-note is intentionally absent —
+      agents can describe a finding; only humans turn it into a vault file.
     </p>
 
-    <h2>Desktop</h2>
-    <p>
-      Single-binary downloads for macOS (Universal), Linux x64, Windows x64.
-      Signed builds land at
-      <a href="https://github.com/plsft/basalt/releases">github.com/plsft/basalt/releases</a>.
-    </p>
-
-    <h2>Web cockpit</h2>
+    <!-- ───────────── Web ───────────── -->
+    <h2 id="web">Web cockpit</h2>
     <p>
       <a href="https://app.basalt.dev">app.basalt.dev</a> — Pro tier. Sign in
       with GitHub or Google, register a vault, generate briefs against your
       indexed corpus.
     </p>
 
-    <h2>Verify</h2>
+    <!-- ───────────── Verify ───────────── -->
+    <h2 id="verify">Verify</h2>
     <p>Every surface prints the same identity:</p>
-    <pre><code>basalt about
-# basalt 0.5.0
-# core   0.5.0
+<pre><code>basalt about
+# basalt 1.4.0
+# core   1.4.0
 # engine ok
 # index  /Users/you/.basalt/db.sqlite</code></pre>
   </section>
 </Default>
+
+<style>
+  .badge {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.1rem 0.5rem;
+    margin-left: 0.5rem;
+    border: 1px solid var(--color-basalt-rule);
+    color: var(--color-basalt-ink-dim);
+    vertical-align: middle;
+  }
+  .badge--beta {
+    color: var(--color-basalt-bg);
+    background: var(--color-basalt-accent-na);
+    border-color: var(--color-basalt-accent-na);
+  }
+  .dl-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin: 1.5rem 0 1rem;
+  }
+  .dl-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding: 1.2rem 1.1rem;
+    border: 1px solid var(--color-basalt-rule);
+    background: var(--color-basalt-bg-raised);
+    color: var(--color-basalt-ink);
+    text-decoration: none;
+    transition: border-color 120ms ease;
+  }
+  .dl-card:hover {
+    border-color: var(--color-basalt-accent-na);
+  }
+  .dl-os {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-basalt-ink-dim);
+  }
+  .dl-meta {
+    font-size: 0.95rem;
+  }
+  .dl-cta {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--color-basalt-accent-na);
+    margin-top: 0.4rem;
+  }
+  @media (max-width: 720px) {
+    .dl-grid { grid-template-columns: 1fr; }
+  }
+  .callout {
+    border-left: 3px solid var(--color-basalt-accent-na);
+    background: var(--color-basalt-bg-raised);
+    padding: 1rem 1.2rem;
+    margin: 1.2rem 0 2rem;
+    font-size: 0.95rem;
+  }
+  .callout p { margin: 0.4rem 0; }
+  .muted {
+    color: var(--color-basalt-ink-dim);
+    font-size: 0.9rem;
+  }
+</style>
