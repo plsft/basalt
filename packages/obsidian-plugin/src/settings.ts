@@ -20,6 +20,12 @@ export interface BasaltSettings {
   weeklyHour: number;
   /** Last weekly-run epoch ms; the scheduler uses this to throttle. */
   lastWeeklyRun: number;
+  /** v1 verb LLM augmentation provider. "none" disables. */
+  llmProvider: "none" | "ollama" | "openai" | "anthropic";
+  /** Model name override. Provider defaults apply when blank. */
+  llmModel: string;
+  /** BYOK API key for openai/anthropic. Empty for ollama or none. */
+  llmApiKey: string;
 }
 
 export const DEFAULT_SETTINGS: BasaltSettings = {
@@ -30,6 +36,9 @@ export const DEFAULT_SETTINGS: BasaltSettings = {
   privacyOptOut: true,
   weeklyHour: 9,
   lastWeeklyRun: 0,
+  llmProvider: "none",
+  llmModel: "",
+  llmApiKey: "",
 };
 
 export class BasaltSettingTab extends PluginSettingTab {
@@ -116,6 +125,60 @@ export class BasaltSettingTab extends PluginSettingTab {
           }
         }),
       );
+
+    containerEl.createEl("h3", { text: "LLM augmentation (v1 verbs)" });
+    containerEl.createEl("p", {
+      text: "Optional: when enabled, generates a named Implicit Thesis and verdicts on Contradictions via the chosen LLM. The base v0 verbs always run.",
+      cls: "setting-item-description",
+    });
+
+    new Setting(containerEl)
+      .setName("LLM provider")
+      .setDesc("Pick a backend, or 'None' to keep the v0-only output.")
+      .addDropdown((dd) =>
+        dd
+          .addOption("none", "None — v0 only")
+          .addOption("ollama", "Ollama (local)")
+          .addOption("openai", "OpenAI (BYOK)")
+          .addOption("anthropic", "Anthropic (BYOK)")
+          .setValue(this.plugin.settings.llmProvider)
+          .onChange(async (value) => {
+            this.plugin.settings.llmProvider = value as BasaltSettings["llmProvider"];
+            await this.plugin.saveSettings();
+            this.display();
+          }),
+      );
+
+    if (this.plugin.settings.llmProvider !== "none") {
+      new Setting(containerEl)
+        .setName("LLM model override")
+        .setDesc("Blank to use provider default.")
+        .addText((text) =>
+          text.setValue(this.plugin.settings.llmModel).onChange(async (value) => {
+            this.plugin.settings.llmModel = value.trim();
+            await this.plugin.saveSettings();
+          }),
+        );
+    }
+
+    if (
+      this.plugin.settings.llmProvider === "openai" ||
+      this.plugin.settings.llmProvider === "anthropic"
+    ) {
+      new Setting(containerEl)
+        .setName(`${this.plugin.settings.llmProvider} API key`)
+        .setDesc(
+          "Stored locally in this vault's plugin data. Never leaves your machine except to the provider you selected.",
+        )
+        .addText((text) => {
+          // biome-ignore lint/suspicious/noExplicitAny: Obsidian's text input doesn't type the underlying inputEl on the public API.
+          (text as any).inputEl.type = "password";
+          text.setValue(this.plugin.settings.llmApiKey).onChange(async (value) => {
+            this.plugin.settings.llmApiKey = value.trim();
+            await this.plugin.saveSettings();
+          });
+        });
+    }
 
     new Setting(containerEl)
       .setName("Privacy: opt out of all non-essential network")
