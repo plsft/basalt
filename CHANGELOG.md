@@ -6,6 +6,44 @@ Phase boundaries get a release tag (`v0.<phase>.0`); public launch tags `v1.0.0`
 
 ## Unreleased
 
+### Added
+- **v1.1.0 — LLM-augmented v1 verbs** (post-launch roadmap milestone #1 from
+  PHASE-6.md). Three verbs gain LLM-augmented "v1" variants alongside their
+  pure-heuristic v0 implementations; v0 keeps shipping when the LLM isn't
+  configured or rate-limits.
+  - **Implicit Thesis v1** (`findImplicitThesesV1`) — runs the v0 cluster
+    detector, then asks the configured `AIAdapter` to synthesize a single
+    English sentence naming the cluster's through-line in the author's
+    voice. System prompt anchors voice ("the author's own words, not a
+    label"); temperature 0.4; cap 120 tokens. LLM failures degrade
+    gracefully — the v0 finding still ships with `named_thesis: null`.
+  - **Contradiction v1** (`findContradictionsV1`) — wraps each v0 pair
+    with a `verdict` (`proven` | `apparent` | `undetermined`) from the
+    LLM, plus a verdict_reason. The verdict tells the surface whether to
+    treat the heuristic match as a real conflict or a topical overlap.
+    Robust JSON parser handles models that wrap their output in backticks
+    or add a preamble; off-enum verdicts fall back to undetermined.
+  - **Drift v1** (`auditDrift`) — *not* LLM-augmented despite the v1
+    name. Re-runs `findDrift` on the current window and tags each
+    historical finding with `auto_verdict`
+    (`confirmed`/`softened`/`reversed`/`vanished`) by comparing
+    `drift_pct` against the current measurement (`< 50%` magnitude →
+    softened; sign flip → reversed; project missing → vanished).
+- **Four `AIAdapter` implementations** under `@basalt/core/adapters/`:
+  - `OllamaAI` — local `/api/chat` against any Ollama-served model
+    (default `llama3.2:3b`); injectable fetch for tests.
+  - `OpenAIAI` — Chat Completions; also works with any OpenAI-compatible
+    endpoint (Groq, Together, etc.) via `baseUrl`. Supports
+    `OpenAI-Organization` header.
+  - `AnthropicAI` — Messages API; splits `system` messages out of the
+    array into the top-level `system` field; concatenates multiple
+    system messages; concatenates all text-block contents in the
+    response.
+  - `WorkersAI` — Cloudflare Workers AI binding (`env.AI.run`). No HTTP,
+    no API key — the binding is the credential. Handles both
+    `{ response }` and `{ result: { response } }` envelope shapes.
+- 40 new tests across the v1 verbs + AI adapters.
+
 ## v1.0.0 — 2026-05-11
 
 ### Added

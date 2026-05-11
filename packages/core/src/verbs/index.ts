@@ -13,8 +13,25 @@ import { findImplicitTheses } from "./thesis";
 export { findBuriedInsights } from "./buried";
 export { findConnections } from "./connection";
 export { findContradictions } from "./contradiction";
+export {
+  type ContradictionV1Finding,
+  type ContradictionV1Options,
+  type ContradictionVerdict,
+  findContradictionsV1,
+} from "./contradiction-v1";
 export { findDrift } from "./drift";
+export {
+  auditDrift,
+  compareDrift,
+  type DriftV1Finding,
+  type DriftVerdict,
+} from "./drift-v1";
 export { findImplicitTheses } from "./thesis";
+export {
+  findImplicitThesesV1,
+  type ImplicitThesisV1Finding,
+  type ThesisV1Options,
+} from "./thesis-v1";
 export type {
   BuriedInsightFinding,
   ConnectionFinding,
