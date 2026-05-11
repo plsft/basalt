@@ -20,12 +20,13 @@ import {
   OllamaAI,
   OllamaEmbedder,
   OpenAIAI,
+  promoteFindingToNote,
   renderBrief,
   type VaultEntry,
 } from "@basalt/core";
 import "@basalt/core/verbs";
 import { invoke } from "@tauri-apps/api/core";
-import { BaseDirectory, readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
+import { exists as fsExists, mkdir, readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
 import type { DesktopSettings } from "./settings";
 
 export interface DesktopBrief {
@@ -37,28 +38,60 @@ export interface DesktopBrief {
 }
 
 class TauriFilesystem implements FilesystemAdapter {
+  constructor(private readonly vaultRoot: string) {}
+
   async *walk(root: string): AsyncIterable<VaultEntry> {
     const entries = await invoke<Array<{ path: string; mtime_ms: number }>>("walk_vault", {
       root,
     });
     for (const e of entries) yield { path: e.path, mtime: e.mtime_ms };
   }
+
   async readFile(path: string): Promise<string> {
     return await readTextFile(path);
   }
-  async exists(_path: string): Promise<boolean> {
-    return true;
-  }
-  async createNoteFile(path: string, content: string): Promise<boolean> {
+
+  async exists(path: string): Promise<boolean> {
     try {
-      await writeTextFile(path, content, { baseDir: BaseDirectory.AppLocalData, create: true });
-      return true;
-    } catch (e) {
-      const msg = e instanceof Error ? e.message : String(e);
-      if (/exists/i.test(msg)) return false;
-      throw e;
+      return await fsExists(resolveInVault(this.vaultRoot, path));
+    } catch {
+      return false;
     }
   }
+
+  /** Create-only: resolves `relPath` against the vault root, creates any
+   *  missing parent directories, refuses to overwrite an existing file. */
+  async createNoteFile(relPath: string, content: string): Promise<boolean> {
+    const abs = resolveInVault(this.vaultRoot, relPath);
+    // Refuse to overwrite — match the architectural contract.
+    try {
+      if (await fsExists(abs)) return false;
+    } catch {
+      // best-effort; fall through to the create attempt
+    }
+    // Auto-create parent directory if missing.
+    const parent = abs.replace(/[/\\][^/\\]+$/, "");
+    if (parent && parent !== abs) {
+      try {
+        await mkdir(parent, { recursive: true });
+      } catch {
+        // mkdir on existing dir errors — ignore.
+      }
+    }
+    await writeTextFile(abs, content);
+    return true;
+  }
+}
+
+function resolveInVault(vaultRoot: string, relPath: string): string {
+  // Tauri's writeTextFile accepts absolute paths when fs:scope permits.
+  // If relPath is already absolute (Windows drive letter or POSIX leading
+  // slash), use it as-is; otherwise join against vaultRoot.
+  const isAbs =
+    relPath.startsWith("/") || /^[a-z]:[/\\]/i.test(relPath) || relPath.startsWith("\\\\");
+  if (isAbs) return relPath;
+  const root = vaultRoot.replace(/[/\\]+$/, "");
+  return `${root}/${relPath}`;
 }
 
 function resolveAi(s: DesktopSettings): AIAdapter | null {
@@ -92,7 +125,7 @@ export async function runBriefForVault(
   settings: DesktopSettings,
   onProgress: (msg: string) => void,
 ): Promise<DesktopBrief> {
-  const fs = new TauriFilesystem();
+  const fs = new TauriFilesystem(vault);
   const storage = new MemoryStorage();
   let embedding: OllamaEmbedder | MockEmbedder;
   try {
@@ -148,6 +181,26 @@ export async function runBriefForVault(
   };
 }
 
+/** Promote-to-note: write a finding back into the user's vault under the
+ *  configured promote folder. Returns the relative path written, or null
+ *  if the user has no current brief / a collision was hit. */
+export async function promoteFindingFromBrief(
+  vault: string,
+  brief: Brief,
+  findingIndex: number,
+  promoteFolder: string,
+): Promise<string | null> {
+  const allFindings: Finding[] = [];
+  for (const arr of Object.values(brief.findings)) if (arr) allFindings.push(...arr);
+  const finding = allFindings[findingIndex];
+  if (!finding) return null;
+
+  const note = promoteFindingToNote(finding, { folder: promoteFolder });
+  const fs = new TauriFilesystem(vault);
+  const ok = await fs.createNoteFile(note.relPath, note.body);
+  return ok ? note.relPath : null;
+}
+
 export async function pushSnapshotForVault(
   vault: string,
   settings: DesktopSettings,
@@ -156,7 +209,7 @@ export async function pushSnapshotForVault(
   if (!settings.apiToken) throw new Error("API token not set in Settings.");
   if (!settings.apiVaultId) throw new Error("Vault ID not set in Settings.");
 
-  const fs = new TauriFilesystem();
+  const fs = new TauriFilesystem(vault);
   const storage = new MemoryStorage();
   const embedder = new OllamaEmbedder({
     url: settings.ollamaUrl,

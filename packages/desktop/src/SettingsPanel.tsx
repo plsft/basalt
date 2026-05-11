@@ -46,6 +46,22 @@ export function SettingsPanel({ initial, onClose, onChange }: Props) {
           </Field>
         </Section>
 
+        <Section title="Promote-to-note">
+          <Field label="Folder under vault root">
+            <input
+              placeholder="Basalt"
+              className="bg-basalt-bg-raised border border-basalt-rule px-3 py-2 mono text-sm w-full"
+              value={s.promoteFolder}
+              onChange={(e) => update("promoteFolder", e.target.value)}
+            />
+          </Field>
+          <p className="text-xs text-basalt-ink-dim">
+            When you promote a finding, the new note is written to{" "}
+            <code>{`<vault>/${s.promoteFolder || "Basalt"}/<finding>.md`}</code>. Existing files are
+            never overwritten.
+          </p>
+        </Section>
+
         <Section title="LLM (v1 verbs)">
           <Field label="Provider">
             <select
