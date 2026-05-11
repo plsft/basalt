@@ -7,6 +7,33 @@ Phase boundaries get a release tag (`v0.<phase>.0`); public launch tags `v1.0.0`
 ## Unreleased
 
 ### Added
+- **CLI v1.1.0 plumbing**: `--llm <ollama|openai|anthropic|none>` flag on
+  `basalt brief` + every alias (`thesis`, `contradiction`, `connection`,
+  `drift`, `buried`); `--llm-model` for model override. When enabled,
+  runs the v1 verb augmentation pass after composition and appends the
+  named thesis / contradiction verdict as Markdown blockquotes. New
+  `basalt snapshot push` subcommand uploads the local SQLite index to the
+  configured API as a `VaultSnapshot` (mirrors
+  `packages/api/src/lib/snapshot.ts` shape byte-for-byte). `basalt audit`
+  gains a `--drift-v1` flag that re-runs Drift on the current window and
+  prints `auto_verdict` (confirmed/softened/reversed/vanished) per
+  historical finding.
+- `CliConfig` extends with `llmProvider`, `llmModel`, `apiUrl`, `apiToken`,
+  `apiVaultId`. Backwards-compatible: defaults remain `none` / blank.
+- `packages/cli/src/llm.ts` resolves config + flag overrides into the right
+  `AIAdapter`; reads `OPENAI_API_KEY` / `ANTHROPIC_API_KEY` from env (never
+  on-disk).
+- `packages/cli/src/snapshot.ts` serializes the index into the on-the-wire
+  shape (notes + base64-LE float32 embeddings) and `POST`s to
+  `/v1/vaults/:id/snapshot` with the session cookie.
+- `Engine.verbContext(top)` — public accessor that returns a ready
+  `VerbContext` for callers that want to run individual verbs (including
+  v1 LLM-augmented variants) without going through `brief()`.
+- `@basalt/core` index now re-exports the four AI adapters
+  (`OllamaAI`/`OpenAIAI`/`AnthropicAI`/`WorkersAI`) and the v1 verb fns
+  (`findImplicitThesesV1`, `findContradictionsV1`, `auditDrift`,
+  `compareDrift`). 14 new tests (snapshot serializer + llm resolver).
+
 - **v1.1.0 — LLM-augmented v1 verbs** (post-launch roadmap milestone #1 from
   PHASE-6.md). Three verbs gain LLM-augmented "v1" variants alongside their
   pure-heuristic v0 implementations; v0 keeps shipping when the LLM isn't

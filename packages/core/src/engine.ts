@@ -178,6 +178,17 @@ export class Engine {
     return await auditPending(storage, today);
   }
 
+  /** Build a VerbContext bound to this engine's dependencies + current graph.
+   *  Useful for callers that want to run individual verb functions (including
+   *  v1 LLM-augmented variants) without going through `brief()`. */
+  async verbContext(top: number = 3): Promise<VerbContext> {
+    const { storage, embedding, filesystem, options } = this.deps;
+    const today = options?.today ?? todayIso();
+    const vaultRoot = await this.findVaultRoot(filesystem);
+    const graph = await buildLinkGraph(filesystem, vaultRoot);
+    return { storage, embedding, graph, top, today };
+  }
+
   async close(): Promise<void> {
     await this.deps.storage.close();
   }

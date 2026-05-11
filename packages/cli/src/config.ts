@@ -13,6 +13,16 @@ export interface CliConfig {
   ollamaUrl: string;
   promoteFolder: string;
   dbPath: string;
+  /** Default LLM provider for the v1 verbs. "none" disables LLM features. */
+  llmProvider: "none" | "ollama" | "openai" | "anthropic";
+  /** Model name override; provider-specific defaults apply when unset. */
+  llmModel: string;
+  /** API base URL for `basalt snapshot push`. */
+  apiUrl: string;
+  /** API session token for `basalt snapshot push`. */
+  apiToken: string;
+  /** Vault ID this CLI's local index corresponds to on the API side. */
+  apiVaultId: string;
 }
 
 const paths = envPaths("basalt", { suffix: "" });
@@ -32,6 +42,11 @@ export function defaultConfig(): CliConfig {
     ollamaUrl: "http://localhost:11434",
     promoteFolder: "Basalt",
     dbPath: defaultDbPath(),
+    llmProvider: "none",
+    llmModel: "",
+    apiUrl: "https://api.basalt.dev",
+    apiToken: "",
+    apiVaultId: "",
   };
 }
 
