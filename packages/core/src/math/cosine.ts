@@ -1,7 +1,21 @@
 // packages/core/src/math/cosine.ts
-// Cosine similarity for L2-normalized vectors == dot product. Stub for TASK-1.6+.
+// Cosine similarity. For L2-normalized vectors, this collapses to dot
+// product (which is what the embedding pipeline at SPEC.md §2.2 produces).
 
-/** Cosine similarity between two pre-normalized Float32Arrays. */
-export function cosine(_a: Float32Array, _b: Float32Array): number {
-  throw new Error("cosine: not yet implemented (lands in TASK-1.6)");
+import { dot, l2Norm } from "./vector";
+
+/** Cosine similarity between two vectors.
+ *
+ *  Fast path: if both inputs are L2-normalized (always true for vectors
+ *  that came out of `EmbeddingAdapter.embed`), pass `assumeNormalized=true`
+ *  and we skip the norm computation entirely. */
+export function cosine(a: Float32Array, b: Float32Array, assumeNormalized = false): number {
+  if (a.length !== b.length) {
+    throw new Error(`cosine: length mismatch (${a.length} vs ${b.length})`);
+  }
+  const numerator = dot(a, b);
+  if (assumeNormalized) return numerator;
+  const denom = l2Norm(a) * l2Norm(b);
+  if (denom === 0) return 0;
+  return numerator / denom;
 }
