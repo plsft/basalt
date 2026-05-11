@@ -86,6 +86,80 @@ If a sentence-extraction divergence is ever found, document it here with the inp
 
 ---
 
+## 2026-05-10 — TASK-1.11 — Brief-parity divergences (verb-side)
+
+The full-Brief parity test (`tests/parity/brief.test.ts`) loads Python's
+pre-computed embeddings into TS storage so verbs see identical input vectors.
+With paths normalised (one-time `scripts/normalize-baseline-paths.py` ran
+against the committed baselines), three divergences remain. They are documented
+here as known-open and are the gating work to call Phase 1 exit-ready.
+
+### D-9: Connection — TS finds 3 candidates where Python found 0 (sample-14)
+
+**Symptom:** Python's `sample-14-connection.json` has zero findings; TS finds
+three cross-folder pairs with cosine ≥ 0.78.
+
+**Hypothesis (unverified):** the Python reference may be running with stricter
+hub-density on the sample vault than the TS port replicates. Specifically the
+sample-14 fixture has notes with high outgoing-link density that may sit just
+above `HUB_DENSITY_HARD = 1.5` in Python's measurement but just below in TS's
+(both compute `out_links / max(word_count/100, 1)` from the same notes).
+
+**Resolution path:**
+1. Add a temporary debug print to TS's `findConnections` that emits the chosen
+   pairs + per-note density at evaluation time.
+2. Run the Python CLI against the same fixture with the same instrumentation.
+3. Compare: which note's density measurement differs?
+4. If it's a parser-side word_count delta, the parser-parity test (which is
+   green at 100%) would have caught it — so it's likely link-resolution
+   (the `out_links` numerator).
+5. If TS's `replaceLinks` + `resolveLinkTargets` produces a different DISTINCT
+   target count than Python's `COUNT(DISTINCT target) GROUP BY from_note_id`,
+   that's the bug.
+
+### D-10: Implicit Thesis — TS finds 2 clusters where Python found 1 (sample-14)
+
+**Symptom:** TS surfaces an additional cluster
+`{01-Daily/2026-04-28.md, 01-Daily/2026-05-03.md, 02-Projects/Atlas/Strategy/Mon.md, 02-Projects/Atlas/Strategy/Wed.md}`
+that Python doesn't.
+
+**Hypothesis:** The diversity gate (≥ 2 folders OR ≥ 30d span) might be evaluated
+against slightly different folder strings (forward-vs-back-slash splits at the
+top folder). The TS port uses `relPath.indexOf("/")` to extract `topFolder`.
+
+**Resolution path:** Verify both ports compute identical `top_folder` for every
+member of the disputed cluster. If TS sees `01-Daily` and `02-Projects` as
+two folders (diversity = 2), but Python sees `01-Daily\…` and `02-Projects\…`
+collapse to a different value, there's a backslash-handling delta.
+
+### D-11: Contradiction — small score drift + ordering mismatch (large-200)
+
+**Symptom:** Same set of candidate pairs but score differs by ~0.07 in the
+top spot, and the second-place pair swaps. Within `ε = 1e-5` tolerance? No —
+the delta is 7×10⁴ above ε.
+
+**Hypothesis (most likely):** Python's `_NEGATION` regex includes a backref
+clause `not\s+(just|merely|only|simply|enough|the|a)` that might match
+slightly differently on TS's `RegExp` engine vs Python's `re`. The signals
+list is correct but the score (which sums signal weights) differs because TS
+fires one extra signal that Python suppresses — or vice versa.
+
+**Resolution path:** For each diverging pair, dump both the Python-computed
+`signals` list and the TS-computed list. The signal-set delta is the bug.
+
+### D-12: Buried Insight — full strict parity passes ✓
+
+For `tests/parity/baseline/sample-14-buried.json` and
+`tests/parity/baseline/large-200-buried.json`, after path normalisation
+(D-9 above's prerequisite) **the Buried Insight verb is at strict parity** —
+identical findings, identical ordering, scores within ε. Recorded here as a
+positive-control proof point: the embedding-injection + verb-execution +
+finding-comparison pipeline works correctly for at least one verb today.
+
+The remaining three verbs need the per-D-9/D-10/D-11 investigations above.
+
+---
+
 ## How divergences are added
 
 When a divergence does eventually land:

@@ -24,13 +24,13 @@
           "asymmetric reversal marker"
         ],
         "note_a": {
-          "rel_path": "01-Daily\\2026-04-28.md",
+          "rel_path": "01-Daily/2026-04-28.md",
           "title": "2026-04-28",
           "quote": "# 2026-04-28 ## Today - Atlas Atlas Atlas. Whole day on Atlas. The launch-sequencing thing is now resolved per Wed — docs first, product second. Reversing felt expensive at first; turns out it's just honest. - Atlas: drafted the first three docs. Already exposed two API design mistakes.",
           "quote_provenance": "opening passage"
         },
         "note_b": {
-          "rel_path": "02-Projects\\Atlas\\Strategy\\Wed.md",
+          "rel_path": "02-Projects/Atlas/Strategy/Wed.md",
           "title": "Atlas — Launch Sequencing (Wednesday, reversed)",
           "quote": "The right order is: docs → product → external launch.",
           "quote_provenance": "first prose sentence"
@@ -39,8 +39,8 @@
           {
             "kind": "neither_edited",
             "params": {
-              "a": "01-Daily\\2026-04-28.md",
-              "b": "02-Projects\\Atlas\\Strategy\\Wed.md",
+              "a": "01-Daily/2026-04-28.md",
+              "b": "02-Projects/Atlas/Strategy/Wed.md",
               "grace_days": 60
             },
             "text": "wrong if neither note is edited within 60 days (you don't think it's a real conflict — heuristic was a false positive)"
@@ -48,8 +48,8 @@
           {
             "kind": "still_in_conflict",
             "params": {
-              "a": "01-Daily\\2026-04-28.md",
-              "b": "02-Projects\\Atlas\\Strategy\\Wed.md",
+              "a": "01-Daily/2026-04-28.md",
+              "b": "02-Projects/Atlas/Strategy/Wed.md",
               "grace_days": 90
             },
             "text": "confirmed if both notes still exist with the contradiction signal intact after 90 days (the conflict is real and unresolved)"
@@ -67,13 +67,13 @@
           "asymmetric negation"
         ],
         "note_a": {
-          "rel_path": "04-Trading\\Signals\\OFI-Validation.md",
+          "rel_path": "04-Trading/Signals/OFI-Validation.md",
           "title": "OFI Walk-Forward Validation",
           "quote": "Independent validation of order-flow imbalance as a directional signal.",
           "quote_provenance": "blockquote summary"
         },
         "note_b": {
-          "rel_path": "02-Projects\\SignalBot\\HYPOTHESIS.md",
+          "rel_path": "02-Projects/SignalBot/HYPOTHESIS.md",
           "title": "SignalBot — Original Hypothesis",
           "quote": "The sustainable edge isn't speed alone — it's speed + intelligence.",
           "quote_provenance": "callout body"
@@ -82,8 +82,8 @@
           {
             "kind": "neither_edited",
             "params": {
-              "a": "04-Trading\\Signals\\OFI-Validation.md",
-              "b": "02-Projects\\SignalBot\\HYPOTHESIS.md",
+              "a": "04-Trading/Signals/OFI-Validation.md",
+              "b": "02-Projects/SignalBot/HYPOTHESIS.md",
               "grace_days": 60
             },
             "text": "wrong if neither note is edited within 60 days (you don't think it's a real conflict — heuristic was a false positive)"
@@ -91,8 +91,8 @@
           {
             "kind": "still_in_conflict",
             "params": {
-              "a": "04-Trading\\Signals\\OFI-Validation.md",
-              "b": "02-Projects\\SignalBot\\HYPOTHESIS.md",
+              "a": "04-Trading/Signals/OFI-Validation.md",
+              "b": "02-Projects/SignalBot/HYPOTHESIS.md",
               "grace_days": 90
             },
             "text": "confirmed if both notes still exist with the contradiction signal intact after 90 days (the conflict is real and unresolved)"
