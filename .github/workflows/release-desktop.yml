@@ -1,0 +1,114 @@
+name: Release Desktop
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: write
+
+env:
+  BUN_VERSION: 1.3.13
+
+jobs:
+  desktop:
+    name: ${{ matrix.os.label }}
+    runs-on: ${{ matrix.os.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - { label: macOS (Universal), runner: macos-14, target: "universal-apple-darwin", bundle: "dmg" }
+          - { label: Linux x64,         runner: ubuntu-22.04, target: "x86_64-unknown-linux-gnu", bundle: "deb,appimage" }
+          - { label: Windows x64,       runner: windows-2022, target: "x86_64-pc-windows-msvc", bundle: "msi,nsis" }
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+
+      - name: Install Rust (stable)
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.os.target }}
+
+      - name: Cache cargo
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            packages/desktop/src-tauri/target/
+          key: ${{ matrix.os.runner }}-cargo-${{ hashFiles('packages/desktop/src-tauri/Cargo.lock') }}
+
+      - name: Linux deps
+        if: matrix.os.runner == 'ubuntu-22.04'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libgtk-3-dev librsvg2-dev libayatana-appindicator3-dev patchelf
+
+      - name: Install JS deps
+        run: bun install --frozen-lockfile
+
+      - name: Build @basalt/core
+        run: bun run --cwd packages/core build
+
+      - name: Build Tauri app (with macOS signing if configured)
+        env:
+          # macOS signing — populated when GitHub secrets are present.
+          # Register: APPLE_ID, APPLE_PASSWORD (app-specific), APPLE_TEAM_ID,
+          # APPLE_CERTIFICATE (base64 of .p12), APPLE_CERTIFICATE_PASSWORD,
+          # APPLE_SIGNING_IDENTITY (e.g. "Developer ID Application: ...").
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
+          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+          APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
+          # Windows Authenticode (optional)
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+        run: |
+          cd packages/desktop
+          bun run tauri build --target ${{ matrix.os.target }}
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: desktop-${{ matrix.os.runner }}
+          path: |
+            packages/desktop/src-tauri/target/${{ matrix.os.target }}/release/bundle/**/*.dmg
+            packages/desktop/src-tauri/target/${{ matrix.os.target }}/release/bundle/**/*.app.tar.gz
+            packages/desktop/src-tauri/target/${{ matrix.os.target }}/release/bundle/**/*.deb
+            packages/desktop/src-tauri/target/${{ matrix.os.target }}/release/bundle/**/*.AppImage
+            packages/desktop/src-tauri/target/${{ matrix.os.target }}/release/bundle/**/*.msi
+            packages/desktop/src-tauri/target/${{ matrix.os.target }}/release/bundle/**/*-setup.exe
+            packages/desktop/src-tauri/target/${{ matrix.os.target }}/release/bundle/**/*.sig
+
+  github-release:
+    name: Attach to GitHub release
+    needs: desktop
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          pattern: desktop-*
+          merge-multiple: true
+
+      - name: Attach to existing release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          TAG="${GITHUB_REF#refs/tags/}"
+          # Release was created by release-cli-mcp.yml; we just attach.
+          find artifacts -type f | xargs -r gh release upload "${TAG}" --clobber || true
