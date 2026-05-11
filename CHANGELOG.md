@@ -6,6 +6,8 @@ Phase boundaries get a release tag (`v0.<phase>.0`); public launch tags `v1.0.0`
 
 ## Unreleased
 
+## v1.4.0 — 2026-05-11
+
 ### Added — v1.4.0 work (self-hosting)
 - `packages/api/src/selfhost/` — Node-runtime variant of the API. Drops
   in `SelfhostD1` (better-sqlite3), `SelfhostKV` (one file per key with
