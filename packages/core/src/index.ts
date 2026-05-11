@@ -14,6 +14,33 @@ export type {
   StorageAdapter,
   VaultEntry,
 } from "./adapters";
+export {
+  ANTHROPIC_AI_DEFAULT_BASE_URL,
+  ANTHROPIC_AI_DEFAULT_MODEL,
+  AnthropicAI,
+  AnthropicAIError,
+  type AnthropicOptions,
+} from "./adapters/ai-anthropic";
+export {
+  OLLAMA_AI_DEFAULT_MODEL,
+  OLLAMA_AI_DEFAULT_URL,
+  OllamaAI,
+  OllamaAIError,
+  type OllamaAIOptions,
+} from "./adapters/ai-ollama";
+export {
+  OPENAI_AI_DEFAULT_BASE_URL,
+  OPENAI_AI_DEFAULT_MODEL,
+  OpenAIAI,
+  OpenAIAIError,
+  type OpenAIOptions,
+} from "./adapters/ai-openai";
+export {
+  WORKERS_AI_DEFAULT_MODEL,
+  WorkersAI,
+  type WorkersAIBinding,
+  type WorkersAIOptions,
+} from "./adapters/ai-workers";
 export { MockEmbedder, type MockEmbeddingOptions } from "./adapters/embedding-mock";
 export {
   EMBED_CONCURRENCY,
@@ -52,5 +79,18 @@ export type {
   TrackRecordSummary,
   Verb,
 } from "./types";
-export { verbs } from "./verbs";
+export {
+  auditDrift,
+  type ContradictionV1Finding,
+  type ContradictionV1Options,
+  type ContradictionVerdict,
+  compareDrift,
+  type DriftV1Finding,
+  type DriftVerdict,
+  findContradictionsV1,
+  findImplicitThesesV1,
+  type ImplicitThesisV1Finding,
+  type ThesisV1Options,
+  verbs,
+} from "./verbs";
 export type { QuoteProvenance, VerbResult } from "./verbs/types";
