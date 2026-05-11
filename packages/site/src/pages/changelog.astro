@@ -1,0 +1,31 @@
+---
+import { existsSync, readFileSync } from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import Default from "../layouts/Default.astro";
+
+const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../../..");
+const changelogPath = path.join(repoRoot, "CHANGELOG.md");
+const raw = existsSync(changelogPath)
+  ? readFileSync(changelogPath, "utf-8")
+  : "_CHANGELOG.md not found at build time._";
+---
+
+<Default title="Changelog · Basalt">
+  <section class="container">
+    <span class="numeral">Changelog</span>
+    <h1>What's shipped, what's next.</h1>
+    <p>Generated from <code>CHANGELOG.md</code> at build time.</p>
+    <pre class="changelog">{raw}</pre>
+  </section>
+</Default>
+
+<style>
+  .changelog {
+    white-space: pre-wrap;
+    font-size: 0.85rem;
+    line-height: 1.7;
+    max-height: 80vh;
+    overflow: auto;
+  }
+</style>

@@ -1,0 +1,58 @@
+---
+import Default from "../layouts/Default.astro";
+---
+
+<Default title="Install · Basalt" description="Install Basalt on every surface — CLI, plugin, MCP, desktop, web.">
+  <section class="container">
+    <span class="numeral">Install</span>
+    <h1>Pick the surface that already fits your day.</h1>
+    <p>
+      Everything below installs the same engine. Run them side by side; they
+      share the index database at <code>~/.basalt/</code>.
+    </p>
+
+    <h2>CLI</h2>
+    <pre><code>npm install -g @basalt/cli
+basalt init        # walks the vault, builds the index
+basalt brief       # writes today's brief into the vault
+basalt about       # prints version + bindings</code></pre>
+
+    <h2>Obsidian plugin</h2>
+    <p>
+      Open Obsidian → Settings → Community Plugins → Browse → search for
+      <code>basalt</code>. The plugin reads your active vault and writes briefs
+      into a configurable folder.
+    </p>
+
+    <h2>MCP server</h2>
+    <p>For Claude Desktop, Cursor, and anything else that speaks MCP:</p>
+    <pre><code>claude mcp add basalt -- npx -y @basalt/mcp</code></pre>
+    <p>
+      The MCP exposes six read-only verbs. Promote-to-note is intentionally
+      absent from MCP — agents can describe a finding, but only humans turn it
+      into a vault file.
+    </p>
+
+    <h2>Desktop</h2>
+    <p>
+      Single-binary downloads for macOS (Universal), Linux x64, Windows x64.
+      Signed builds land at
+      <a href="https://github.com/plsft/basalt/releases">github.com/plsft/basalt/releases</a>.
+    </p>
+
+    <h2>Web cockpit</h2>
+    <p>
+      <a href="https://app.basalt.dev">app.basalt.dev</a> — Pro tier. Sign in
+      with GitHub or Google, register a vault, generate briefs against your
+      indexed corpus.
+    </p>
+
+    <h2>Verify</h2>
+    <p>Every surface prints the same identity:</p>
+    <pre><code>basalt about
+# basalt 0.5.0
+# core   0.5.0
+# engine ok
+# index  /Users/you/.basalt/db.sqlite</code></pre>
+  </section>
+</Default>

@@ -1,0 +1,31 @@
+---
+title: Obsidian plugin
+description: Run Basalt directly inside Obsidian.
+---
+
+## Install
+
+1. Open Obsidian → Settings → Community Plugins → Browse
+2. Search for `basalt`
+3. Install and enable
+
+## First brief
+
+- Open the command palette (Cmd/Ctrl+P)
+- Run `Basalt: Generate Brief`
+- The brief lands in the folder configured under Settings → Basalt (defaults to `Briefs/`)
+
+## Settings
+
+| Setting | Default | What |
+| --- | --- | --- |
+| Brief folder | `Briefs/` | Where new briefs are created |
+| Window | `30d` | How far back to consider notes |
+| Embeddings provider | `ollama` | Or `mock` for testing |
+| Ollama URL | `http://localhost:11434` | |
+
+## Indexing
+
+The plugin uses `sql.js` (WASM) for its index — it writes to a single
+`.basalt-index.db` file inside your vault. Add `.basalt-index.db` to your
+ignore list if you sync the vault and don't want the index synced.

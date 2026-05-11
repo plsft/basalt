@@ -1,0 +1,90 @@
+---
+const elements = [
+  { sym: "Na", num: 11, name: "Sodium" },
+  { sym: "Cl", num: 17, name: "Chlorine" },
+  { sym: "Hg", num: 80, name: "Mercury" },
+  { sym: "C", num: 6, name: "Carbon" },
+  { sym: "Au", num: 79, name: "Gold" },
+];
+---
+
+<footer class="site-footer">
+  <div class="inner container">
+    <div class="strip">
+      {elements.map((e) => (
+        <span class="tile mono">
+          <span class="num">{e.num}</span>
+          <span class="sym">{e.sym}</span>
+        </span>
+      ))}
+    </div>
+    <div class="meta">
+      <p class="mono">© 1556 Ventures LLC · MIT</p>
+      <ul>
+        <li><a href="https://github.com/plsft/basalt">GitHub</a></li>
+        <li><a href="/privacy">Privacy</a></li>
+        <li><a href="/changelog">Changelog</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--color-basalt-rule);
+    padding: 4rem 0 6rem;
+    background: var(--color-basalt-bg);
+  }
+  .strip {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+  }
+  .tile {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0.6rem 0.7rem;
+    border: 1px solid var(--color-basalt-rule);
+    background: var(--color-basalt-bg-raised);
+    min-width: 3rem;
+  }
+  .num {
+    font-size: 0.6rem;
+    color: var(--color-basalt-ink-dim);
+  }
+  .sym {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--color-basalt-ink);
+  }
+  .meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .meta p {
+    color: var(--color-basalt-ink-dim);
+    font-size: 0.8rem;
+    margin: 0;
+  }
+  .meta ul {
+    display: flex;
+    gap: 1.4rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .meta a {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--color-basalt-ink-dim);
+    border: none;
+  }
+  .meta a:hover {
+    color: var(--color-basalt-ink);
+  }
+</style>

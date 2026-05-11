@@ -6,8 +6,20 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "build": "exit 0",
-    "typecheck": "tsc --noEmit",
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "typecheck": "astro check",
     "test": "echo \"@basalt/site: no tests yet\" && exit 0"
+  },
+  "dependencies": {
+    "@basalt/ui": "workspace:*",
+    "astro": "^5.0.0",
+    "@astrojs/mdx": "^4.0.0",
+    "@astrojs/sitemap": "^3.2.1"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.4",
+    "typescript": "5.7.2"
   }
 }

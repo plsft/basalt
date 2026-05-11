@@ -1,0 +1,31 @@
+---
+title: Connection (C)
+description: Two notes you wrote months apart that are the same idea.
+---
+
+**Element:** Carbon (C · 6) · forms more bonds than any other element.
+
+## What it does
+
+Finds pairs of notes whose embedded content is highly similar, while their
+explicit link graph is at distance ≥ 2 — i.e. you wrote the same thing twice
+and never connected the two.
+
+## Algorithm sketch
+
+1. For each note, find its k-nearest neighbors in embedding space (k=20)
+2. Filter to neighbors at graph distance ≥ 2 (i.e. no shared link/backlink)
+3. Apply hub-penalty so daily-notes don't dominate
+4. Sort by similarity × novelty (embedding similarity × inverse hub-frequency)
+
+## False positives
+
+- **Templated notes.** Two notes from the same template will look similar.
+  Add the template path to `.basalt/config.toml::ignored_templates`.
+- **Quoted material.** If two notes quote the same paper, they'll match. The
+  quote extractor in the parser handles this for top-k cases.
+
+## Confidence
+
+Connection confidence is the raw cosine similarity (0–1). Above 0.78 is a real
+match; below 0.65 is noise.

@@ -1,0 +1,81 @@
+---
+const links = [
+  { href: "/install", label: "Install" },
+  { href: "/pricing", label: "Pricing" },
+  { href: "/privacy", label: "Privacy" },
+  { href: "https://docs.basalt.dev", label: "Docs" },
+];
+---
+
+<header class="site-header">
+  <div class="inner container">
+    <a href="/" class="logo mono" aria-label="Basalt home">
+      <span class="logo-tile">Na</span>
+      <span class="logo-word">basalt</span>
+    </a>
+    <nav>
+      <ul>
+        {links.map((l) => (
+          <li><a href={l.href}>{l.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    border-bottom: 1px solid var(--color-basalt-rule);
+    padding: 1.2rem 0;
+  }
+  .inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 88ch;
+  }
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--color-basalt-ink);
+    border: none;
+    font-weight: 500;
+  }
+  .logo-tile {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    background: var(--color-basalt-accent-na);
+    color: var(--color-basalt-bg);
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+  .logo-word {
+    font-size: 1rem;
+    letter-spacing: 0.02em;
+  }
+  nav ul {
+    display: flex;
+    gap: 1.4rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  nav a {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    text-transform: lowercase;
+    letter-spacing: 0.05em;
+    color: var(--color-basalt-ink-dim);
+    border: none;
+  }
+  nav a:hover {
+    color: var(--color-basalt-ink);
+  }
+  @media (max-width: 640px) {
+    .inner { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+  }
+</style>

@@ -1,0 +1,37 @@
+---
+title: Contradiction (Cl)
+description: Two notes that disagree with each other.
+---
+
+**Element:** Chlorine (Cl · 17) · the opposite of sodium; with it forms salt.
+
+## What it does
+
+Finds pairs of notes where you assert opposing positions — the kind of slow
+disagreement that only becomes visible across months.
+
+## Algorithm sketch
+
+1. Extract candidate claim sentences (sentences with a polarity-bearing verb)
+2. For each pair within an embedding-similarity window, run the 21 polarity-pair
+   classifiers (e.g. "must / must not", "always / sometimes", "preserved / removed")
+3. Filter by recency span (default: ≥ 30 days apart) to bias toward slow drift
+4. Rank by polarity strength × embedding distance
+
+## Polarity pairs
+
+The 21 pairs are listed in `SPEC.md §7.3`. They were tuned against George's
+vault and the bundled fixtures; tuning them per-vault is on the roadmap.
+
+## False positives
+
+- **Rhetorical opposition.** "Some people think X; I think Y" can register as
+  a contradiction with itself. The audit pass catches most.
+- **Quoted text.** Sentences inside blockquotes are still indexed but get
+  down-weighted via the `quote_penalty` factor.
+
+## Confidence
+
+Pair confidence multiplies polarity strength × embedding distance × recency
+gap. A high-confidence contradiction is the kind worth investigating; a
+low-confidence one is usually you exploring an idea.

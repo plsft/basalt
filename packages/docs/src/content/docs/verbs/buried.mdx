@@ -1,0 +1,36 @@
+---
+title: Buried Insight (Au)
+description: The line you wrote in 2022 that your current work keeps mining.
+---
+
+**Element:** Gold (Au · 79) · the buried treasure.
+
+## What it does
+
+Surfaces individual sentences from older notes that have semantic kinship with
+multiple recent notes — and aren't linked to them. The "you said this years ago
+and have been re-discovering it ever since" finding.
+
+## Algorithm sketch
+
+1. Sentence-split every note in the vault
+2. Embed each sentence independently
+3. For each sentence older than `cooldown_days` (default 365), find recent
+   sentences within similarity ≥ `match_threshold`
+4. Score by `match_count × similarity_mean × recency_weight`
+5. Return top-k with quote context (parent paragraph)
+
+## Thresholds
+
+| Setting | Default |
+| --- | --- |
+| `cooldown_days` | 365 |
+| `match_threshold` | 0.78 |
+| `match_count_min` | 3 |
+| `recency_window_days` | 60 |
+
+## Confidence
+
+Buried Insight confidence is `match_count_pct × similarity_mean`. A finding
+with ≥ 5 recent matches at ≥ 0.85 similarity is gold; under 3 matches is
+probably coincidence.
