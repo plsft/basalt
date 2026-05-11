@@ -1,0 +1,38 @@
+---
+title: Threat model
+description: What Basalt protects against, and what it doesn't.
+---
+
+## In scope
+
+- **Vault tampering.** The index manifest is BLAKE3-hashed; modifying a note
+  after indexing is detected on the next read.
+- **Server-side index leak (Pro).** Indexes are stored per-user in D1 with
+  row-level isolation; the worker authenticates every read.
+- **Vault Sync server compromise.** All synced data is E2EE; the server stores
+  ciphertext only. Compromise leaks ciphertext, not vault content.
+- **Brief substitution.** The audit chain detects swapped briefs.
+- **Vendor disappearance.** Open tier never depends on our infrastructure.
+
+## Out of scope
+
+- **Local machine compromise.** A keylogger or screen-scraper on your laptop
+  beats Basalt completely. We do not pretend otherwise.
+- **Supply-chain attack on Basalt itself.** We mitigate via signed releases
+  (Apple Dev ID on macOS, Authenticode on Windows when available, BLAKE3
+  manifests for all platforms). A successful build-system compromise still
+  defeats us.
+- **The LLM provider you BYOK to.** Their data handling is their problem.
+- **Quantum-resistant key recovery.** Vault Sync uses Argon2id + AES-GCM. If
+  you need post-quantum resistance, don't use Vault Sync.
+
+## Verifying a release
+
+Every GitHub release publishes BLAKE3 hashes. Verify before installing:
+
+```sh
+b3sum --check basalt-0.5.0-macos-universal.tar.gz.b3
+```
+
+The hashes themselves are signed by the Basalt release key. Public key is in
+`SECURITY.md` in the repo.

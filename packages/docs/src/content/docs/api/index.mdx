@@ -1,0 +1,25 @@
+---
+title: API
+description: REST API for the Basalt web cockpit.
+---
+
+The Pro-tier web cockpit is built on a Hono application at
+`https://api.basalt.dev`, running on Cloudflare Workers.
+
+| Method | Path | What |
+| --- | --- | --- |
+| `POST` | `/v1/auth/oauth/start` | Begin GitHub/Google OAuth |
+| `GET` | `/v1/me` | Current user |
+| `GET` | `/v1/vaults` | List registered vaults |
+| `POST` | `/v1/vaults` | Register a new vault |
+| `POST` | `/v1/briefs/generate` | Generate a brief against a registered vault |
+| `GET` | `/v1/briefs` | List recent briefs |
+| `GET` | `/v1/briefs/:id` | Fetch a brief |
+| `GET` | `/v1/findings` | Cross-vault finding timeline |
+| `POST` | `/v1/billing/checkout` | Create a Stripe Checkout session |
+
+Authentication is cookie-based session, set by `/v1/auth/oauth/callback`.
+Rate limiting is 60 req/min per session by default; `/v1/briefs/generate` is
+6 req/min.
+
+See [reference](/api/reference/) for the auto-generated OpenAPI spec.

@@ -1,0 +1,70 @@
+---
+import Default from "../layouts/Default.astro";
+---
+
+<Default title="Status · Basalt" description="Basalt service status. Open tier is local-first; this page covers the hosted Pro surfaces.">
+  <section class="container">
+    <span class="numeral">Status</span>
+    <h1>Hosted surface status.</h1>
+    <p>
+      The Open tier (CLI, plugin, MCP, desktop) does not depend on our
+      infrastructure. This page covers <code>api.basalt.dev</code> (Pro brief
+      generation), <code>app.basalt.dev</code> (web cockpit), and
+      <code>docs.basalt.dev</code> (documentation).
+    </p>
+    <div id="status-grid">
+      <p class="muted mono">Loading…</p>
+    </div>
+  </section>
+</Default>
+
+<script>
+  const apiBase = "https://api.basalt.dev";
+  const surfaces = [
+    { id: "api", name: "API", url: `${apiBase}/v1/status` },
+    { id: "site", name: "Marketing", url: "https://basalt.dev/" },
+    { id: "docs", name: "Docs", url: "https://docs.basalt.dev/" },
+    { id: "app", name: "Web cockpit", url: "https://app.basalt.dev/" },
+  ];
+  const grid = document.getElementById("status-grid");
+  if (grid) {
+    grid.innerHTML = "";
+    for (const s of surfaces) {
+      const div = document.createElement("div");
+      div.className = "row";
+      div.innerHTML = `<span class="mono name">${s.name}</span><span class="mono state" data-id="${s.id}">…</span>`;
+      grid.appendChild(div);
+    }
+    Promise.all(
+      surfaces.map(async (s) => {
+        const el = grid.querySelector(`[data-id="${s.id}"]`) as HTMLElement | null;
+        try {
+          const res = await fetch(s.url, { method: s.id === "api" ? "GET" : "HEAD", mode: "cors" });
+          if (el) {
+            el.textContent = res.ok ? "ok" : `degraded (${res.status})`;
+            el.classList.add(res.ok ? "ok" : "degraded");
+          }
+        } catch {
+          if (el) {
+            el.textContent = "unreachable";
+            el.classList.add("degraded");
+          }
+        }
+      }),
+    );
+  }
+</script>
+
+<style is:global>
+  #status-grid { margin-top: 2rem; }
+  .row {
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid var(--color-basalt-rule);
+    padding: 1rem 0;
+    font-size: 0.9rem;
+  }
+  .row:last-of-type { border-bottom: 1px solid var(--color-basalt-rule); }
+  .state.ok { color: var(--color-basalt-accent-cl); }
+  .state.degraded { color: var(--color-basalt-danger); }
+</style>

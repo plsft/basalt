@@ -1,0 +1,72 @@
+---
+interface Props {
+  symbol: string;
+  number: number;
+  name: string;
+  verb: string;
+  blurb: string;
+  accent: "na" | "cl" | "hg" | "c" | "au";
+}
+const { symbol, number, name, verb, blurb, accent } = Astro.props;
+---
+
+<article class={`tile tile--${accent}`}>
+  <header>
+    <span class="number mono">{number}</span>
+    <span class="symbol">{symbol}</span>
+  </header>
+  <h3 class="verb">{verb}</h3>
+  <p class="elname mono">{name}</p>
+  <p class="blurb">{blurb}</p>
+</article>
+
+<style>
+  .tile {
+    border: 1px solid var(--color-basalt-rule);
+    background: var(--color-basalt-bg-raised);
+    padding: 1.4rem 1.4rem 1.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    min-height: 14rem;
+  }
+  .tile header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 0.6rem;
+  }
+  .number {
+    color: var(--color-basalt-ink-dim);
+    font-size: 0.75rem;
+  }
+  .symbol {
+    font-size: 2.2rem;
+    font-family: var(--font-mono);
+    font-weight: 700;
+  }
+  .verb {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    margin: 0;
+  }
+  .elname {
+    color: var(--color-basalt-ink-dim);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin: 0 0 0.4rem;
+  }
+  .blurb {
+    font-size: 0.95rem;
+    line-height: 1.55;
+    margin: 0;
+    color: var(--color-basalt-ink);
+  }
+
+  .tile--na .symbol { color: var(--color-basalt-accent-na); }
+  .tile--cl .symbol { color: var(--color-basalt-accent-cl); }
+  .tile--hg .symbol { color: var(--color-basalt-accent-hg); }
+  .tile--c  .symbol { color: var(--color-basalt-accent-c); }
+  .tile--au .symbol { color: var(--color-basalt-accent-au); }
+</style>

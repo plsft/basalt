@@ -1,0 +1,30 @@
+---
+title: Anthropic
+description: Use Claude for Implicit Thesis synthesis.
+---
+
+## Get a key
+
+1. Sign in at [console.anthropic.com](https://console.anthropic.com)
+2. **Settings → API Keys → Create Key**
+3. Copy the value
+
+## Set it
+
+```sh
+basalt config set provider.anthropic.api_key sk-ant-...
+```
+
+## Models used
+
+| Use | Model |
+| --- | --- |
+| Synthesis | `claude-sonnet-4-6` (default) |
+| Audit reasoning | `claude-haiku-4-5` (cheap) |
+
+Anthropic does not currently offer a competitive embedding model; pair it with
+Ollama (free, local) or OpenAI for embeddings.
+
+## Cost expectations
+
+Brief synthesis: ~$0.02–$0.05 per brief on Sonnet, ~$0.005 on Haiku.

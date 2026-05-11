@@ -1,0 +1,44 @@
+---
+title: Implicit Thesis (Na)
+description: The through-line you keep returning to.
+---
+
+**Element:** Sodium (Na · 11) · alkali metal, foundational.
+
+## What it does
+
+Implicit Thesis finds tight neighborhoods of notes that pull toward a single
+position — and (with LLM synthesis enabled) writes that position as a sentence.
+
+Not a cluster label. Not a tag. An actual thesis sentence in your voice.
+
+## Algorithm sketch
+
+1. Build a link graph over the indexed notes
+2. Apply hub-penalty smoothing (heavy hubs like daily-notes get down-weighted)
+3. Detect tight near-cliques (density ≥ 0.5)
+4. For each clique, pull representative quotes
+5. Synthesize a thesis sentence via the configured LLM (or skip with `--no-llm`)
+
+## Thresholds
+
+| Setting | Default | Where to override |
+| --- | --- | --- |
+| `HUB_DENSITY_HARD` | 1.5 | `SPEC.md §9.2` |
+| `HUB_DENSITY_SOFT` | 0.5 | `SPEC.md §9.2` |
+| Min clique size | 3 | `--min-clique` |
+| Confidence floor | 0.55 | `--confidence-floor` |
+
+## False positives
+
+The most common failure mode is **diary clusters**: 12 daily notes all
+mentioning "the build" don't constitute a thesis. The hub-penalty layer
+addresses this, but if your vault has unusually structured daily-notes the
+penalty may not fire. Add a project-root tag to the daily folder to make it
+visible.
+
+## Confidence
+
+Confidence is computed via the falsification audit (see [audit](/privacy/)).
+A finding with confidence ≥ 0.65 is suitable for promotion; below 0.45,
+review by hand first.

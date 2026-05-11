@@ -1,0 +1,51 @@
+---
+title: MCP server
+description: Use Basalt with Claude Desktop, Cursor, and other MCP hosts.
+---
+
+## Install
+
+### Claude Desktop
+
+```sh
+claude mcp add basalt -- npx -y @basalt/mcp
+```
+
+Or edit `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS)
+manually:
+
+```json
+{
+  "mcpServers": {
+    "basalt": {
+      "command": "npx",
+      "args": ["-y", "@basalt/mcp"],
+      "env": {
+        "BASALT_VAULT": "/Users/you/vault"
+      }
+    }
+  }
+}
+```
+
+### Cursor
+
+Cursor → Settings → MCP → Add server, same arguments.
+
+## Available tools
+
+| Tool | What |
+| --- | --- |
+| `basalt_brief` | Generate a full brief |
+| `basalt_thesis` | Implicit Thesis only |
+| `basalt_contradiction` | Contradiction only |
+| `basalt_drift` | Drift only |
+| `basalt_connection` | Connection only |
+| `basalt_buried_insight` | Buried Insight only |
+| `basalt_audit` | Falsification audit pass |
+
+## What's intentionally absent
+
+**Promote-to-note is not an MCP tool.** Per PRD §4.3, agents can describe a
+finding but only humans turn it into a vault file. If you want promote-to-note
+behavior, run it via the CLI.

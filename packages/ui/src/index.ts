@@ -1,3 +1,12 @@
-// @basalt/ui — shared React components and brand tokens.
-// Components land in Phase 1+; see PRD §3.1.
-export {};
+export { tailwindTheme, themeCss } from "./tailwind.preset.js";
+export type { ElementKey } from "./tokens.js";
+export {
+  colors,
+  elements,
+  fontSizes,
+  fonts,
+  lineHeights,
+  radii,
+  spacing,
+  tokens,
+} from "./tokens.js";

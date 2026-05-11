@@ -1,0 +1,337 @@
+---
+import Default from "../layouts/Default.astro";
+import ElementTile from "../components/ElementTile.astro";
+
+const verbs = [
+  {
+    symbol: "Na",
+    number: 11,
+    name: "Sodium",
+    verb: "Implicit Thesis",
+    accent: "na" as const,
+    blurb: "The through-line you keep seasoning your work with — named, not just clustered.",
+  },
+  {
+    symbol: "Cl",
+    number: 17,
+    name: "Chlorine",
+    verb: "Contradiction",
+    accent: "cl" as const,
+    blurb: "Two notes that disagree with each other. Quietly. For months.",
+  },
+  {
+    symbol: "Hg",
+    number: 80,
+    name: "Mercury",
+    verb: "Drift",
+    accent: "hg" as const,
+    blurb: "Projects whose meaning slid sideways while you were busy maintaining them.",
+  },
+  {
+    symbol: "C",
+    number: 6,
+    name: "Carbon",
+    verb: "Connection",
+    accent: "c" as const,
+    blurb: "Two notes you wrote months apart that turn out to be the same idea.",
+  },
+  {
+    symbol: "Au",
+    number: 79,
+    name: "Gold",
+    verb: "Buried Insight",
+    accent: "au" as const,
+    blurb: "The line you wrote in 2022 that your work this week keeps mining without knowing it.",
+  },
+];
+
+const briefSample = `# Basalt Brief — 2026-05-11
+
+## I. Implicit Thesis
+> The work I keep returning to is **interpretability of agent
+> behavior at the level of artifacts** — not benchmarks, not
+> activations, but the durable text agents leave behind.
+
+confidence: 0.78 (3 of 5 falsification rules satisfied)
+
+## II. Contradiction
+- 2024-08-14 \`agents/loop-design.md\`: "tools must always be
+  idempotent — retries are the path of least surprise"
+- 2026-04-02 \`agents/scratch.md\`: "we now require side-effecting
+  tools for the planner to make progress"
+
+## III. Drift
+- \`projects/basalt-port/index.md\` (founded 2025-12-08) opened as a
+  build log; the last 14 entries are reflections on what to leave
+  behind. The artifact has become the journal.
+
+## IV. Connection
+- 2023-11-02 \`reading/sennett-craftsman.md\`
+- 2026-03-19 \`agents/operating-manual.md\`
+Both circle the same claim: that the rituals you build around
+the work are the work.
+
+## V. Buried Insight
+- 2022-06-04 \`fragments.md\` line 41
+- referenced (without citation) in 3 notes from the last 60 days.
+`;
+---
+
+<Default title="Basalt — second-brain compiler">
+  <section class="hero container">
+    <span class="numeral">I — The Promise</span>
+    <h1>Basalt reads your notes and tells you what you're really working on.</h1>
+    <p class="lede">
+      A second-brain compiler. It walks your Markdown vault, indexes the
+      structure, and surfaces what you believe but never wrote down. Local-first.
+      MIT-licensed. Compiles you, not the corpus.
+    </p>
+    <p class="cta-row">
+      <a class="cta" href="/install">install</a>
+      <a class="cta cta--ghost" href="https://github.com/plsft/basalt">github</a>
+    </p>
+  </section>
+
+  <section class="verbs container">
+    <span class="numeral">II — The Verbs</span>
+    <h2>Five elements, five questions about your own work.</h2>
+    <div class="grid">
+      {verbs.map((v) => (
+        <ElementTile
+          symbol={v.symbol}
+          number={v.number}
+          name={v.name}
+          verb={v.verb}
+          blurb={v.blurb}
+          accent={v.accent}
+        />
+      ))}
+    </div>
+  </section>
+
+  <section class="brief container">
+    <span class="numeral">III — A Real Brief</span>
+    <h2>Anonymized output from a 2,400-note vault.</h2>
+    <p>
+      The format below is what <code>basalt brief</code> writes. No charts,
+      no dashboards — a one-page Markdown artifact you can paste into the same
+      vault it came from.
+    </p>
+    <pre>{briefSample}</pre>
+  </section>
+
+  <section class="demo container">
+    <span class="numeral">IV — The Demo</span>
+    <h2><code>basalt demo</code> against the bundled fixture.</h2>
+    <p>
+      A 45-second recording lands here before launch. Until then:
+    </p>
+    <pre class="terminal">$ basalt init
+{"="}{"="}{"="}{"="}{"="} basalt init {"="}{"="}{"="}{"="}{"="}
+indexed 12 notes · 38 sentences · 9 links
+embeddings: ok (nomic-embed-text · 768d · 12/12)
+
+$ basalt brief
+{"="}{"="}{"="}{"="}{"="} basalt brief · 2026-05-11 {"="}{"="}{"="}{"="}{"="}
+Implicit Thesis     · 1 found · confidence 0.78
+Contradiction       · 2 found
+Drift               · 1 found
+Connection          · 3 found
+Buried Insight      · 1 found
+wrote 2026-05-11-brief.md (1.4 KB)</pre>
+  </section>
+
+  <section class="promise container">
+    <span class="numeral">V — The Promise (technical)</span>
+    <h2>What we do not do.</h2>
+    <div class="cols">
+      <div>
+        <h3>No network in Open tier.</h3>
+        <p>
+          The CLI, plugin, MCP, and desktop run entirely on your machine.
+          Ollama if you want embeddings, BYOK if you want a hosted LLM.
+          Nothing else.
+        </p>
+      </div>
+      <div>
+        <h3>Read-only on your vault.</h3>
+        <p>
+          Basalt never modifies the files it finds. Promote-to-note creates
+          new files only; an architectural test in the codebase enforces this.
+        </p>
+      </div>
+      <div>
+        <h3>No methodology imposed.</h3>
+        <p>
+          Your folder structure, your tags, your linking habits — Basalt does
+          not care. It compiles the corpus you already have.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="surfaces container">
+    <span class="numeral">VI — Surfaces</span>
+    <h2>Run it wherever you already read.</h2>
+    <div class="surfaces-grid">
+      <article>
+        <h3>CLI</h3>
+        <pre><code>npm i -g @basalt/cli
+basalt init && basalt brief</code></pre>
+      </article>
+      <article>
+        <h3>Obsidian plugin</h3>
+        <p class="muted">Community Plugin: <code>basalt</code></p>
+      </article>
+      <article>
+        <h3>MCP server</h3>
+        <pre><code>claude mcp add basalt -- npx -y @basalt/mcp</code></pre>
+      </article>
+      <article>
+        <h3>Desktop</h3>
+        <p>Tauri 2 build — macOS · Linux · Windows. <a href="/install">downloads</a></p>
+      </article>
+      <article>
+        <h3>Web cockpit</h3>
+        <p>Pro tier — <a href="https://app.basalt.dev">app.basalt.dev</a></p>
+      </article>
+    </div>
+  </section>
+
+  <section class="pricing container">
+    <span class="numeral">VII — Pricing</span>
+    <h2>Three tiers. Honest defaults.</h2>
+    <div class="tiers">
+      <article>
+        <h3>Open</h3>
+        <p class="price mono">$0</p>
+        <ul>
+          <li>CLI · Plugin · MCP · Desktop</li>
+          <li>BYOK to any provider</li>
+          <li>Local Ollama embeddings</li>
+          <li>MIT-licensed, forever</li>
+        </ul>
+      </article>
+      <article class="featured">
+        <h3>Pro</h3>
+        <p class="price mono">$12<span>/mo</span></p>
+        <ul>
+          <li>Hosted brief generation</li>
+          <li>Vault Sync (E2EE)</li>
+          <li>Web cockpit</li>
+          <li>Cancel anytime</li>
+        </ul>
+        <a href="/pricing" class="cta">Subscribe</a>
+      </article>
+      <article>
+        <h3>Founder</h3>
+        <p class="price mono">$240</p>
+        <ul>
+          <li>One-time. Lifetime Pro.</li>
+          <li>First 200 only</li>
+          <li>Name in CHANGELOG</li>
+          <li>Direct line to the build</li>
+        </ul>
+        <a href="/pricing" class="cta cta--ghost">Become a founder</a>
+      </article>
+    </div>
+  </section>
+</Default>
+
+<style>
+  .hero h1 {
+    max-width: 18ch;
+    margin-bottom: 1.2rem;
+  }
+  .lede {
+    font-size: 1.15rem;
+    color: var(--color-basalt-ink);
+    max-width: 56ch;
+  }
+  .cta-row {
+    display: flex;
+    gap: 0.8rem;
+    margin-top: 2rem;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  .cols {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+  .cols h3 {
+    font-size: 1.05rem;
+    color: var(--color-basalt-accent-na);
+    margin-bottom: 0.6rem;
+  }
+  @media (max-width: 720px) {
+    .cols { grid-template-columns: 1fr; }
+  }
+  .terminal {
+    background: #050505;
+    color: #c5c5c2;
+    font-size: 0.82rem;
+  }
+  .surfaces-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  .surfaces-grid article {
+    border: 1px solid var(--color-basalt-rule);
+    background: var(--color-basalt-bg-raised);
+    padding: 1.4rem;
+  }
+  .surfaces-grid h3 {
+    font-size: 1rem;
+    font-family: var(--font-mono);
+    margin-bottom: 0.6rem;
+    color: var(--color-basalt-ink-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .muted { color: var(--color-basalt-ink-dim); font-size: 0.95rem; }
+  .tiers {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  .tiers article {
+    border: 1px solid var(--color-basalt-rule);
+    padding: 2rem 1.4rem;
+    background: var(--color-basalt-bg-raised);
+  }
+  .tiers .featured {
+    border-color: var(--color-basalt-accent-na);
+  }
+  .price {
+    font-size: 2.2rem;
+    color: var(--color-basalt-accent-na);
+    margin: 0.4rem 0 1rem;
+  }
+  .price span {
+    font-size: 1rem;
+    color: var(--color-basalt-ink-dim);
+  }
+  .tiers ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    color: var(--color-basalt-ink);
+    font-size: 0.95rem;
+  }
+  @media (max-width: 720px) {
+    .tiers { grid-template-columns: 1fr; }
+  }
+</style>

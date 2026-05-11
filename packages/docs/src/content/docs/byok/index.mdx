@@ -1,0 +1,22 @@
+---
+title: BYOK
+description: Bring your own API key.
+---
+
+Basalt Open and Desktop both support Bring-Your-Own-Key for hosted LLMs. The
+key never leaves your machine; your machine talks directly to the provider.
+
+| Provider | Used for | Page |
+| --- | --- | --- |
+| OpenAI | Embeddings, Implicit Thesis synthesis | [openai](/byok/openai/) |
+| Anthropic | Implicit Thesis synthesis | [anthropic](/byok/anthropic/) |
+| Google | Embeddings, synthesis | [google](/byok/google/) |
+| Mistral | Embeddings, synthesis | (coming) |
+| Cohere | Embeddings | (coming) |
+
+## Key storage
+
+- **CLI / Desktop:** OS keychain via the platform native API.
+- **Plugin:** stored encrypted in the plugin's data file using a key derived
+  from a passphrase you set on first run.
+- **MCP:** read from environment at process start (no on-disk persistence).

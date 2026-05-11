@@ -1,0 +1,36 @@
+---
+title: OpenAI
+description: Use OpenAI for embeddings and brief synthesis.
+---
+
+## Get a key
+
+1. Sign in at [platform.openai.com](https://platform.openai.com)
+2. **API Keys** → **Create new secret key**
+3. Copy the `sk-...` value
+
+## Set it
+
+```sh
+basalt config set provider.openai.api_key sk-...
+```
+
+The CLI stores it in the OS keychain.
+
+## Models used
+
+| Use | Model | Notes |
+| --- | --- | --- |
+| Embeddings | `text-embedding-3-small` (1536 d) | Default |
+| Synthesis | `gpt-4o-mini` | Fast and inexpensive; override per-verb |
+
+## Cost expectations
+
+Indexing a 1k-note vault: ~$0.04. Brief generation: ~$0.01–$0.03 per brief.
+
+## Privacy
+
+Basalt sends only the text you ask it to embed or summarize. We never proxy
+this traffic — your machine talks to OpenAI directly. The OpenAI privacy
+policy applies to that data; review it before pointing Basalt at a sensitive
+vault.

@@ -1,0 +1,36 @@
+---
+title: Desktop
+description: Native desktop app — macOS, Linux, Windows.
+---
+
+## Download
+
+[github.com/plsft/basalt/releases](https://github.com/plsft/basalt/releases)
+
+- **macOS Universal** (Apple Silicon + Intel, signed and notarized)
+- **Linux** (`.deb`, `.rpm`, `.AppImage`)
+- **Windows** (`.msi`, `.exe`)
+
+## First launch
+
+1. Pick your vault folder from the file picker
+2. Click **Generate Brief**
+3. The brief renders inline; click **Save to vault** to write it as a Markdown file
+
+## Performance
+
+- Cold start: < 800 ms median
+- Idle memory: < 100 MB
+- Index is shared with the CLI at `~/.basalt/db.sqlite` — they're interchangeable
+
+## Updates
+
+The desktop app auto-checks for updates on launch. Updates are signed with
+the Basalt updater key; tampered updates are rejected.
+
+## Code signing
+
+- **macOS:** signed with Apple Developer ID, notarized via Apple's notary service.
+- **Linux:** unsigned (`.deb`/`.rpm`/`.AppImage`); verify against the published BLAKE3 hash.
+- **Windows:** signed when `TAURI_SIGNING_PRIVATE_KEY` is available; SmartScreen
+  may flag until our cert builds reputation.

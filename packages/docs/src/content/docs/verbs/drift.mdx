@@ -1,0 +1,39 @@
+---
+title: Drift (Hg)
+description: Projects whose meaning slid sideways.
+---
+
+**Element:** Mercury (Hg · 80) · the only metal liquid at room temperature.
+
+## What it does
+
+Detects projects whose semantic center moved over their lifespan. The classic
+case: a "build log" folder that quietly became a journal.
+
+## Algorithm sketch
+
+1. Group notes by detected project path (and daily-note regex)
+2. For each project, build a time-windowed embedding centroid trajectory
+3. Compute the angle between the first window's centroid and the last
+4. Surface projects where the angle exceeds the drift threshold
+
+## Project detection
+
+Projects are detected by:
+- `projects/<name>/` path prefix
+- Folder containing an `index.md` or `README.md`
+- Daily-note pattern: `YYYY-MM-DD.md` files under a single folder
+
+You can override detection in `.basalt/config.toml`:
+
+```toml
+[projects]
+roots = ["projects", "work/active"]
+exclude = ["projects/archived"]
+```
+
+## Confidence
+
+Drift confidence is the cosine angle normalized to [0, 1]. Anything > 0.6 is
+worth a look. Anything > 0.85 is a project that has fundamentally changed
+shape.

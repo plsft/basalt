@@ -1,0 +1,56 @@
+---
+import Default from "../layouts/Default.astro";
+---
+
+<Default title="Pricing · Basalt">
+  <section class="container">
+    <span class="numeral">Pricing</span>
+    <h1>Open is free, forever. Pro is hosted. Founder is the bet.</h1>
+
+    <h2>Open</h2>
+    <p><strong>$0 · MIT-licensed · no account required.</strong></p>
+    <ul>
+      <li>CLI, plugin, MCP, and desktop apps</li>
+      <li>Local embeddings via Ollama (or BYOK to any provider)</li>
+      <li>Full audit + calibration locally</li>
+    </ul>
+    <p>
+      No upsell modals, no feature gating, no telemetry. Open is the actual
+      product. Pro is hosted convenience layered on top.
+    </p>
+
+    <h2>Pro · <span class="mono">$12/mo</span> or <span class="mono">$108/yr</span></h2>
+    <ul>
+      <li>Hosted brief generation — no Ollama required, no key management</li>
+      <li>Vault Sync (E2EE) across machines</li>
+      <li>Web cockpit with timeline + finding history</li>
+      <li>Pro-tier latency budget: p95 &lt; 8s on a 1k-note vault</li>
+      <li>Cancel anytime; access continues to end of billing period</li>
+    </ul>
+    <p><a class="cta" href="https://app.basalt.dev/signup">Start free trial</a></p>
+
+    <h2>Founder · <span class="mono">$240 one-time</span></h2>
+    <ul>
+      <li>Lifetime Pro — never pay for Pro again</li>
+      <li>First 200 founders only</li>
+      <li>Your name in CHANGELOG and on the credits wall</li>
+      <li>Direct line to George during build-out</li>
+      <li>If we ever sunset Pro, lifetime Pro converts to a perpetual self-host license</li>
+    </ul>
+    <p><a class="cta" href="https://app.basalt.dev/founder">Become a founder</a></p>
+
+    <h2 id="faq">FAQ</h2>
+    <h3>Will Pro pricing change?</h3>
+    <p>
+      Possibly upward. Founders and existing subscribers are grandfathered at
+      their original price. New customers see the new price.
+    </p>
+    <h3>Refunds?</h3>
+    <p>
+      Pro: cancel any time within the billing period and we refund the unused
+      portion if you ask. Founder: 30-day no-questions refund window.
+    </p>
+    <h3>Will you ever add ads or telemetry?</h3>
+    <p>No. That's the deal.</p>
+  </section>
+</Default>

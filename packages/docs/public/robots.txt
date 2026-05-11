@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://docs.basalt.dev/sitemap-index.xml

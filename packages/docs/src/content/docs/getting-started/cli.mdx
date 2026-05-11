@@ -1,0 +1,47 @@
+---
+title: CLI
+description: Install and use the Basalt CLI.
+---
+
+The CLI is the canonical surface. Everything else wraps the same engine.
+
+## Install
+
+```sh
+npm install -g @basalt/cli
+basalt about
+```
+
+You should see the engine version, the index path, and an `ok` status for the
+embeddings provider.
+
+## First brief
+
+```sh
+cd /path/to/your/vault
+basalt init        # walks the vault, builds the index
+basalt brief       # writes today's brief next to your notes
+```
+
+The first `init` is the slowest step — it embeds every note. On a 1k-note vault
+with `nomic-embed-text` via Ollama, expect ~30 seconds.
+
+## Common flags
+
+```sh
+basalt brief --window 14d        # only consider notes touched in the last 14 days
+basalt brief --no-llm            # skip Implicit Thesis synthesis
+basalt brief --out brief.md      # explicit output path
+basalt thesis --top 3            # run a single verb
+basalt audit                     # falsification pass over recent findings
+```
+
+## Troubleshooting
+
+- **Ollama not running.** Start it: `ollama serve` in another terminal. The CLI
+  uses `http://localhost:11434` by default; override with `BASALT_OLLAMA_URL`.
+- **No embeddings provider.** Briefs still run with a mock embedder — verb
+  output will degrade quality but the engine works end-to-end.
+- **Permission errors writing the brief.** The CLI writes via `O_CREAT|O_EXCL`;
+  it will not overwrite an existing file. Specify `--out` if the default path
+  collides.

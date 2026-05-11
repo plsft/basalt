@@ -1,0 +1,42 @@
+---
+title: Python → TS
+description: Migrating from the original Python Basalt to the TS port.
+---
+
+The original Basalt was a Python prototype. The TS port is the production
+codebase. The migration path is meant to be boring:
+
+## Why we ported
+
+- Single executable across CLI, plugin, MCP, desktop, web. Bun's `--compile`
+  + Tauri + a shared engine.
+- Strict typing surface contract across surfaces.
+- Local-first WASM story (sql.js, ONNX Web) the Python prototype couldn't reach.
+
+## Command equivalence
+
+| Python | TS |
+| --- | --- |
+| `python -m basalt init` | `basalt init` |
+| `python -m basalt brief` | `basalt brief` |
+| `python -m basalt thesis` | `basalt thesis` |
+| `python -m basalt audit` | `basalt audit` |
+
+Flags are identical with the exception of `--verbose` (now `--debug`).
+
+## Schema compatibility
+
+The TS port reads the **same** SQLite schema as the Python prototype. You can
+point the TS CLI at a Python-built `~/.basalt/db.sqlite` and run `basalt brief`
+without re-indexing.
+
+Migration source: `packages/core/src/migrations/001-init.sql` — byte-identical
+to the Python `index.py` schema.
+
+## Known divergences
+
+Three verbs have documented divergences from Python output. See
+[`docs/parsing-decisions.md`](https://github.com/plsft/basalt/blob/main/docs/parsing-decisions.md)
+in the repo (D-9 Connection, D-10 Implicit Thesis, D-11 Contradiction). They
+land alignment fixes in v0.6.0; until then, output structure matches but ranks
+may differ for a small minority of findings.

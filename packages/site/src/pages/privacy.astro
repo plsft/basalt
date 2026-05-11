@@ -1,0 +1,59 @@
+---
+import Default from "../layouts/Default.astro";
+---
+
+<Default title="Privacy · Basalt">
+  <section class="container">
+    <span class="numeral">Privacy</span>
+    <h1>What leaves your computer.</h1>
+
+    <h2>Open tier (CLI, plugin, MCP, desktop)</h2>
+    <p>
+      <strong>Nothing.</strong> The Open tier does not make any network calls
+      on your behalf. If you point it at Ollama, it talks to <code>localhost</code>.
+      If you BYOK to a hosted provider, your machine talks to that provider
+      directly — Basalt never proxies that traffic.
+    </p>
+
+    <h2>BYOK</h2>
+    <p>
+      API keys are stored in your OS keychain (macOS Keychain, Windows
+      Credential Manager, libsecret on Linux). They are never written to disk
+      in plain text, never sent to our servers, never logged.
+    </p>
+
+    <h2>Pro tier (web cockpit)</h2>
+    <p>
+      Pro processes embeddings and brief generation on Cloudflare Workers.
+      In-memory only — no Brief content is persisted server-side beyond the
+      single request cycle. The index database itself stays on your machine
+      unless you opt into Vault Sync.
+    </p>
+
+    <h2>Vault Sync (opt-in, Pro only)</h2>
+    <p>
+      Sync is end-to-end encrypted with a key derived from your passphrase via
+      Argon2id. We can serve you ciphertext blobs back; we cannot read them.
+      Losing the passphrase loses the synced index — local indexes are
+      reconstructible by re-running <code>basalt init</code>.
+    </p>
+
+    <h2>Verifiability</h2>
+    <ul>
+      <li>Every brief writes a hash-chained audit entry to <code>~/.basalt/audit.log</code>.</li>
+      <li>Index manifests use BLAKE3; you can verify the index hasn't been tampered with.</li>
+      <li>Pro briefs additionally include an OpenTimestamps anchor on request.</li>
+    </ul>
+
+    <h2>Threat model</h2>
+    <ul>
+      <li><strong>Protects against:</strong> casual server compromise, supply-chain swaps of brief content, vendor disappearance (Open tier keeps working).</li>
+      <li><strong>Does not protect against:</strong> a compromised local machine, a key-logger on your keyboard, the LLM provider you BYOK to.</li>
+    </ul>
+
+    <p>
+      Full technical detail lives in the docs:
+      <a href="https://docs.basalt.dev/privacy/threat-model">threat model</a>.
+    </p>
+  </section>
+</Default>

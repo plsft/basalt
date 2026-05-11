@@ -20,7 +20,9 @@
       "!**/main.js",
       "!**/.venv*",
       "!packages/obsidian-plugin/main.js",
-      "!**/*.css"
+      "!**/*.css",
+      "!**/*.astro",
+      "!**/*.mdx"
     ]
   },
   "formatter": {

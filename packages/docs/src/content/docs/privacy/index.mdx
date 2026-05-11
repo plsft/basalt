@@ -1,0 +1,37 @@
+---
+title: Privacy
+description: Basalt's privacy posture and implementation detail.
+---
+
+The marketing-side privacy summary is at
+[basalt.dev/privacy](https://basalt.dev/privacy). This page goes deeper.
+
+## What lives where
+
+| Surface | Index | Brief content | Embeddings |
+| --- | --- | --- | --- |
+| CLI | `~/.basalt/db.sqlite` | Your vault (Markdown file) | Index DB only |
+| Plugin | Vault root `.basalt-index.db` | Vault subfolder | Index DB only |
+| MCP | Inherits CLI's index | Returned to host | Index DB only |
+| Desktop | `~/.basalt/db.sqlite` | Vault folder | Index DB only |
+| Web cockpit | Cloudflare D1 (per-user) | Cloudflare R2 (per-user, encrypted) | Cloudflare Vectorize |
+
+## What goes over the network
+
+| Tier | Outbound traffic |
+| --- | --- |
+| Open (CLI/plugin/MCP/desktop, no BYOK) | None |
+| Open + BYOK | Direct from your machine to the provider |
+| Pro (cockpit) | TLS to `api.basalt.dev` (Cloudflare Workers) |
+| Vault Sync | Encrypted blobs to `r2-sync.basalt.dev` |
+
+## Audit log
+
+Every brief writes one line to `~/.basalt/audit.log`:
+
+```
+2026-05-11T09:31:22Z brief sha256=... prev_sha256=... config_hash=...
+```
+
+The chain is BLAKE3-hash-linked; tampering with any line invalidates every
+line after it. `basalt audit verify` re-walks the chain.
