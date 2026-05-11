@@ -1,7 +1,7 @@
 {
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "default",
-  "description": "Capabilities granted to the main window. Tightly scoped — no wildcards on FS write outside $HOME, no shell execute, no global notification permissions.",
+  "description": "Capabilities granted to the main window. Tightly scoped: dialog + shell-open for external URLs only, FS read/write limited to the user's HOME (vault folders live there). No shell exec, no notification permissions beyond default, no global FS write outside scope.",
   "windows": ["main"],
   "permissions": [
     "core:default",
@@ -15,6 +15,10 @@
     "fs:allow-exists",
     "fs:allow-read-dir",
     "fs:allow-stat",
+    {
+      "identifier": "fs:scope",
+      "allow": [{ "path": "$HOME/**" }, { "path": "$APPDATA/**" }, { "path": "$APPLOCALDATA/**" }]
+    },
     "notification:default",
     "os:default",
     "updater:default",

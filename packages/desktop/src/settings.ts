@@ -8,6 +8,8 @@ export interface DesktopSettings {
   llmProvider: "none" | "ollama" | "openai" | "anthropic";
   llmModel: string;
   llmApiKey: string;
+  /** Folder under the user's vault where promote-to-note writes new files. */
+  promoteFolder: string;
   apiUrl: string;
   apiToken: string;
   apiVaultId: string;
@@ -22,6 +24,7 @@ export function defaultSettings(): DesktopSettings {
     llmProvider: "none",
     llmModel: "",
     llmApiKey: "",
+    promoteFolder: "Basalt",
     apiUrl: "https://api.basalt.dev",
     apiToken: "",
     apiVaultId: "",
