@@ -6,6 +6,24 @@ Phase boundaries get a release tag (`v0.<phase>.0`); public launch tags `v1.0.0`
 
 ## Unreleased
 
+### Added — v1.2.0 work (mobile PWA)
+- New `@basalt/mobile` package — installable Progressive Web App
+  (read-only Brief reader) for iOS Safari and Android Chrome. React 19
+  + Vite 6 + react-router-dom 7 + `vite-plugin-pwa`. Bundle: 239 KB JS
+  / 3.7 KB CSS / 10-entry precache (238 KB).
+- Routes: `/` (brief list), `/briefs/:id` (full Markdown view + v1.1.0
+  banner showing named thesis and contradiction verdicts when present),
+  `/login` (session token paste), `/settings` (account info + sign out).
+- Service worker: `StaleWhileRevalidate` for `/v1/briefs(/:id)?`
+  (offline-friendly), `NetworkFirst` with 4s timeout for `/v1/me` and
+  `/v1/vaults`. App shell precached.
+- iOS / Android install via "Add to Home Screen" — full-screen mode,
+  basalt-black theme color, safe-area-aware padding, 44px tap targets.
+- `.github/workflows/deploy-mobile.yml` → Cloudflare Pages
+  `basalt-mobile` project. Target domain: `mobile.basalt.dev`.
+- Docs: new `/v1.2.0-mobile` page with install recipes per platform,
+  setup, privacy posture, and the roadmap.
+
 ## v1.4.0 — 2026-05-11
 
 ### Added — v1.4.0 work (self-hosting)

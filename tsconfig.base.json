@@ -46,6 +46,7 @@
     ".venv-reference",
     "packages/obsidian-plugin",
     "packages/web",
+    "packages/mobile",
     "packages/desktop",
     "packages/site",
     "packages/docs"

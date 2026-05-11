@@ -1,0 +1,85 @@
+---
+title: v1.2.0 — Mobile (PWA)
+description: Read-only Brief reader for iOS / Android, installable as a PWA.
+---
+
+`v1.2.0` ships the mobile companion: a tiny installable PWA that reads
+your briefs on iOS Safari and Android Chrome. No App Store, no Play
+Store — install to home screen from the URL.
+
+## What it does
+
+- **Read briefs** — full Markdown of any brief in your account
+- **v1.1.0 banner** — when a brief was generated with LLM augmentation,
+  the named thesis + contradiction verdicts surface at the top
+- **Offline** — service worker caches the app shell + recently-viewed
+  briefs (stale-while-revalidate); reopening loads instantly even on
+  the subway
+- **Install** — both iOS and Android offer "Add to Home Screen" which
+  installs the manifest icon, theme color, and full-screen mode
+
+## What it does NOT do
+
+- **No brief generation.** This is read-only. Generate from the
+  desktop, CLI, or Obsidian plugin, then push a snapshot via the API.
+- **No vault editing.** Promote-to-note remains a desktop / CLI /
+  plugin action.
+- **No multi-vault switching UI.** Searches across all of your vaults
+  by default; vault filter UI lands in v1.3.0.
+
+## Install
+
+### iOS Safari
+1. Open `https://mobile.basalt.dev` in Safari
+2. Tap the Share button
+3. Tap **Add to Home Screen**
+
+### Android Chrome
+1. Open `https://mobile.basalt.dev` in Chrome
+2. Tap the three-dot menu
+3. Tap **Add to Home screen** or **Install app**
+
+## First-time setup
+
+You'll be asked for your **API URL** + **session token** on first
+launch. We can't read cross-origin HttpOnly cookies from a separate
+PWA, so this is a one-time copy-paste:
+
+1. Open `https://app.basalt.dev` in a desktop browser
+2. Sign in
+3. Open DevTools → Application → Cookies
+4. Copy the value of `basalt_session`
+5. Paste into the mobile Login screen
+
+The token expires after 30 days; re-paste then.
+
+## Tech
+
+- React 19 + Vite 6 + react-router-dom 7
+- `vite-plugin-pwa` for the manifest + service worker
+- Workbox caching strategies:
+  - `StaleWhileRevalidate` for brief content (offline-friendly)
+  - `NetworkFirst` with 4s timeout for `me` + `vaults` metadata
+- Bundle: 239 KB JS / 3.7 KB CSS / 10-file precache (238 KB)
+- Deploy: Cloudflare Pages via `.github/workflows/deploy-mobile.yml`
+- Domain (post-DNS): `mobile.basalt.dev`
+
+## Privacy
+
+Same posture as every other Basalt surface:
+
+- The PWA's only network destination is your configured API URL. No
+  telemetry, no analytics SDKs, no third-party trackers.
+- The session token lives in `localStorage`, never sent anywhere except
+  in the `Cookie` header to your configured API.
+- Service worker caches are scoped to the PWA's origin and isolated
+  from the rest of your browser's storage.
+
+## Roadmap
+
+- **v1.2.1** — Per-vault filter on the Briefs list
+- **v1.2.2** — Mobile snooze / confirm / dismiss finding actions
+- **v1.3.0** — Add cross-vault search (re-uses the `/v1/search` endpoint
+  already shipped in the API)
+- **v2.0.0** — Optional native shells via Tauri 2 mobile when stable;
+  the PWA remains the supported default until then.
