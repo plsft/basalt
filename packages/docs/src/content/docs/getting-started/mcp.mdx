@@ -8,7 +8,7 @@ description: Use Basalt with Claude Desktop, Cursor, and other MCP hosts.
 ### Claude Desktop
 
 ```sh
-claude mcp add basalt -- npx -y @basalt/mcp
+claude mcp add basalt -- npx -y basalted-mcp
 ```
 
 Or edit `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS)
@@ -19,7 +19,7 @@ manually:
   "mcpServers": {
     "basalt": {
       "command": "npx",
-      "args": ["-y", "@basalt/mcp"],
+      "args": ["-y", "basalted-mcp"],
       "env": {
         "BASALT_VAULT": "/Users/you/vault"
       }

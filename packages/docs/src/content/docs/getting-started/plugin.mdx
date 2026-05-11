@@ -3,17 +3,48 @@ title: Obsidian plugin
 description: Run Basalt directly inside Obsidian.
 ---
 
+The plugin reads your active vault and writes briefs into a configurable
+folder. During the open beta it is not yet in the Obsidian community
+store, so use one of the install paths below.
+
 ## Install
 
-1. Open Obsidian → Settings → Community Plugins → Browse
-2. Search for `basalt`
-3. Install and enable
+### Option 1 — Manual (recommended)
+
+1. Open the latest Basalt release on GitHub:
+   [github.com/plsft/basalt/releases/latest](https://github.com/plsft/basalt/releases/latest)
+2. Download these four files into your vault's plugin folder:
+   - `manifest.json`
+   - `main.js`
+   - `styles.css`
+   - `sql-wasm.wasm`
+3. The plugin folder is `<your-vault>/.obsidian/plugins/basalt/` — create it if it doesn't exist.
+4. In Obsidian: **Settings → Community plugins → Installed plugins →
+   Refresh**, then enable **Basalt**.
+
+One-shot alternative: download `basalt-obsidian-plugin.zip` from the same
+release and unzip into the plugin folder.
+
+### Option 2 — BRAT (auto-updating beta)
+
+[BRAT](https://github.com/TfTHacker/obsidian42-brat) is a community plugin
+that pulls beta releases directly from GitHub.
+
+1. Install BRAT from the community plugins store and enable it.
+2. **Settings → BRAT → Add Beta plugin** → paste `plsft/basalt`.
+3. BRAT auto-updates Basalt every time a new release tag is cut.
+
+### Option 3 — Community store
+
+Pending review by the Obsidian team. Once approved you'll be able to
+install via **Settings → Community plugins → Browse → search "basalt"**.
 
 ## First brief
 
-- Open the command palette (Cmd/Ctrl+P)
+- Open the command palette (`Cmd/Ctrl+P`)
 - Run `Basalt: Generate Brief`
-- The brief lands in the folder configured under Settings → Basalt (defaults to `Briefs/`)
+- The brief lands in the folder configured under **Settings → Basalt**
+  (defaults to `Briefs/`)
 
 ## Settings
 
@@ -23,9 +54,76 @@ description: Run Basalt directly inside Obsidian.
 | Window | `30d` | How far back to consider notes |
 | Embeddings provider | `ollama` | Or `mock` for testing |
 | Ollama URL | `http://localhost:11434` | |
+| LLM provider | `none` | `ollama`, `openai`, `anthropic` (v1.1.0+) |
+| LLM model | provider default | e.g. `claude-sonnet-4-6`, `gpt-4o-mini` |
+| LLM API key | — | Password-masked; not synced; never written to disk outside the local Obsidian config |
 
 ## Indexing
 
 The plugin uses `sql.js` (WASM) for its index — it writes to a single
 `.basalt-index.db` file inside your vault. Add `.basalt-index.db` to your
-ignore list if you sync the vault and don't want the index synced.
+sync ignore list if you don't want the index synced across devices.
+
+## Develop locally
+
+For contributors and anyone modifying the plugin in this repo.
+
+### One-time setup
+
+```sh
+# Clone + install
+git clone https://github.com/plsft/basalt
+cd basalt
+bun install
+
+# Build the plugin once
+bun run --cwd packages/obsidian-plugin build
+```
+
+### Symlink the plugin into a test vault
+
+Pick (or create) a vault you don't mind treating as a test vault, then
+symlink the plugin directory into it. Replace `<VAULT>` with your path.
+
+**Windows (PowerShell, run as admin or with Developer Mode on):**
+
+```powershell
+New-Item -ItemType Junction `
+  -Path "<VAULT>\.obsidian\plugins\basalt" `
+  -Target "C:\Code\basalt\packages\obsidian-plugin"
+```
+
+**macOS / Linux:**
+
+```sh
+ln -s "$PWD/packages/obsidian-plugin" "<VAULT>/.obsidian/plugins/basalt"
+```
+
+In Obsidian: open the vault → **Settings → Community plugins** → turn off
+"Restricted mode" if needed → **Installed plugins** → enable **Basalt**.
+
+### Hot-reload while you code
+
+```sh
+# Terminal 1 — esbuild watch mode rebuilds main.js on every save
+bun run --cwd packages/obsidian-plugin dev
+```
+
+In Obsidian, `Cmd/Ctrl+P` → **Reload app without saving** picks up the
+new `main.js`. For full auto-reload, drop in
+[pjeby/hot-reload](https://github.com/pjeby/hot-reload) — it watches
+plugin folders and reloads automatically on `main.js` change.
+
+### What to verify
+
+1. A ribbon icon appears in the left sidebar, and `Basalt: Generate
+   brief` is in the command palette.
+2. Running the command walks the vault and writes
+   `<configured-folder>/<YYYY-MM-DD>-brief.md`.
+3. **Settings → Basalt → LLM** lets you pick `none` / `ollama` /
+   `openai` / `anthropic`. With a provider selected, briefs include
+   named Implicit Theses and `proven` / `apparent` verdicts on
+   Contradictions.
+4. Promote-to-note buttons inside the rendered brief create *new* files
+   only — they must never overwrite existing notes. This is an
+   architectural test in `packages/obsidian-plugin/src/adapters/`.
