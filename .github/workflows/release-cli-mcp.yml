@@ -39,13 +39,18 @@ jobs:
         run: bun run --cwd packages/cli compile:${{ matrix.target }}
       - name: Compile basalt-mcp (${{ matrix.target }})
         run: bun run --cwd packages/mcp compile:${{ matrix.target }}
+      - name: Stage binaries (flatten for upload)
+        run: |
+          mkdir -p _release_stage
+          cp packages/cli/bin/basalt-${{ matrix.target }}* _release_stage/
+          cp packages/mcp/bin/basalt-mcp-${{ matrix.target }}* _release_stage/
+          ls -la _release_stage/
       - name: Upload binaries
         uses: actions/upload-artifact@v4
         with:
           name: binaries-${{ matrix.target }}
-          path: |
-            packages/cli/bin/basalt-${{ matrix.target }}*
-            packages/mcp/bin/basalt-mcp-${{ matrix.target }}*
+          path: _release_stage/*
+          if-no-files-found: error
 
   github-release:
     name: GitHub release
@@ -75,9 +80,21 @@ jobs:
           if [ -z "${NOTES// }" ]; then
             NOTES="Release ${TAG}. See CHANGELOG.md for details."
           fi
-          gh release create "${TAG}" --title "${TAG}" --notes "${NOTES}" \
-            artifacts/basalt-* \
-            artifacts/basalt-mcp-*
+          # Find binaries wherever they ended up under artifacts/.
+          mapfile -t FILES < <(find artifacts -type f \( -name 'basalt-*' -o -name 'basalt-mcp-*' \))
+          if [ ${#FILES[@]} -eq 0 ]; then
+            echo "::error::No binaries found under artifacts/. Layout:"
+            find artifacts -type f
+            exit 1
+          fi
+          echo "Releasing ${#FILES[@]} binaries:"
+          printf '  %s\n' "${FILES[@]}"
+          # If the tag already has a release (e.g. re-run on the same tag), upload assets instead.
+          if gh release view "${TAG}" >/dev/null 2>&1; then
+            gh release upload "${TAG}" "${FILES[@]}" --clobber
+          else
+            gh release create "${TAG}" --title "${TAG}" --notes "${NOTES}" "${FILES[@]}"
+          fi
 
   npm-publish:
     name: npm publish
