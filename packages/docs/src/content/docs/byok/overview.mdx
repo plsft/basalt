@@ -1,0 +1,61 @@
+---
+title: BYOK — bring your own key
+description: Plumbing for OpenAI, Anthropic, and Google API keys across every Basalt surface.
+---
+
+Basalt is local-first by default. The only network traffic the Open tier
+makes is to whichever inference provider **you** pick — Basalt itself
+never proxies BYOK calls through its servers.
+
+## Where keys live
+
+| Surface     | Storage                                                     | Network access                    |
+| ----------- | ----------------------------------------------------------- | --------------------------------- |
+| CLI         | Env var (`OPENAI_API_KEY` / `ANTHROPIC_API_KEY`)            | Direct from your machine          |
+| Desktop     | LocalStorage in the app's data directory (password field)   | Direct from your machine          |
+| Plugin      | Ollama only for v1.1.0; multi-provider in v1.2.0            | Direct from your machine          |
+| Web cockpit | AES-GCM encrypted in `BYOK_KEYS` KV; master key wrangler-secret | Workers → provider direct      |
+| MCP         | Env var passed in MCP server config                         | Direct from the MCP host machine  |
+
+The cockpit's BYOK storage is the only one that touches our infrastructure —
+and even then, the key is AES-GCM encrypted at rest with a master key that
+never leaves the Worker's secret store.
+
+## Cost expectations (per Brief)
+
+These are rough — your vault's word count drives the embedding cost; the
+verb pass adds a fixed-ish LLM cost.
+
+| Provider              | Embedding 1k notes | Brief synthesis | Brief verdict pass |
+| --------------------- | -----------------: | --------------: | -----------------: |
+| Ollama (local)        | $0                 | $0              | $0                 |
+| OpenAI gpt-4o-mini    | ~$0.04             | ~$0.01          | ~$0.02             |
+| Anthropic claude-haiku-4-5 | n/a (use OpenAI or Ollama for embeddings) | ~$0.005 | ~$0.005 |
+| Anthropic claude-sonnet-4-6 | n/a              | ~$0.02         | ~$0.05            |
+
+## Provider-specific pages
+
+- [OpenAI](/byok/openai/) — keys, models, OpenAI-compatible endpoints
+- [Anthropic](/byok/anthropic/) — Messages API; Claude 4.6 default
+- [Google](/byok/google/) — Gemini 2.5 family
+
+## Worker-side BYOK API
+
+The hosted API exposes three endpoints for cockpit-side key management.
+All require an active session cookie.
+
+```sh
+# Inspect what's stored (has_key only — never the key itself):
+curl https://api.basalt.dev/v1/byok -H "Cookie: basalt_session=..."
+
+# Store / rotate a key:
+curl -X PUT https://api.basalt.dev/v1/byok \
+  -H "Cookie: basalt_session=..." \
+  -d '{"provider":"openai","api_key":"sk-..."}'
+
+# Delete:
+curl -X DELETE https://api.basalt.dev/v1/byok/openai \
+  -H "Cookie: basalt_session=..."
+```
+
+See the [API reference](/api/reference/) for the schema.

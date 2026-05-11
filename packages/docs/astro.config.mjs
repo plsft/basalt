@@ -13,6 +13,7 @@ export default defineConfig({
       customCss: ["./src/styles/custom.css"],
       sidebar: [
         { label: "Overview", link: "/" },
+        { label: "What's new in v1.1.0", link: "/v1.1.0/" },
         {
           label: "Getting Started",
           items: [

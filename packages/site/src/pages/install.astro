@@ -17,6 +17,18 @@ basalt init        # walks the vault, builds the index
 basalt brief       # writes today's brief into the vault
 basalt about       # prints version + bindings</code></pre>
 
+    <p>
+      <strong>v1.1.0 — LLM augmentation.</strong> Pass <code>--llm ollama</code>,
+      <code>--llm openai</code>, or <code>--llm anthropic</code> to any brief
+      command to get a synthesized one-sentence Implicit Thesis and an LLM
+      verdict (<code>proven</code> / <code>apparent</code>) on each
+      Contradiction. BYOK keys come from <code>OPENAI_API_KEY</code> /
+      <code>ANTHROPIC_API_KEY</code> environment variables — never on disk.
+    </p>
+    <pre><code>basalt brief --llm ollama          # local; no key needed
+basalt thesis --llm anthropic       # uses claude-sonnet-4-6 by default
+basalt brief --llm openai --llm-model gpt-4o-mini</code></pre>
+
     <h2>Obsidian plugin</h2>
     <p>
       Open Obsidian → Settings → Community Plugins → Browse → search for
