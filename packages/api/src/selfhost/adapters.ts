@@ -4,41 +4,55 @@
 // depends on — not the whole surface.
 //
 // File layout under SELFHOST_DATA_DIR:
-//   db.sqlite               — D1 replacement (better-sqlite3)
+//   db.sqlite               — D1 replacement (sqlite via bun:sqlite or better-sqlite3)
 //   kv/<namespace>/<key>    — KV replacement (single file per key)
 //   r2/<bucket>/<key>       — R2 replacement (raw file)
 //   vectors.sqlite          — Vectorize replacement (flat ANN over SQLite)
 //
 // This is *not* a clustered production setup. It runs the entire Pro
 // stack on one box for self-hosters who want to keep data local.
+//
+// SQLite backend selection: bun:sqlite (when running under Bun, any
+// platform) or better-sqlite3 (Node). The runtime-detection lives in
+// `sqlite-driver.ts`.
 
 import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
-import Database from "better-sqlite3";
+import { type Db, openDatabase } from "./sqlite-driver";
 
 export class SelfhostD1 {
-  private db: Database.Database;
-  constructor(path: string) {
+  private db: Db | null = null;
+  constructor(private readonly path: string) {
     mkdirSync(dirname(path), { recursive: true });
-    this.db = new Database(path);
+  }
+  async init(): Promise<void> {
+    if (this.db) return;
+    this.db = await openDatabase(this.path);
     this.db.pragma("journal_mode = WAL");
     this.db.pragma("foreign_keys = ON");
   }
+  private requireDb(): Db {
+    if (!this.db) throw new Error("SelfhostD1: init() not called");
+    return this.db;
+  }
   prepare(sql: string): SelfhostD1Statement {
-    return new SelfhostD1Statement(this.db, sql);
+    return new SelfhostD1Statement(this.requireDb(), sql);
   }
   exec(sql: string): void {
-    this.db.exec(sql);
+    this.requireDb().exec(sql);
   }
   close(): void {
-    this.db.close();
+    if (this.db) {
+      this.db.close();
+      this.db = null;
+    }
   }
 }
 
 export class SelfhostD1Statement {
   private boundArgs: unknown[] = [];
   constructor(
-    private readonly db: Database.Database,
+    private readonly db: Db,
     private readonly sql: string,
   ) {}
   bind(...args: unknown[]): SelfhostD1Statement {
@@ -47,12 +61,12 @@ export class SelfhostD1Statement {
   }
   async first<T = Record<string, unknown>>(): Promise<T | null> {
     const stmt = this.db.prepare(this.sql);
-    const row = stmt.get(...(this.boundArgs as unknown[])) as T | undefined;
+    const row = stmt.get<T>(...(this.boundArgs as unknown[]));
     return row ?? null;
   }
   async all<T = Record<string, unknown>>(): Promise<{ results: T[] }> {
     const stmt = this.db.prepare(this.sql);
-    const rows = stmt.all(...(this.boundArgs as unknown[])) as T[];
+    const rows = stmt.all<T>(...(this.boundArgs as unknown[]));
     return { results: rows };
   }
   async run(): Promise<{ success: boolean; meta: { changes: number } }> {
@@ -179,10 +193,13 @@ export class SelfhostR2 {
  *  Suitable for single-box self-hosting up to ~100k vectors.
  *  Cluster-grade replacement (pg_vector, Qdrant, etc.) is a follow-up. */
 export class SelfhostVectorize {
-  private db: Database.Database;
-  constructor(path: string) {
+  private db: Db | null = null;
+  constructor(private readonly path: string) {
     mkdirSync(dirname(path), { recursive: true });
-    this.db = new Database(path);
+  }
+  async init(): Promise<void> {
+    if (this.db) return;
+    this.db = await openDatabase(this.path);
     this.db.exec(`
       CREATE TABLE IF NOT EXISTS vectors (
         id TEXT PRIMARY KEY,
@@ -193,19 +210,28 @@ export class SelfhostVectorize {
       CREATE INDEX IF NOT EXISTS idx_vectors_metadata ON vectors(id);
     `);
   }
+  private requireDb(): Db {
+    if (!this.db) throw new Error("SelfhostVectorize: init() not called");
+    return this.db;
+  }
   close(): void {
-    this.db.close();
+    if (this.db) {
+      this.db.close();
+      this.db = null;
+    }
   }
   async upsert(
     records: Array<{ id: string; values: number[]; metadata: Record<string, unknown> }>,
   ): Promise<{ count: number }> {
-    const stmt = this.db.prepare(
+    const db = this.requireDb();
+    const stmt = db.prepare(
       "INSERT OR REPLACE INTO vectors (id, dim, vec, metadata_json) VALUES (?, ?, ?, ?)",
     );
-    const tx = this.db.transaction((batch: typeof records) => {
+    const tx = db.transaction((...args: unknown[]) => {
+      const batch = args[0] as typeof records;
       for (const r of batch) {
         const f32 = new Float32Array(r.values);
-        const buf = Buffer.from(f32.buffer, f32.byteOffset, f32.byteLength);
+        const buf = new Uint8Array(f32.buffer, f32.byteOffset, f32.byteLength);
         stmt.run(r.id, r.values.length, buf, JSON.stringify(r.metadata));
       }
     });
@@ -213,8 +239,10 @@ export class SelfhostVectorize {
     return { count: records.length };
   }
   async deleteByIds(ids: string[]): Promise<void> {
-    const stmt = this.db.prepare("DELETE FROM vectors WHERE id = ?");
-    const tx = this.db.transaction((batch: string[]) => {
+    const db = this.requireDb();
+    const stmt = db.prepare("DELETE FROM vectors WHERE id = ?");
+    const tx = db.transaction((...args: unknown[]) => {
+      const batch = args[0] as string[];
       for (const id of batch) stmt.run(id);
     });
     tx(ids);
@@ -222,21 +250,22 @@ export class SelfhostVectorize {
   async query(
     queryVec: number[],
     opts: { topK?: number; filter?: Record<string, unknown>; returnMetadata?: string },
-  ): Promise<{ matches: Array<{ id: string; score: number; metadata: Record<string, unknown> }> }> {
+  ): Promise<{
+    matches: Array<{ id: string; score: number; metadata: Record<string, unknown> }>;
+  }> {
+    const db = this.requireDb();
     const topK = Math.max(1, Math.min(1000, opts.topK ?? 10));
-    const rows = this.db.prepare("SELECT id, dim, vec, metadata_json FROM vectors").all() as Array<{
-      id: string;
-      dim: number;
-      vec: Buffer;
-      metadata_json: string;
-    }>;
+    const rows = db
+      .prepare("SELECT id, dim, vec, metadata_json FROM vectors")
+      .all<{ id: string; dim: number; vec: Uint8Array | Buffer; metadata_json: string }>();
     const q = new Float32Array(queryVec);
     const filter = compileFilter(opts.filter);
     const scored: Array<{ id: string; score: number; metadata: Record<string, unknown> }> = [];
     for (const row of rows) {
       const meta = JSON.parse(row.metadata_json) as Record<string, unknown>;
       if (!filter(meta)) continue;
-      const v = new Float32Array(row.vec.buffer, row.vec.byteOffset, row.vec.byteLength / 4);
+      const u8 = row.vec instanceof Uint8Array ? row.vec : new Uint8Array(row.vec);
+      const v = new Float32Array(u8.buffer, u8.byteOffset, u8.byteLength / 4);
       let dot = 0;
       const n = Math.min(q.length, v.length);
       for (let i = 0; i < n; i++) dot += (q[i] ?? 0) * (v[i] ?? 0);
@@ -278,7 +307,6 @@ export class SelfhostAI {
     input: { messages?: Array<{ role: string; content: string }>; text?: string[] },
   ): Promise<unknown> {
     if (input.text && Array.isArray(input.text)) {
-      // Embedding path: route to Ollama's /api/embeddings.
       const url = `${(this.opts.ollamaUrl ?? "http://localhost:11434").replace(/\/$/, "")}/api/embeddings`;
       const out: number[][] = [];
       for (const text of input.text) {
@@ -294,7 +322,6 @@ export class SelfhostAI {
       return { shape: [out.length, out[0]?.length ?? 0], data: out };
     }
     if (input.messages && Array.isArray(input.messages)) {
-      // Chat path: route to Ollama's /api/chat.
       const url = `${(this.opts.ollamaUrl ?? "http://localhost:11434").replace(/\/$/, "")}/api/chat`;
       const res = await fetch(url, {
         method: "POST",

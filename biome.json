@@ -23,7 +23,8 @@
       "!**/*.css",
       "!**/*.astro",
       "!**/*.mdx",
-      "!**/openapi.json"
+      "!**/openapi.json",
+      "!**/worker-configuration.d.ts"
     ]
   },
   "formatter": {
