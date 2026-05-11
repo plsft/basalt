@@ -147,6 +147,26 @@ const ROUTES: RouteEntry[] = [
   },
   {
     method: "post",
+    path: "/v1/vaults/:id/reindex",
+    summary: "Re-embed notes into Vectorize for cross-vault search",
+    description:
+      "Reads the latest snapshot from R2, re-embeds title+content via Workers AI under the canonical model, and upserts the vectors into VECTORIZE with user/vault metadata.",
+    auth: true,
+    response: { status: 200, description: "Reindexed", schema: "ReindexResponse" },
+  },
+  {
+    method: "post",
+    path: "/v1/search",
+    summary: "Cross-vault semantic search",
+    description:
+      "Embeds the query via Workers AI and queries Vectorize. Filters to user-owned vaults; vault_ids[] narrows further. Returns hits sorted by similarity.",
+    auth: true,
+    rateLimit: { scope: "search", max: 60, window: 60 },
+    body: "SearchRequest",
+    response: { status: 200, description: "Search hits", schema: "SearchResponse" },
+  },
+  {
+    method: "post",
     path: "/v1/briefs/generate",
     summary: "Generate a brief",
     description:
@@ -500,6 +520,50 @@ const SCHEMAS: Record<string, unknown> = {
       },
     },
     required: ["providers"],
+  },
+  ReindexResponse: {
+    type: "object",
+    properties: {
+      ok: { type: "boolean" },
+      vault_id: { type: "string" },
+      note_count: { type: "integer" },
+      vectors_upserted: { type: "integer" },
+      embedding_model: { type: "string" },
+      elapsed_ms: { type: "integer" },
+    },
+    required: ["ok", "vault_id", "note_count", "vectors_upserted", "embedding_model", "elapsed_ms"],
+  },
+  SearchRequest: {
+    type: "object",
+    properties: {
+      query: { type: "string", minLength: 1, maxLength: 2000 },
+      vault_ids: { type: "array", items: { type: "string" } },
+      top: { type: "integer", minimum: 1, maximum: 50, default: 10 },
+    },
+    required: ["query"],
+  },
+  SearchResponse: {
+    type: "object",
+    properties: {
+      query: { type: "string" },
+      elapsed_ms: { type: "integer" },
+      embedding_model: { type: "string" },
+      hits: {
+        type: "array",
+        items: {
+          type: "object",
+          properties: {
+            vault_id: { type: "string" },
+            rel_path: { type: "string" },
+            title: { type: "string" },
+            updated: { type: "string", nullable: true },
+            score: { type: "number" },
+          },
+          required: ["vault_id", "rel_path", "title", "score"],
+        },
+      },
+    },
+    required: ["query", "elapsed_ms", "embedding_model", "hits"],
   },
   SnapshotMeta: {
     type: "object",

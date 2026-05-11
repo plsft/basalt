@@ -97,6 +97,33 @@ program
   });
 
 program
+  .command("search <query>")
+  .description("Cross-vault semantic search against the hosted API.")
+  .option("--vault-id <id...>", "Scope to specific vault id(s). Repeatable.")
+  .option("--top <n>", "Top N hits. Default 10.", "10")
+  .option("--api-url <url>", "API base URL")
+  .option("--api-token <token>", "API session token (or BASALT_API_TOKEN env)")
+  .option("--json", "Emit raw JSON.")
+  .action(async (query: string, opts) => {
+    const o = opts as {
+      vaultId?: string[];
+      top?: string;
+      apiUrl?: string;
+      apiToken?: string;
+      json?: boolean;
+    };
+    const { searchCommand } = await import("./commands/search");
+    await searchCommand({
+      query,
+      ...(o.vaultId ? { vaultIds: o.vaultId } : {}),
+      top: o.top ? Number.parseInt(o.top, 10) : 10,
+      ...(o.apiUrl ? { apiUrl: o.apiUrl } : {}),
+      ...(o.apiToken ? { apiToken: o.apiToken } : {}),
+      ...(o.json ? { json: true } : {}),
+    });
+  });
+
+program
   .command("demo")
   .description("Run an offline demo against the bundled sample vault.")
   .action(async () => {

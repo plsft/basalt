@@ -8,8 +8,10 @@ import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import { z } from "zod";
 import type { Bindings, Variables } from "../env";
-import { VaultSnapshot } from "../lib/snapshot";
+import { VaultSnapshot, type VaultSnapshot as VaultSnapshotT } from "../lib/snapshot";
 import { ulid } from "../lib/ulid";
+import { deleteVectorsForVault, upsertVectorsForVault } from "../lib/vectorize";
+import { embedTextsWorkers, WORKERS_EMBEDDING_DEFAULT_MODEL } from "../lib/workers-embedding";
 import { requireAuth } from "../middleware/auth";
 import { rateLimit } from "../middleware/rate-limit";
 
@@ -60,6 +62,21 @@ vaultsRoutes.delete("/:id", async (c) => {
   )
     .bind(ulid(), user.id, "vault.soft_delete", JSON.stringify({ vault_id: vaultId }), now)
     .run();
+
+  // Best-effort: also tear down the vector entries so search stops
+  // returning hits from this vault immediately. We don't block on this —
+  // a slow Vectorize round-trip shouldn't block the user's delete UX.
+  try {
+    const key = `snapshots/${user.id}/${vaultId}.json`;
+    const snapshotObj = await c.env.BRIEFS_BUCKET.get(key);
+    if (snapshotObj) {
+      const snap = VaultSnapshot.parse(JSON.parse(await snapshotObj.text())) as VaultSnapshotT;
+      const relPaths = snap.notes.map((n) => n.rel_path);
+      c.executionCtx.waitUntil(deleteVectorsForVault(c.env.VECTORIZE, user.id, vaultId, relPaths));
+    }
+  } catch (e) {
+    console.warn("vault delete: vector cleanup failed", e);
+  }
   return c.json({ ok: true, scheduled_hard_delete_at: thirtyDaysFromNow() });
 });
 
@@ -104,6 +121,76 @@ vaultsRoutes.post("/:id/snapshot", async (c) => {
     embedding_count: parsed.data.embeddings.length,
     link_count: parsed.data.links.length,
     bytes: body.length,
+  });
+});
+
+vaultsRoutes.post("/:id/reindex", async (c) => {
+  const user = c.get("user");
+  if (!user) return c.json({ error: "unauthorized" }, 401);
+  if (!c.env.AI) return c.json({ error: "ai_binding_missing" }, 501);
+  const vaultId = c.req.param("id");
+  const owned = await assertVaultOwned(c.env, vaultId, user.id);
+  if (!owned) return c.json({ error: "not_found" }, 404);
+
+  const key = `snapshots/${user.id}/${vaultId}.json`;
+  const obj = await c.env.BRIEFS_BUCKET.get(key);
+  if (!obj) {
+    return c.json(
+      {
+        error: "no_snapshot",
+        message: "Upload a snapshot via POST /v1/vaults/:id/snapshot first.",
+      },
+      409,
+    );
+  }
+  let snap: VaultSnapshotT;
+  try {
+    snap = VaultSnapshot.parse(JSON.parse(await obj.text())) as VaultSnapshotT;
+  } catch (e) {
+    return c.json(
+      { error: "snapshot_corrupt", detail: e instanceof Error ? e.message : String(e) },
+      500,
+    );
+  }
+
+  const t0 = Date.now();
+  // Re-embed every note's title+content under our canonical model so all
+  // vaults share the same vector space.
+  const texts = snap.notes.map((n) => `${n.title}\n\n${n.content}`.trim());
+  const vecs = await embedTextsWorkers(c.env.AI, texts, WORKERS_EMBEDDING_DEFAULT_MODEL);
+  const upserts = snap.notes.map((n, i) => ({
+    rel_path: n.rel_path,
+    title: n.title,
+    updated: n.updated ?? null,
+    vec: vecs[i] ?? new Float32Array(0),
+  }));
+  const result = await upsertVectorsForVault(c.env.VECTORIZE, user.id, vaultId, upserts);
+  const elapsedMs = Date.now() - t0;
+
+  await c.env.DB.prepare(
+    "INSERT INTO audit_log (id, user_id, action, payload_json, created_at) VALUES (?, ?, ?, ?, ?)",
+  )
+    .bind(
+      ulid(),
+      user.id,
+      "vault.reindex",
+      JSON.stringify({
+        vault_id: vaultId,
+        note_count: snap.notes.length,
+        elapsed_ms: elapsedMs,
+        model: WORKERS_EMBEDDING_DEFAULT_MODEL,
+      }),
+      new Date().toISOString(),
+    )
+    .run();
+
+  return c.json({
+    ok: true,
+    vault_id: vaultId,
+    note_count: snap.notes.length,
+    vectors_upserted: result.inserted,
+    embedding_model: WORKERS_EMBEDDING_DEFAULT_MODEL,
+    elapsed_ms: elapsedMs,
   });
 });
 

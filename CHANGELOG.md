@@ -6,6 +6,32 @@ Phase boundaries get a release tag (`v0.<phase>.0`); public launch tags `v1.0.0`
 
 ## Unreleased
 
+### Added — v1.3.0 work (multi-vault search)
+- `POST /v1/vaults/:id/reindex` — re-embeds the latest snapshot's notes
+  via Workers AI's `@cf/baai/bge-base-en-v1.5` model and upserts vectors
+  into the Vectorize index. Server-side re-embedding makes cross-vault
+  search work even when different local surfaces used different
+  embedding models (Ollama nomic vs MockEmbedder, etc.).
+- `POST /v1/search` — cross-vault semantic search. Embeds the query via
+  Workers AI, queries Vectorize with `topK` + metadata filters (always
+  scopes to caller's `user_id`; optional `vault_ids[]` narrows further).
+  Returns `{ query, elapsed_ms, embedding_model, hits[] }`.
+  Rate-limited at 60/min.
+- `DELETE /v1/vaults/:id` now also fires a best-effort `deleteByIds`
+  against Vectorize for that vault's vectors (waitUntil so it doesn't
+  block the user-facing delete).
+- `basalt search "<query>"` CLI command. Supports `--vault-id <id>`
+  (repeatable), `--top N`, `--api-url`, `--api-token`, `--json`.
+- `packages/api/src/lib/{vectorize,workers-embedding}.ts` — helpers for
+  ID/metadata namespacing, batch embedding, and tree-style filter
+  composition.
+- Docs: new `/v1.3.0-search` page with cost expectations, privacy
+  posture (per-user metadata filter), and the response shape.
+- OpenAPI regen: **25 paths / 27 schemas / 53 KB**. New schemas:
+  `ReindexResponse`, `SearchRequest`, `SearchResponse`.
+- 6 new tests (vector ID determinism + namespacing + length bound);
+  622 total.
+
 ## v1.1.0 — 2026-05-11
 
 ### Added

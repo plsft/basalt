@@ -11,6 +11,7 @@ import { briefsRoutes } from "./routes/briefs";
 import { byokRoutes } from "./routes/byok";
 import { findingsRoutes } from "./routes/findings";
 import { meRoutes } from "./routes/me";
+import { searchRoutes } from "./routes/search";
 import { status } from "./routes/status";
 import { vaultsRoutes } from "./routes/vaults";
 
@@ -49,6 +50,7 @@ app.route("/v1/briefs", briefsRoutes);
 app.route("/v1/findings", findingsRoutes);
 app.route("/v1/billing", billingRoutes);
 app.route("/v1/byok", byokRoutes);
+app.route("/v1/search", searchRoutes);
 app.route("/", status);
 
 app.notFound((c) => c.json({ error: "not_found", path: c.req.path }, 404));
