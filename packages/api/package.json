@@ -17,6 +17,7 @@
     "test": "echo \"@basalt/api: tests run from root via 'bun run test'\" && exit 0"
   },
   "dependencies": {
+    "@basalt/core": "workspace:*",
     "@hono/zod-validator": "^0.4.2",
     "hono": "^4.6.0",
     "zod": "^3.24.0"

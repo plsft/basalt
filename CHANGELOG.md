@@ -7,6 +7,50 @@ Phase boundaries get a release tag (`v0.<phase>.0`); public launch tags `v1.0.0`
 ## Unreleased
 
 ### Added
+- Real brief generation on Workers + vault snapshot pipeline. New endpoints:
+  - `POST /v1/vaults/:id/snapshot` accepts a `VaultSnapshot` (notes +
+    base64-float32 embeddings + wikilinks), validates via zod, persists to
+    R2 at `snapshots/<user>/<vault>.json`. Replaces the previous index-queue
+    stub; the snapshot is self-contained so brief generation never touches
+    raw vault files.
+  - `GET /v1/vaults/:id/snapshot/meta` — size, upload time, custom metadata.
+  - `DELETE /v1/vaults/:id` — soft delete with 30-day grace + audit_log.
+  - `POST /v1/briefs/generate` is now **synchronous**: hydrates the engine's
+    `MemoryFilesystem` + `MemoryStorage` from the latest snapshot via
+    `packages/api/src/lib/engine-adapters.ts`, runs `Engine.brief({ section, top })`,
+    persists the result + one row per finding to D1, returns the full Brief
+    inline. Rate-limited at 6/min per user (PRD §6.4).
+  - `DELETE /v1/briefs/:id` — hard delete + cascade to findings.
+  - `GET /v1/findings` — cursor-paginated finding timeline with filters
+    (verb, vault_id, status) joined to briefs for owner scoping.
+  - `POST /v1/findings/:id/{snooze,dismiss,confirm}` — owner-scoped status
+    transitions with audit_log entries. Promote-to-note remains
+    intentionally client-side per PRD §2.3.
+- `packages/api/src/lib/snapshot.ts` — `VaultSnapshot` zod schema +
+  base64-float32 encode/decode helpers. 7 unit tests cover round-trip
+  preservation on 768-dim normalized vectors and zod schema edges.
+- `packages/api/src/lib/engine-adapters.ts` — `buildEngineFromSnapshot()`:
+  synthesizes a `MemoryFilesystem` + `MemoryStorage` Engine seeded with the
+  snapshot's notes, then replaces mock embeddings with the snapshot's real
+  vectors before verbs run. 2 integration tests including a sample-14
+  fixture round-trip.
+
+### Changed
+- All API ID generation switched from `crypto.randomUUID()` to `ulid()` for
+  sortable, prefix-comparable identifiers. Affects vaults, briefs, findings,
+  audit_log, subscriptions.
+- `findings` mutation endpoints (snooze / dismiss / confirm) now verify
+  ownership via JOIN to `briefs.user_id` — previously any authenticated
+  user could mutate any finding by ID guess. Closed before any production
+  traffic.
+
+### API surface
+
+OpenAPI doc regenerated: **21 paths / 22 schemas / 42,925 bytes**. New
+schemas: `VaultSnapshot`, `VaultSnapshotAck`, `SnapshotMeta`,
+`FindingSnoozeRequest`. New endpoints documented with `x-rate-limit` hints
+and owner-scoping notes.
+
 - API hardening: real OAuth (GitHub + Google) and HMAC-verified Stripe
   webhooks. `/v1/auth/oauth/{start,callback,logout}` does real code exchange
   + `userinfo` lookup against the providers, upserts the user row in D1
