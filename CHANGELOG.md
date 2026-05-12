@@ -6,6 +6,31 @@ Phase boundaries get a release tag (`v0.<phase>.0`); public launch tags `v1.0.0`
 
 ## Unreleased
 
+## v1.5.1 — 2026-05-12
+
+### Fixed
+- **Desktop bundle filenames** — Tauri reads version from three places
+  (`tauri.conf.json`, `Cargo.toml`, `package.json`) and embeds it in the
+  output filename. v1.5.0 shipped `Basalt_0.0.0_*.dmg` because the
+  desktop workflow didn't stamp the tag into any of them. Add a Stamp
+  version from tag step that mirrors the same pattern used in
+  release-cli-mcp.yml.
+
+### Added
+- **Stable filenames for desktop bundles** — each Tauri bundle is
+  now also published under a version-free name alongside the canonical
+  version-named asset:
+  - `basalt-desktop-macos-universal.dmg`
+  - `basalt-desktop-linux-x64.deb` + `.AppImage`
+  - `basalt-desktop-windows-x64-setup.exe` + `.msi`
+
+  Stable names enable permanent deep-links via
+  `/releases/latest/download/<name>` that don't break across releases.
+- **Marketing site download grid rewritten** with deep links to the
+  stable filenames. Added a "Standalone binaries" subsection under the
+  CLI install path for users who want a single-file `basalt` binary
+  without Node/Bun.
+
 ## v1.5.0 — 2026-05-12
 
 ### Added — v1.5.0 work (brand migration + downloadable artifacts)
