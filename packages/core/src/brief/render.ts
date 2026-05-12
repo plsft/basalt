@@ -21,12 +21,14 @@ const BUCKET_TITLE: Record<FindingsBucket, string> = {
   drift: "Drift (Hg)",
 };
 
+// Mirror reference/src/basalt/brief.py section ordering (v0.0.14+):
+//   implicit-thesis → buried-insight → drift → contradiction → connection
 const RENDER_ORDER: FindingsBucket[] = [
-  "buried_insight",
-  "connection",
-  "contradiction",
   "implicit_thesis",
+  "buried_insight",
   "drift",
+  "contradiction",
+  "connection",
 ];
 
 export function renderBrief(brief: Brief, format: RenderFormat): string {

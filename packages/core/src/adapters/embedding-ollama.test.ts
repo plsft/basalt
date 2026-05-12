@@ -34,14 +34,14 @@ describe("OllamaEmbedder constants", () => {
 });
 
 describe("OllamaEmbedder.embed", () => {
-  it("POSTs to /api/embeddings with the correct request shape", async () => {
+  it("POSTs to /api/embed with the new {model,input} request shape", async () => {
     const fetchImpl = makeFetchMock(async (req) => {
-      expect(req.url).toBe("http://localhost:11434/api/embeddings");
+      expect(req.url).toBe("http://localhost:11434/api/embed");
       expect(req.method).toBe("POST");
-      const body = JSON.parse(await req.text()) as { model: string; prompt: string };
+      const body = JSON.parse(await req.text()) as { model: string; input: string };
       expect(body.model).toBe("nomic-embed-text");
-      expect(body.prompt).toBe("hello");
-      return okJson({ embedding: FAKE_VEC });
+      expect(body.input).toBe("hello");
+      return okJson({ embeddings: [FAKE_VEC] });
     });
     const e = new OllamaEmbedder({ fetchImpl });
     const out = await e.embed(["hello"]);
@@ -49,8 +49,17 @@ describe("OllamaEmbedder.embed", () => {
     expect(out[0]?.length).toBe(3);
   });
 
+  it("accepts the legacy {embedding: [...]} response shape for back-compat", async () => {
+    // Older Ollama daemons (pre-v0.2) only return `embedding`. We continue
+    // to parse that so users on stale installs keep working.
+    const fetchImpl = makeFetchMock(() => okJson({ embedding: FAKE_VEC }));
+    const e = new OllamaEmbedder({ fetchImpl });
+    const out = await e.embed(["hello"]);
+    expect(out[0]?.length).toBe(3);
+  });
+
   it("L2-normalizes the response vector", async () => {
-    const fetchImpl = makeFetchMock(() => okJson({ embedding: [3, 4, 0] }));
+    const fetchImpl = makeFetchMock(() => okJson({ embeddings: [[3, 4, 0]] }));
     const e = new OllamaEmbedder({ fetchImpl });
     const [v] = await e.embed(["x"]);
     // ||(3,4,0)||₂ = 5 → normalized = (0.6, 0.8, 0)
@@ -62,21 +71,20 @@ describe("OllamaEmbedder.embed", () => {
   it("truncates prompts longer than maxChars", async () => {
     const longText = "a".repeat(EMBED_MAX_CHARS + 100);
     const fetchImpl = makeFetchMock(async (req) => {
-      const body = JSON.parse(await req.text()) as { prompt: string };
-      expect(body.prompt.length).toBe(EMBED_MAX_CHARS);
-      return okJson({ embedding: [1] });
+      const body = JSON.parse(await req.text()) as { input: string };
+      expect(body.input.length).toBe(EMBED_MAX_CHARS);
+      return okJson({ embeddings: [[1]] });
     });
     const e = new OllamaEmbedder({ fetchImpl });
     await e.embed([longText]);
   });
 
   it("preserves input order under concurrent dispatch", async () => {
-    const _nextLabel = 0;
     const fetchImpl = makeFetchMock(async (req) => {
-      const body = JSON.parse(await req.text()) as { prompt: string };
+      const body = JSON.parse(await req.text()) as { input: string };
       // Mark each response with a deterministic label tied to the input.
-      const idx = Number.parseInt(body.prompt.replace(/^x/, ""), 10);
-      return okJson({ embedding: [idx, idx, idx] });
+      const idx = Number.parseInt(body.input.replace(/^x/, ""), 10);
+      return okJson({ embeddings: [[idx, idx, idx]] });
     });
     const e = new OllamaEmbedder({ fetchImpl, concurrency: 3 });
     const inputs = Array.from({ length: 10 }, (_, i) => `x${i}`);
@@ -89,7 +97,7 @@ describe("OllamaEmbedder.embed", () => {
   });
 
   it("caches dimension after first successful embed", async () => {
-    const fetchImpl = makeFetchMock(() => okJson({ embedding: [0.1, 0.2, 0.3, 0.4, 0.5] }));
+    const fetchImpl = makeFetchMock(() => okJson({ embeddings: [[0.1, 0.2, 0.3, 0.4, 0.5]] }));
     const e = new OllamaEmbedder({ fetchImpl });
     expect(e.dimension()).toBe(0);
     await e.embed(["x"]);
@@ -104,10 +112,10 @@ describe("OllamaEmbedder.embed", () => {
     await expect(e.embed(["x"])).rejects.toThrow(OllamaEmbeddingError);
   });
 
-  it("throws OllamaEmbeddingError when 'embedding' is missing from JSON", async () => {
+  it("throws OllamaEmbeddingError when the embedding field is missing from JSON", async () => {
     const fetchImpl = makeFetchMock(() => okJson({ wrongKey: [1, 2, 3] }));
     const e = new OllamaEmbedder({ fetchImpl });
-    await expect(e.embed(["x"])).rejects.toThrow(/missing 'embedding'/);
+    await expect(e.embed(["x"])).rejects.toThrow(/missing 'embeddings'\/'embedding'/);
   });
 
   it("throws when fetch throws (network down)", async () => {

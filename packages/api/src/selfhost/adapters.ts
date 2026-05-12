@@ -307,17 +307,22 @@ export class SelfhostAI {
     input: { messages?: Array<{ role: string; content: string }>; text?: string[] },
   ): Promise<unknown> {
     if (input.text && Array.isArray(input.text)) {
-      const url = `${(this.opts.ollamaUrl ?? "http://localhost:11434").replace(/\/$/, "")}/api/embeddings`;
+      // Mirror packages/core/src/adapters/embedding-ollama.ts: POST to
+      // /api/embed with {model,input}; accept either the new
+      // {embeddings:[[...]]} or legacy {embedding:[...]} response.
+      const url = `${(this.opts.ollamaUrl ?? "http://localhost:11434").replace(/\/$/, "")}/api/embed`;
       const out: number[][] = [];
       for (const text of input.text) {
         const res = await fetch(url, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ model: "nomic-embed-text", prompt: text }),
+          body: JSON.stringify({ model: "nomic-embed-text", input: text }),
         });
         if (!res.ok) throw new Error(`selfhost embedding failed: HTTP ${res.status}`);
-        const data = (await res.json()) as { embedding: number[] };
-        out.push(data.embedding);
+        const data = (await res.json()) as { embedding?: number[]; embeddings?: number[][] };
+        const vec = data.embeddings?.[0] ?? data.embedding;
+        if (!Array.isArray(vec)) throw new Error("selfhost embedding response missing vector");
+        out.push(vec);
       }
       return { shape: [out.length, out[0]?.length ?? 0], data: out };
     }

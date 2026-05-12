@@ -107,10 +107,15 @@ export class OllamaEmbedder implements EmbeddingAdapter {
     const timer = setTimeout(() => controller.abort(), this.timeoutMs);
     let res: Response;
     try {
-      res = await this.fetchImpl(`${this.url}/api/embeddings`, {
+      // Ollama v0.2+ exposes /api/embed (returns `embeddings: [[...]]`).
+      // The legacy /api/embeddings endpoint (returns `embedding: [...]`)
+      // is still served by older Ollama daemons. Mirror Python's strategy:
+      // POST to /api/embed with the new shape; on the JSON side accept
+      // either response key for back-compat.
+      res = await this.fetchImpl(`${this.url}/api/embed`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ model: this.model, prompt: text }),
+        body: JSON.stringify({ model: this.model, input: text }),
         signal: controller.signal,
       });
     } catch (err) {
@@ -131,16 +136,23 @@ export class OllamaEmbedder implements EmbeddingAdapter {
     } catch (err) {
       throw new OllamaEmbeddingError("Ollama response was not valid JSON", err);
     }
-    if (
-      typeof json !== "object" ||
-      json === null ||
-      !Array.isArray((json as { embedding?: unknown }).embedding)
-    ) {
+    if (typeof json !== "object" || json === null) {
       throw new OllamaEmbeddingError(
-        `Ollama response missing 'embedding' array: ${JSON.stringify(json).slice(0, 200)}`,
+        `Ollama response not an object: ${JSON.stringify(json).slice(0, 200)}`,
       );
     }
-    const raw = (json as { embedding: number[] }).embedding;
+    const payload = json as { embedding?: unknown; embeddings?: unknown };
+    let raw: number[] | null = null;
+    if (Array.isArray(payload.embeddings) && Array.isArray(payload.embeddings[0])) {
+      raw = payload.embeddings[0] as number[];
+    } else if (Array.isArray(payload.embedding)) {
+      raw = payload.embedding as number[];
+    }
+    if (raw === null) {
+      throw new OllamaEmbeddingError(
+        `Ollama response missing 'embeddings'/'embedding' array: ${JSON.stringify(json).slice(0, 200)}`,
+      );
+    }
     const vec = new Float32Array(raw.length);
     for (let i = 0; i < raw.length; i++) vec[i] = raw[i] ?? 0;
     if (this.cachedDim === 0) this.cachedDim = vec.length;

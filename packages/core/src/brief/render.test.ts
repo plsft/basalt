@@ -188,9 +188,11 @@ describe("renderBrief — Markdown", () => {
     const buriedIdx = md.indexOf("Buried Insight");
     const connIdx = md.indexOf("Connection");
     const driftIdx = md.indexOf("Drift");
+    // Canonical order (matches reference/src/basalt/brief.py):
+    // implicit-thesis → buried → drift → contradiction → connection.
     expect(buriedIdx).toBeGreaterThan(0);
-    expect(connIdx).toBeGreaterThan(buriedIdx);
-    expect(driftIdx).toBeGreaterThan(connIdx);
+    expect(driftIdx).toBeGreaterThan(buriedIdx);
+    expect(connIdx).toBeGreaterThan(driftIdx);
   });
 });
 

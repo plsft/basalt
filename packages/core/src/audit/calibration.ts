@@ -176,6 +176,46 @@ export function findingKey(verb: Verb, finding: Finding): string {
 
 // ── Recording ─────────────────────────────────────────────────────────────
 
+/** Which `rel_path`s does this finding cite? Used to snapshot `word_count`
+ *  at log time so `*_shrinks` rules can fire later in `auditPending`. Drift
+ *  cites projects rather than notes — returns []. Mirror of Python
+ *  `audit.py::_cited_paths`. */
+export function citedPaths(verb: Verb, finding: Finding): string[] {
+  switch (verb) {
+    case "buried-insight":
+      return [(finding as BuriedInsightFinding).rel_path];
+    case "connection": {
+      const f = finding as ConnectionFinding;
+      return [f.note_a.rel_path, f.note_b.rel_path];
+    }
+    case "contradiction": {
+      const f = finding as ContradictionFinding;
+      return [f.note_a.rel_path, f.note_b.rel_path];
+    }
+    case "implicit-thesis": {
+      const f = finding as ImplicitThesisFinding;
+      return [f.centroid.rel_path, ...f.members.map((m) => m.rel_path)];
+    }
+    case "drift":
+      return [];
+  }
+}
+
+/** Fetch current `word_count` per cited path from the storage adapter. Paths
+ *  not present in the index are simply omitted (no fabrication — matches
+ *  Python's `_lookup_word_counts`). */
+async function lookupWordCounts(
+  storage: StorageAdapter,
+  paths: string[],
+): Promise<Record<string, number>> {
+  const out: Record<string, number> = {};
+  for (const p of paths) {
+    const note = await storage.getNote(p);
+    if (note !== null) out[p] = note.wordCount;
+  }
+  return out;
+}
+
 /** Log a Brief finding to the calibration table. Idempotent on
  *  (verb, finding_key) while pending. Returns the inserted row id, or null
  *  if a pending duplicate already exists. */
@@ -186,10 +226,17 @@ export async function recordFinding(
   today: string,
 ): Promise<number | null> {
   const rules = falsificationRulesFor(verb, finding);
+  const paths = citedPaths(verb, finding);
+  const wordCountsAtLog = paths.length > 0 ? await lookupWordCounts(storage, paths) : {};
+  // Augment the finding with the word-count snapshot so `*_shrinks` rules
+  // can later compare current state to log-time state. Mirror of Python
+  // `audit.py::_finding_payload(verb, finding, word_counts)`.
+  const augmented =
+    paths.length > 0 ? { ...finding, word_counts_at_log: wordCountsAtLog } : finding;
   return await storage.upsertFinding({
     verb,
     finding_key: findingKey(verb, finding),
-    finding_json: JSON.stringify(finding),
+    finding_json: JSON.stringify(augmented),
     falsification: JSON.stringify(rules),
     created_at: today,
     status: "pending",
@@ -291,6 +338,16 @@ async function snapshotResolvedLinks(storage: StorageAdapter): Promise<ResolvedL
   return { edges };
 }
 
+/** Pull a cited path's `word_count` from the log-time snapshot embedded in
+ *  the finding (`word_counts_at_log`). Returns null if the finding was
+ *  logged before v1.6.0 (no snapshot) or the path wasn't cited. */
+function wordCountSnapshot(finding: Record<string, unknown>, relPath: string): number | null {
+  const snap = finding.word_counts_at_log;
+  if (snap === null || typeof snap !== "object" || snap === undefined) return null;
+  const value = (snap as Record<string, unknown>)[relPath];
+  return typeof value === "number" ? value : null;
+}
+
 function parseIsoDate(s: string | undefined | null): Date {
   if (!s) return new Date(Number.NaN);
   return new Date(`${s.slice(0, 10)}T00:00:00Z`);
@@ -304,7 +361,6 @@ function evaluateRule(
   links: ResolvedLinks,
   todayDate: Date,
 ): { newStatus: "confirmed" | "falsified" | "pending"; reason: string } {
-  void finding;
   const { kind, params } = rule;
   const p = params as Record<string, unknown>;
 
@@ -316,8 +372,22 @@ function evaluateRule(
       }
       return { newStatus: "pending", reason: "" };
     }
-    case "candidate_shrinks":
+    case "candidate_shrinks": {
+      const rel = String(p.rel_path);
+      const dropPct = Number(p.drop_pct);
+      const current = state.notes.get(rel);
+      if (!current) return { newStatus: "pending", reason: "" };
+      const snapshot = wordCountSnapshot(finding, rel);
+      if (snapshot === null || snapshot <= 0) return { newStatus: "pending", reason: "" };
+      const dropped = ((snapshot - current.wordCount) / snapshot) * 100;
+      if (dropped >= dropPct) {
+        return {
+          newStatus: "falsified",
+          reason: `${rel} shrank from ${snapshot} → ${current.wordCount} words (${dropped.toFixed(1)}%, threshold ${dropPct}%)`,
+        };
+      }
       return { newStatus: "pending", reason: "" };
+    }
 
     case "no_new_validators":
       if (ageDays < Number(p.grace_days)) return { newStatus: "pending", reason: "" };
@@ -340,8 +410,36 @@ function evaluateRule(
       }
       return { newStatus: "pending", reason: "" };
     }
-    case "either_shrinks":
+    case "either_shrinks": {
+      const a = String(p.a);
+      const b = String(p.b);
+      const dropPct = Number(p.drop_pct);
+      const aCurrent = state.notes.get(a);
+      const bCurrent = state.notes.get(b);
+      const aSnap = wordCountSnapshot(finding, a);
+      const bSnap = wordCountSnapshot(finding, b);
+      const aDropped =
+        aCurrent && aSnap !== null && aSnap > 0
+          ? ((aSnap - aCurrent.wordCount) / aSnap) * 100
+          : null;
+      const bDropped =
+        bCurrent && bSnap !== null && bSnap > 0
+          ? ((bSnap - bCurrent.wordCount) / bSnap) * 100
+          : null;
+      if (aDropped !== null && aDropped >= dropPct) {
+        return {
+          newStatus: "falsified",
+          reason: `${a} shrank from ${aSnap} → ${aCurrent?.wordCount ?? 0} words (${aDropped.toFixed(1)}%, threshold ${dropPct}%) — underlying idea discarded`,
+        };
+      }
+      if (bDropped !== null && bDropped >= dropPct) {
+        return {
+          newStatus: "falsified",
+          reason: `${b} shrank from ${bSnap} → ${bCurrent?.wordCount ?? 0} words (${bDropped.toFixed(1)}%, threshold ${dropPct}%) — underlying idea discarded`,
+        };
+      }
       return { newStatus: "pending", reason: "" };
+    }
 
     case "neither_edited": {
       const a = state.notes.get(String(p.a));

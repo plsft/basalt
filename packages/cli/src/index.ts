@@ -7,7 +7,9 @@ import kleur from "kleur";
 import { aboutCommand } from "./commands/about";
 import { auditCommand } from "./commands/audit";
 import { briefCommand } from "./commands/brief";
+import { configShowCommand } from "./commands/config_show";
 import { demoCommand } from "./commands/demo";
+import { doctorCommand } from "./commands/doctor";
 import { indexCommand } from "./commands/index_";
 import { initCommand } from "./commands/init";
 import { promoteCommand } from "./commands/promote";
@@ -136,6 +138,21 @@ program
   .description("Show version, schema, and the Basalt mark.")
   .action(() => {
     aboutCommand();
+  });
+
+const configCmd = program.command("config").description("Inspect or modify the Basalt config.");
+configCmd
+  .command("show")
+  .description("Print the resolved config (file + defaults).")
+  .action(() => {
+    configShowCommand();
+  });
+
+program
+  .command("doctor")
+  .description("Pre-flight checks — vault, index, Ollama, embedding model, API token.")
+  .action(async () => {
+    await doctorCommand();
   });
 
 await program.parseAsync(process.argv).catch((err: unknown) => {

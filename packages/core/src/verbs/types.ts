@@ -57,6 +57,10 @@ export interface BuriedInsightFinding {
     similarity: number;
   }>;
   falsification?: FalsificationRule[];
+  /** Snapshot of cited paths' `word_count` at the time the finding was
+   *  recorded. Lets `candidate_shrinks` rules fire later by comparing to
+   *  the current `word_count`. Absent on findings logged before v1.6.0. */
+  word_counts_at_log?: Record<string, number>;
 }
 
 export interface ConnectionFinding {
@@ -67,6 +71,7 @@ export interface ConnectionFinding {
   note_a: PairSide & { hub_density: number };
   note_b: PairSide & { hub_density: number };
   falsification?: FalsificationRule[];
+  word_counts_at_log?: Record<string, number>;
 }
 
 export interface ContradictionFinding {
@@ -80,6 +85,7 @@ export interface ContradictionFinding {
   note_a: PairSide;
   note_b: PairSide;
   falsification?: FalsificationRule[];
+  word_counts_at_log?: Record<string, number>;
 }
 
 export interface ImplicitThesisFinding {
@@ -100,6 +106,7 @@ export interface ImplicitThesisFinding {
     quote_provenance: QuoteProvenance;
   }>;
   falsification?: FalsificationRule[];
+  word_counts_at_log?: Record<string, number>;
 }
 
 export interface DriftFinding {

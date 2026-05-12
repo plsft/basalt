@@ -344,6 +344,128 @@ describe("auditPending", () => {
     expect(results[0]?.ruleKind).toBe("candidate_deleted");
   });
 
+  it("buried candidate_shrinks: falsified when rel_path loses >30% of its word_count", async () => {
+    const storage = new MemoryStorage();
+    // At log time the note had 200 words.
+    await storage.upsertNote({
+      path: "/v/shrinker.md",
+      relPath: "shrinker.md",
+      stem: "shrinker",
+      title: "shrinker",
+      created: "2024-01-01",
+      updated: "2024-06-01",
+      tags: [],
+      content: "x".repeat(200),
+      wikilinks: [],
+      wordCount: 200,
+      contentHash: "h-pre",
+    });
+    await recordFinding(storage, "buried-insight", buried("shrinker.md"), "2026-05-01");
+    // User dismantles the claim — note shrinks to 100 words (50% drop, > 30% threshold).
+    await storage.upsertNote({
+      path: "/v/shrinker.md",
+      relPath: "shrinker.md",
+      stem: "shrinker",
+      title: "shrinker",
+      created: "2024-01-01",
+      updated: "2026-05-05",
+      tags: [],
+      content: "x".repeat(100),
+      wikilinks: [],
+      wordCount: 100,
+      contentHash: "h-post",
+    });
+    const results = await auditPending(storage, "2026-05-09");
+    expect(results[0]?.newStatus).toBe("falsified");
+    expect(results[0]?.ruleKind).toBe("candidate_shrinks");
+    expect(results[0]?.reason).toContain("shrank from 200");
+  });
+
+  it("buried candidate_shrinks: stays pending when shrink is below threshold", async () => {
+    const storage = new MemoryStorage();
+    await storage.upsertNote({
+      path: "/v/stable.md",
+      relPath: "stable.md",
+      stem: "stable",
+      title: "stable",
+      created: "2024-01-01",
+      updated: "2024-06-01",
+      tags: [],
+      content: "x".repeat(200),
+      wikilinks: [],
+      wordCount: 200,
+      contentHash: "h-pre",
+    });
+    await recordFinding(storage, "buried-insight", buried("stable.md"), "2026-05-01");
+    // Small 10% drop — under the 30% threshold.
+    await storage.upsertNote({
+      path: "/v/stable.md",
+      relPath: "stable.md",
+      stem: "stable",
+      title: "stable",
+      created: "2024-01-01",
+      updated: "2026-05-05",
+      tags: [],
+      content: "x".repeat(180),
+      wikilinks: [],
+      wordCount: 180,
+      contentHash: "h-post",
+    });
+    const results = await auditPending(storage, "2026-05-03");
+    // No falsified result — the only rule that could fire (candidate_shrinks)
+    // didn't trip, and the others (candidate_deleted, no_new_validators)
+    // shouldn't fire 2 days after log.
+    expect(results.length).toBe(0);
+  });
+
+  it("connection either_shrinks: falsified when one of the pair loses >50% words", async () => {
+    const storage = new MemoryStorage();
+    await storage.upsertNote({
+      path: "/v/A.md",
+      relPath: "A.md",
+      stem: "A",
+      title: "A",
+      created: "2024-01-01",
+      updated: "2024-06-01",
+      tags: [],
+      content: "x".repeat(300),
+      wikilinks: [],
+      wordCount: 300,
+      contentHash: "ha",
+    });
+    await storage.upsertNote({
+      path: "/v/B.md",
+      relPath: "B.md",
+      stem: "B",
+      title: "B",
+      created: "2024-01-01",
+      updated: "2024-06-01",
+      tags: [],
+      content: "x".repeat(300),
+      wikilinks: [],
+      wordCount: 300,
+      contentHash: "hb",
+    });
+    await recordFinding(storage, "connection", connection("A.md", "B.md"), "2026-05-01");
+    // A drops 70% — clearly past the 50% threshold.
+    await storage.upsertNote({
+      path: "/v/A.md",
+      relPath: "A.md",
+      stem: "A",
+      title: "A",
+      created: "2024-01-01",
+      updated: "2026-05-05",
+      tags: [],
+      content: "x".repeat(90),
+      wikilinks: [],
+      wordCount: 90,
+      contentHash: "ha2",
+    });
+    const results = await auditPending(storage, "2026-05-09");
+    expect(results[0]?.newStatus).toBe("falsified");
+    expect(results[0]?.ruleKind).toBe("either_shrinks");
+  });
+
   it("contradiction neither_edited: falsified after 60d if neither note edited", async () => {
     const storage = new MemoryStorage();
     await storage.upsertNote({
