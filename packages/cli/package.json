@@ -1,8 +1,29 @@
 {
   "name": "basalted",
   "version": "0.0.0",
-  "description": "Basalt CLI — index, brief, audit your Markdown vault from the terminal.",
+  "description": "Basalt CLI (`basalt`) — local-first second-brain compiler. Reads your Markdown vault, surfaces what you believe but never wrote down. Install with `npm i -g basalted`, run with `basalt brief`.",
   "license": "MIT",
+  "homepage": "https://basalted.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/plsft/basalt.git",
+    "directory": "packages/cli"
+  },
+  "bugs": {
+    "url": "https://github.com/plsft/basalt/issues"
+  },
+  "keywords": [
+    "basalt",
+    "cli",
+    "second-brain",
+    "obsidian",
+    "markdown",
+    "notes",
+    "thesis",
+    "brief",
+    "knowledge-management",
+    "local-first"
+  ],
   "type": "module",
   "bin": {
     "basalt": "./bin/basalt.js"

@@ -6,7 +6,36 @@ Phase boundaries get a release tag (`v0.<phase>.0`); public launch tags `v1.0.0`
 
 ## Unreleased
 
-## v1.5.3 — 2026-05-12
+## v1.5.4 — 2026-05-12
+
+### Fixed
+- **npm package pages on npmjs.com appeared "empty"** because
+  `homepage` and `repository` were missing from every published
+  `package.json`. The READMEs were present in the tarballs (verified
+  by `npm view <pkg> readme`) but the right-hand sidebar on the npm
+  website only shows substantive content when those fields are set.
+  Added `homepage`, `repository.{type,url,directory}`, `bugs.url`,
+  and topical `keywords` to all three packages.
+- **Descriptions reworded** to make the three-package distinction
+  unambiguous from the npm listing alone:
+  - `basalted-core`: "Runtime-agnostic engine ... Used by the
+    basalted CLI, basalted-mcp server, Obsidian plugin, desktop
+    app, and the hosted API."
+  - `basalted`: "Basalt CLI (`basalt`) ... Install with `npm i -g
+    basalted`, run with `basalt brief`."
+  - `basalted-mcp`: "Model Context Protocol server for Basalt ...
+    so Claude Desktop / Cursor / Cline / Zed / VS Code Copilot can
+    run them against your Markdown vault."
+
+### Added
+- **READMEs rewritten across all three packages** with a shared
+  "Which package do I want?" table at the top of each, so a user
+  landing on any of the three npm pages can immediately see what
+  the package is, what it isn't, and which of the siblings they
+  might want instead. Each README now also documents requirements
+  (Node 22+ / Bun 1.3+ / Ollama optional), dependency posture
+  (transitive `basalted-core` for CLI + MCP), and an exhaustive
+  command/tool table.
 
 ### Fixed
 - **Desktop app crashed silently on launch (Windows + all platforms).**

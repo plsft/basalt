@@ -1,8 +1,28 @@
 {
   "name": "basalted-mcp",
   "version": "0.0.0",
-  "description": "Basalt MCP server — exposes Brief, verbs, and audit as MCP tools.",
+  "description": "Model Context Protocol server for Basalt. Exposes Brief, the five verbs, and audit as MCP tools so Claude Desktop / Cursor / Cline / Zed / VS Code Copilot can run them against your Markdown vault.",
   "license": "MIT",
+  "homepage": "https://basalted.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/plsft/basalt.git",
+    "directory": "packages/mcp"
+  },
+  "bugs": {
+    "url": "https://github.com/plsft/basalt/issues"
+  },
+  "keywords": [
+    "basalt",
+    "mcp",
+    "model-context-protocol",
+    "claude",
+    "claude-desktop",
+    "cursor",
+    "second-brain",
+    "obsidian",
+    "markdown"
+  ],
   "type": "module",
   "bin": {
     "basalt-mcp": "./bin/basalt-mcp.js"

@@ -1,100 +1,122 @@
-# basalted
+# `basalted` — the Basalt CLI
 
-> Basalt CLI — read your Markdown vault, write a weekly Brief about what you believe but never wrote down.
-
-Local-first. No network in the default tier. The CLI is the canonical surface for Basalt — every other surface (Obsidian plugin, MCP server, desktop app, web cockpit, mobile PWA) wraps the same `basalted-core` engine.
-
-- Marketing: https://basalted.com
-- Docs: https://docs.basalted.com
-- Source: https://github.com/plsft/basalt
-- Engine library: [`basalted-core`](https://www.npmjs.com/package/basalted-core)
-- MCP server: [`basalted-mcp`](https://www.npmjs.com/package/basalted-mcp)
-
----
-
-## Install
+> A local-first second-brain compiler. Walks your Markdown vault, builds an index, writes a weekly Brief about what you believe but never wrote down.
 
 ```sh
 npm install -g basalted
-# or:  bun add -g basalted
 basalt about
+basalt init        # interactive setup → ~/.basalt/config.toml
+basalt brief       # writes today's brief into your vault
 ```
 
-The binary is named `basalt` (not `basalted`) — npm package is `basalted` because the unscoped name on npm matches the domain.
+The binary is **`basalt`** (not `basalted` — the npm package matches the domain `basalted.com`).
 
-Standalone single-file binaries are also attached to every GitHub release if you don't want a Node/Bun runtime:
+- **Marketing:** https://basalted.com
+- **Docs:** https://docs.basalted.com
+- **Source:** https://github.com/plsft/basalt
+- **License:** MIT
+
+---
+
+## Which package do I want?
+
+Basalt is published as three npm packages. **Most users want `basalted`**.
+
+| Package | Install | What it gives you | When to use it |
+| --- | --- | --- | --- |
+| **`basalted`** *(this one)* | `npm i -g basalted` | The `basalt` CLI binary | You want to run Basalt from the terminal. |
+| [`basalted-core`](https://www.npmjs.com/package/basalted-core) | `npm i basalted-core` | Library (no binary) — the engine | You're embedding Basalt in your own tool (a new surface, plugin, integration). |
+| [`basalted-mcp`](https://www.npmjs.com/package/basalted-mcp) | `npm i -g basalted-mcp` | The `basalt-mcp` server binary | You want Claude Desktop / Cursor / Cline to call Basalt verbs as MCP tools. |
+
+`basalted` transitively depends on `basalted-core`, so installing the CLI gives you the whole engine.
+
+---
+
+## Requirements
+
+- **Node 22+** *or* **Bun 1.3+**
+- **Ollama** (optional but recommended) running locally on `http://localhost:11434` with `nomic-embed-text` pulled. The Open tier is fully offline — no network calls outside Ollama.
+- A folder of Markdown files (your "vault"). Obsidian, Logseq, plain `~/notes` — Basalt doesn't care about your folder structure.
 
 ```sh
+# one-time Ollama setup, if you're using it:
+ollama pull nomic-embed-text
+ollama serve   # leave running in another terminal
+```
+
+The CLI degrades gracefully without Ollama (uses a deterministic mock embedder) — verb output quality drops but everything still works end to end.
+
+## Standalone binaries (no Node/Bun required)
+
+Every GitHub release attaches single-file compiled binaries:
+
+```sh
+# example: Linux x64
 curl -L -o basalt https://github.com/plsft/basalt/releases/latest/download/basalt-linux-x64
 chmod +x basalt && ./basalt about
 ```
 
 Five platforms: `basalt-linux-x64`, `basalt-linux-arm64`, `basalt-darwin-x64`, `basalt-darwin-arm64`, `basalt-windows-x64.exe`.
 
-## First brief
+---
 
-```sh
-cd /path/to/your/vault
-basalt init        # walks the vault, builds the index in ~/.basalt/
-basalt brief       # writes today's brief into the vault
-```
+## What it does
 
-`init` is the slowest step — it embeds every note. On a 1k-note vault with `nomic-embed-text` via Ollama, expect ~30s. The Brief renders five sections in canonical order:
+Every command runs the same five verbs over your vault. The Brief renders them in this order — matching the [Python reference](https://github.com/virtexvirtuoso/basalt):
 
-1. **Implicit Thesis** (`Na`) — the through-line you keep returning to
-2. **Buried Insight** (`Au`) — the line you wrote months ago that your work still mines
-3. **Drift** (`Hg`) — projects whose meaning slid sideways
-4. **Contradiction** (`Cl`) — two notes that disagree quietly
-5. **Connection** (`C`) — two notes that are secretly the same idea
+| Order | Verb | Element | Question |
+| --- | --- | --- | --- |
+| I | Implicit Thesis | **Na** | What's the through-line I keep returning to? |
+| II | Buried Insight | **Au** | What did I write months ago that my work still mines? |
+| III | Drift | **Hg** | Which projects' meaning slid sideways? |
+| IV | Contradiction | **Cl** | Where am I disagreeing with myself? |
+| V | Connection | **C** | Which notes are secretly the same idea? |
 
 ## Commands
 
 | Command | What |
 | --- | --- |
-| `basalt init` | Interactive setup — writes `~/.basalt/config.toml` |
-| `basalt index` | Re-index the vault (incremental) |
-| `basalt brief` | Generate today's brief, write to the vault |
-| `basalt thesis` / `connection` / etc. | Run a single verb (`basalt --help` for all five) |
-| `basalt promote <findingId>` | Promote a finding to a new note (never overwrites) |
-| `basalt audit` | Falsification pass over recent findings |
-| `basalt search <query>` | Multi-vault semantic search via the Pro API |
-| `basalt config show` | Print the resolved config |
-| `basalt doctor` | Pre-flight checks (vault, index, Ollama, model, API token) |
-| `basalt demo` | Run an offline demo against a bundled fixture vault |
+| `basalt init` | Interactive setup; writes `~/.basalt/config.toml` |
+| `basalt index` | Re-index the vault (incremental, embeds new notes) |
+| `basalt brief` | Generate today's brief and write it to the vault |
+| `basalt thesis` / `buried` / `drift` / `contradiction` / `connection` | Run a single verb |
+| `basalt promote <findingId>` | Promote a finding to a new note (create-only — never overwrites) |
+| `basalt audit` | Falsification pass over recent findings; auto-verdict drift |
+| `basalt search <query>` | Multi-vault semantic search (via the hosted API) |
+| `basalt config show` | Print the resolved config (file + defaults) |
+| `basalt doctor` | Pre-flight checks: vault, index, Ollama, embedding model, API token |
+| `basalt demo` | Run an offline demo against the bundled fixture vault |
 | `basalt about` | Version + bindings |
+
+Run `basalt <command> --help` for flags.
 
 ## LLM augmentation (v1.1.0+)
 
-Pass `--llm ollama | openai | anthropic` to any brief command to add a synthesized one-sentence Implicit Thesis and an LLM verdict (`proven` / `apparent`) on each Contradiction.
+Pass `--llm ollama | openai | anthropic` to a brief command to get a synthesized named thesis and `proven` / `apparent` verdicts on contradictions.
 
 ```sh
-basalt brief --llm ollama                            # local, no key needed
+basalt brief --llm ollama                            # local, no API key needed
 basalt thesis --llm anthropic                        # claude-sonnet-4-6 by default
 basalt brief --llm openai --llm-model gpt-4o-mini
 ```
 
-Keys come from `OPENAI_API_KEY` / `ANTHROPIC_API_KEY` — never written to disk.
+Keys are read from `OPENAI_API_KEY` / `ANTHROPIC_API_KEY` — **never** written to disk.
 
-## Pro API integration
+## Pro tier (optional)
 
-When you set `apiUrl`, `apiToken`, and `apiVaultId` in `~/.basalt/config.toml`, the CLI can:
+When you set `apiUrl`, `apiToken`, and `apiVaultId` in `~/.basalt/config.toml`:
 
-- `basalt snapshot push` — upload your local index to the API as a VaultSnapshot for hosted brief generation
-- `basalt search "<query>" --vault-id <id>` — semantic search across one or more uploaded vaults
+- `basalt snapshot push` — upload your local index to the hosted API
+- `basalt search "<query>" --vault-id <id>` — semantic search across multiple uploaded vaults
 
-The Open tier (everything above this section) is fully local and never phones home.
+The Open tier is fully local. Hosted is opt-in.
 
-## Architecture
+## Read-only guarantee
 
-The CLI is a thin shell over [`basalted-core`](https://www.npmjs.com/package/basalted-core) — the runtime-agnostic engine. Adapters injected at startup:
+Basalt **never modifies your existing notes**. `promote` creates *new* files only — its underlying API (`FilesystemAdapter.createNoteFile`) is strictly create-only, enforced by architectural tests.
 
-- `FilesystemAdapter` → `fs-node` (reads `.md` files from disk)
-- `StorageAdapter` → SQLite via `bun:sqlite` on Bun or `better-sqlite3` on Node (runtime-detected)
-- `EmbeddingAdapter` → `OllamaEmbedder` against `/api/embed` (with back-compat for the legacy `/api/embeddings` endpoint)
-- `AIAdapter` → optional, selected by `--llm`
+---
 
 ## License
 
 MIT. © 1556 Ventures LLC.
-
-See https://github.com/plsft/basalt for the rest of the operating contract.
