@@ -46,6 +46,7 @@ jobs:
         # at the top level of the release. sql-wasm.wasm is our extra
         # runtime dependency; we attach it as a sibling so users can drop
         # all four files into <vault>/.obsidian/plugins/basalt/.
+        shell: bash
         run: |
           set -euo pipefail
           mkdir -p _plugin_stage
@@ -54,9 +55,9 @@ jobs:
               cp "packages/obsidian-plugin/$f" _plugin_stage/
             fi
           done
-          # Also stage a ZIP for users who prefer one download.
-          (cd _plugin_stage && zip -r ../basalt-obsidian-plugin.zip ./*)
-          mv basalt-obsidian-plugin.zip _plugin_stage/
+          # Cross-platform zip via Node (host `zip` isn't always on PATH
+          # under rehearse / Windows hosts; the Node path works everywhere).
+          node scripts/zip-plugin.mjs _plugin_stage _plugin_stage/basalt-obsidian-plugin.zip
           ls -la _plugin_stage/
       - name: Upload artifact (workflow_dispatch path)
         uses: actions/upload-artifact@v4

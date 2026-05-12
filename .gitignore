@@ -63,3 +63,4 @@ __pycache__/
 # Root CLAUDE.md is the operating manual and is checked in.
 **/CLAUDE.md
 !/CLAUDE.md
+.runner/
