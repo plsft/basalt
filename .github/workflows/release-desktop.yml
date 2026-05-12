@@ -100,6 +100,22 @@ jobs:
           echo "--- Cargo.toml ---"
           grep -E '^version' packages/desktop/src-tauri/Cargo.toml | head -1
 
+      - name: Clean stale bundle outputs
+        # Cargo cache restores target/ including target/<triple>/release/bundle/
+        # from the previous run. Without this step, prior-version bundles
+        # (Basalt_X.Y.Z_*.dmg from an earlier release) get re-uploaded
+        # alongside the new ones. We keep the rest of target/ (Rust object
+        # files, dependency builds) for the speed-up.
+        shell: bash
+        run: |
+          set -euo pipefail
+          DIR="packages/desktop/src-tauri/target/${{ matrix.os.target }}/release/bundle"
+          if [ -d "$DIR" ]; then
+            echo "Removing stale bundles from cache:"
+            ls -la "$DIR" || true
+            rm -rf "$DIR"
+          fi
+
       - name: Build Tauri app (with macOS signing if configured)
         env:
           # macOS signing — populated when GitHub secrets are present.
