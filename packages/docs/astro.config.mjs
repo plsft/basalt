@@ -31,11 +31,13 @@ export default defineConfig({
           label: "Verbs",
           items: [
             { label: "Overview", link: "/verbs/" },
+            // Canonical render order — matches reference/src/basalt/brief.py
+            // (implicit-thesis → buried-insight → drift → contradiction → connection)
             { label: "Implicit Thesis (Na)", link: "/verbs/thesis/" },
-            { label: "Contradiction (Cl)", link: "/verbs/contradiction/" },
-            { label: "Drift (Hg)", link: "/verbs/drift/" },
-            { label: "Connection (C)", link: "/verbs/connection/" },
             { label: "Buried Insight (Au)", link: "/verbs/buried/" },
+            { label: "Drift (Hg)", link: "/verbs/drift/" },
+            { label: "Contradiction (Cl)", link: "/verbs/contradiction/" },
+            { label: "Connection (C)", link: "/verbs/connection/" },
           ],
         },
         {
