@@ -6,6 +6,53 @@ Phase boundaries get a release tag (`v0.<phase>.0`); public launch tags `v1.0.0`
 
 ## Unreleased
 
+## v1.5.0 — 2026-05-12
+
+### Added — v1.5.0 work (brand migration + downloadable artifacts)
+- **npm rename**: all published packages now live under the
+  `basalted` brand (matches `basalted.com` domain). New names:
+  `basalted` (CLI), `basalted-core` (engine library),
+  `basalted-mcp` (MCP server). Workspace-only packages also renamed
+  to `basalted-*` for consistency. The CLI binary stays `basalt`.
+- **Marketing site + docs migrated** from `basalt.dev` → `basalted.com`
+  across 37 files. Live at `https://basalted.com`,
+  `https://docs.basalted.com`, `https://api.basalted.com`.
+- **Obsidian plugin release pipeline**
+  (`.github/workflows/release-obsidian-plugin.yml`): stamps version
+  from tag, builds the plugin, attaches `manifest.json` / `main.js` /
+  `styles.css` / `sql-wasm.wasm` / `basalt-obsidian-plugin.zip` to
+  every GitHub release. Enables BRAT auto-update via `plsft/basalt`
+  and direct manual install from the latest release.
+- **CLI version stamping**: `basalt about` and `--version` now read
+  from the package's `package.json` instead of a hardcoded "0.0.0".
+  Bun's `--compile` inlines the JSON import, so compiled binaries
+  report the real tagged version. Same fix for the MCP server's
+  handshake.
+- **Local deploy script**: `scripts/deploy.sh` wraps the wrangler
+  commands needed to publish the API + site + docs from a developer
+  machine using a `wrangler login` OAuth session.
+
+### Fixed — v1.5.0 work
+- **release-cli-mcp.yml**: gate `npm-publish` job on real tag pushes
+  (was firing on dispatch with bogus `0.0.0` version). Stamp tag
+  version into each published `package.json` AND rewrite `workspace:*`
+  deps to the same exact version — npm rejects the `workspace:`
+  protocol on publish, so the old workflow could never have published
+  even if it had been gated correctly. Drop `--provenance` and the
+  `|| echo` failure-swallow.
+- **deploy-site.yml + deploy-docs.yml**: install Node 22 via
+  `actions/setup-node@v4`. Wrangler 4 requires Node 22+; the bun
+  runner ships Node 20, so these workflows had been silently skipping
+  publishes since v1.0.0.
+- **API cron syntax**: change `"0 23 * * 0"` to `"0 23 * * SUN"` in
+  `packages/api/wrangler.jsonc`. CF's cron parser rejected the
+  numeric-Sunday form with `code: 10100 invalid cron string`,
+  blocking production deploys.
+- **Docs build**: switch from Starlight's default `docsLoader` to
+  Astro's `glob` loader with an explicit `!**/CLAUDE.md` exclude.
+  `claude-mem` drops auto-generated CLAUDE.md files into content
+  directories; they lack Starlight's schema and crashed `astro build`.
+
 ## v1.2.0 — 2026-05-11
 
 ### Added — v1.2.0 work (mobile PWA)
