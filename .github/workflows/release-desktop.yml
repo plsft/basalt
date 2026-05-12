@@ -61,6 +61,45 @@ jobs:
       - name: Build basalted-core
         run: bun run --cwd packages/core build
 
+      - name: Stamp version from tag
+        # Tauri reads tauri.conf.json + Cargo.toml versions and embeds them
+        # in bundle filenames (Basalt_X.Y.Z_*.dmg etc.). Without this step
+        # bundles ship as Basalt_0.0.0_* even on tagged releases. We update
+        # all three so the version is consistent everywhere.
+        if: ${{ startsWith(github.ref, 'refs/tags/') }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          TAG="${GITHUB_REF#refs/tags/v}"
+          echo "Stamping desktop bundle version: ${TAG}"
+          # tauri.conf.json — drives the bundle filename
+          node -e "
+            const fs = require('fs');
+            const p = 'packages/desktop/src-tauri/tauri.conf.json';
+            const j = JSON.parse(fs.readFileSync(p, 'utf8'));
+            j.version = '${TAG}';
+            fs.writeFileSync(p, JSON.stringify(j, null, 2) + '\n');
+          "
+          # Cargo.toml — drives the Rust binary metadata
+          # Use sed for TOML; only matches the first version line at the top.
+          if [ "$(uname)" = "Darwin" ]; then
+            sed -i '' -E "0,/^version = \".+\"/s//version = \"${TAG}\"/" packages/desktop/src-tauri/Cargo.toml
+          else
+            sed -i -E "0,/^version = \".+\"/s//version = \"${TAG}\"/" packages/desktop/src-tauri/Cargo.toml
+          fi
+          # package.json — metadata only
+          node -e "
+            const fs = require('fs');
+            const p = 'packages/desktop/package.json';
+            const j = JSON.parse(fs.readFileSync(p, 'utf8'));
+            j.version = '${TAG}';
+            fs.writeFileSync(p, JSON.stringify(j, null, 2) + '\n');
+          "
+          echo "--- tauri.conf.json ---"
+          grep -E '"version"' packages/desktop/src-tauri/tauri.conf.json
+          echo "--- Cargo.toml ---"
+          grep -E '^version' packages/desktop/src-tauri/Cargo.toml | head -1
+
       - name: Build Tauri app (with macOS signing if configured)
         env:
           # macOS signing — populated when GitHub secrets are present.
@@ -92,18 +131,58 @@ jobs:
           cd packages/desktop
           bun run tauri build --target ${{ matrix.os.target }}
 
+      - name: Stage bundles with stable filenames
+        # Tauri names bundles with the embedded version (e.g.
+        # Basalt_1.5.0_universal.dmg). For the marketing site to link to
+        # /releases/latest/download/<name> we ALSO ship the same artifacts
+        # under version-free names. Both the version-named originals AND
+        # the stable-named copies end up on the release.
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p _desktop_stage
+          BUNDLE_DIR="packages/desktop/src-tauri/target/${{ matrix.os.target }}/release/bundle"
+
+          # Copy version-named originals as-is.
+          find "$BUNDLE_DIR" -type f \
+            \( -name '*.dmg' -o -name '*.app.tar.gz' -o -name '*.deb' \
+            -o -name '*.AppImage' -o -name '*.msi' -o -name '*-setup.exe' \
+            -o -name '*.sig' \) \
+            -exec cp {} _desktop_stage/ \;
+
+          # Add stable-named copies for the marketing site download links.
+          case "${{ matrix.os.runner }}" in
+            macos-14)
+              for f in _desktop_stage/Basalt_*_universal.dmg; do
+                [ -f "$f" ] && cp "$f" _desktop_stage/basalt-desktop-macos-universal.dmg
+              done
+              ;;
+            ubuntu-22.04)
+              for f in _desktop_stage/Basalt_*_amd64.deb; do
+                [ -f "$f" ] && cp "$f" _desktop_stage/basalt-desktop-linux-x64.deb
+              done
+              for f in _desktop_stage/Basalt_*_amd64.AppImage; do
+                [ -f "$f" ] && cp "$f" _desktop_stage/basalt-desktop-linux-x64.AppImage
+              done
+              ;;
+            windows-2022)
+              for f in _desktop_stage/Basalt_*_x64_en-US.msi; do
+                [ -f "$f" ] && cp "$f" _desktop_stage/basalt-desktop-windows-x64.msi
+              done
+              for f in _desktop_stage/Basalt_*_x64-setup.exe; do
+                [ -f "$f" ] && cp "$f" _desktop_stage/basalt-desktop-windows-x64-setup.exe
+              done
+              ;;
+          esac
+
+          ls -la _desktop_stage/
+
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: desktop-${{ matrix.os.runner }}
-          path: |
-            packages/desktop/src-tauri/target/${{ matrix.os.target }}/release/bundle/**/*.dmg
-            packages/desktop/src-tauri/target/${{ matrix.os.target }}/release/bundle/**/*.app.tar.gz
-            packages/desktop/src-tauri/target/${{ matrix.os.target }}/release/bundle/**/*.deb
-            packages/desktop/src-tauri/target/${{ matrix.os.target }}/release/bundle/**/*.AppImage
-            packages/desktop/src-tauri/target/${{ matrix.os.target }}/release/bundle/**/*.msi
-            packages/desktop/src-tauri/target/${{ matrix.os.target }}/release/bundle/**/*-setup.exe
-            packages/desktop/src-tauri/target/${{ matrix.os.target }}/release/bundle/**/*.sig
+          path: _desktop_stage/*
+          if-no-files-found: error
 
   github-release:
     name: Attach to GitHub release

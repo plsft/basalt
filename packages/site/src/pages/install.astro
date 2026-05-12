@@ -47,6 +47,29 @@ basalt about       # prints version + bindings</code></pre>
 basalt thesis --llm anthropic       # claude-sonnet-4-6 by default
 basalt brief --llm openai --llm-model gpt-4o-mini</code></pre>
 
+    <h3>Standalone binaries</h3>
+    <p>
+      If you don't want Node/Bun on the box, grab a single-file
+      cross-compiled binary from the latest release (no runtime needed):
+    </p>
+    <ul class="bin-list">
+      <li>
+        Linux: <a href={`${LATEST}/download/basalt-linux-x64`}><code>basalt-linux-x64</code></a> ·
+        <a href={`${LATEST}/download/basalt-linux-arm64`}><code>basalt-linux-arm64</code></a>
+      </li>
+      <li>
+        macOS: <a href={`${LATEST}/download/basalt-darwin-x64`}><code>basalt-darwin-x64</code></a> ·
+        <a href={`${LATEST}/download/basalt-darwin-arm64`}><code>basalt-darwin-arm64</code></a>
+      </li>
+      <li>
+        Windows: <a href={`${LATEST}/download/basalt-windows-x64.exe`}><code>basalt-windows-x64.exe</code></a>
+      </li>
+    </ul>
+    <p class="muted">
+      Same five platforms for the MCP binary —
+      <code>basalt-mcp-&lt;platform&gt;</code> on the same release page.
+    </p>
+
     <!-- ───────────── Desktop (beta) ───────────── -->
     <h2 id="desktop">Desktop — beta <span class="badge badge--beta">beta</span></h2>
     <p>
@@ -55,21 +78,27 @@ basalt brief --llm openai --llm-model gpt-4o-mini</code></pre>
     </p>
 
     <div class="dl-grid">
-      <a class="dl-card" href={LATEST}>
+      <a class="dl-card" href={`${LATEST}/download/basalt-desktop-macos-universal.dmg`}>
         <span class="dl-os">macOS</span>
         <span class="dl-meta">Universal · <code>.dmg</code></span>
-        <span class="dl-cta">Download latest →</span>
+        <span class="dl-cta">Download →</span>
       </a>
-      <a class="dl-card" href={LATEST}>
+      <div class="dl-card dl-card--multi">
         <span class="dl-os">Linux</span>
-        <span class="dl-meta">x64 · <code>.deb</code> / <code>.AppImage</code></span>
-        <span class="dl-cta">Download latest →</span>
-      </a>
-      <a class="dl-card" href={LATEST}>
+        <span class="dl-meta">x64</span>
+        <span class="dl-multi-row">
+          <a href={`${LATEST}/download/basalt-desktop-linux-x64.deb`}>.deb →</a>
+          <a href={`${LATEST}/download/basalt-desktop-linux-x64.AppImage`}>.AppImage →</a>
+        </span>
+      </div>
+      <div class="dl-card dl-card--multi">
         <span class="dl-os">Windows</span>
-        <span class="dl-meta">x64 · <code>.msi</code> / <code>-setup.exe</code></span>
-        <span class="dl-cta">Download latest →</span>
-      </a>
+        <span class="dl-meta">x64</span>
+        <span class="dl-multi-row">
+          <a href={`${LATEST}/download/basalt-desktop-windows-x64-setup.exe`}>setup.exe →</a>
+          <a href={`${LATEST}/download/basalt-desktop-windows-x64.msi`}>.msi →</a>
+        </span>
+      </div>
     </div>
 
     <p class="muted">
@@ -83,7 +112,8 @@ basalt brief --llm openai --llm-model gpt-4o-mini</code></pre>
         are unsigned during the open beta. macOS will show a "developer cannot
         be verified" warning on first launch — right-click the app → Open →
         confirm. On Windows, SmartScreen may prompt "More info → Run anyway".
-        Signed installers ship at <code>v1.5.0</code>.
+        Signed installers land once the Apple Developer ID + Authenticode
+        certificates are wired into CI.
       </p>
       <p>
         The desktop app is read-only against your vault. Promote-to-note
@@ -221,6 +251,33 @@ basalt brief --llm openai --llm-model gpt-4o-mini</code></pre>
     font-size: 0.78rem;
     color: var(--color-basalt-accent-na);
     margin-top: 0.4rem;
+  }
+  .dl-card--multi {
+    cursor: default;
+  }
+  .dl-multi-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    margin-top: 0.4rem;
+  }
+  .dl-multi-row a {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--color-basalt-accent-na);
+    border: none;
+  }
+  .dl-multi-row a:hover {
+    text-decoration: underline;
+  }
+  .bin-list {
+    list-style: none;
+    padding: 0;
+    margin: 0.8rem 0 1.2rem;
+    font-size: 0.9rem;
+  }
+  .bin-list li {
+    padding: 0.3rem 0;
   }
   @media (max-width: 720px) {
     .dl-grid { grid-template-columns: 1fr; }
