@@ -63,12 +63,6 @@
       "endpoints": [
         "https://basalt-releases.plsft.com/updater/{{target}}/{{arch}}/{{current_version}}"
       ]
-    },
-    "fs": {
-      "scope": {
-        "allow": ["$HOME/**"],
-        "deny": ["$HOME/.basalt/secrets/**"]
-      }
     }
   }
 }

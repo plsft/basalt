@@ -6,6 +6,24 @@ Phase boundaries get a release tag (`v0.<phase>.0`); public launch tags `v1.0.0`
 
 ## Unreleased
 
+## v1.5.3 — 2026-05-12
+
+### Fixed
+- **Desktop app crashed silently on launch (Windows + all platforms).**
+  `tauri.conf.json` still had a legacy `plugins.fs.scope` block from
+  the Tauri 1 → 2 migration; Tauri 2's plugin-fs deserializer rejected
+  it with `unknown field 'scope', expected 'requireLiteralLeadingDot'`,
+  and the app panicked before painting a window. The MSI installed
+  cleanly, the shortcut was created, but a double-click did nothing —
+  no error dialog, no event-log entry.
+
+  Diagnosis: run `basalt-desktop.exe` from a terminal and capture
+  stderr. The panic from `src/lib.rs:98` named the failing plugin.
+
+  The `fs:scope` we actually want is already declared in
+  `src-tauri/capabilities/default.json`. The block in `tauri.conf.json`
+  was redundant + invalid; removed it.
+
 ## v1.5.2 — 2026-05-12
 
 ### Fixed
