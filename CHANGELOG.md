@@ -6,6 +6,20 @@ Phase boundaries get a release tag (`v0.<phase>.0`); public launch tags `v1.0.0`
 
 ## Unreleased
 
+## v1.5.2 — 2026-05-12
+
+### Fixed
+- **npm package `basalted` was published without a README.** Added
+  `packages/cli/README.md` so the npm registry page shows install
+  instructions, the command table, LLM-augmentation flags, and the
+  Pro-API integration story instead of an empty "no readme" placeholder.
+- Refreshed `packages/core/README.md`: dropped the stale "Phase 1, in
+  progress" copy that lingered from pre-v1.0.0 work. README now links
+  the sibling packages and notes the v0.0.15 parity contract.
+- Added `LICENSE` to all three published packages
+  (`basalted-core` / `basalted` / `basalted-mcp`). The `files` field
+  in each `package.json` already listed it; the file was just missing.
+
 ## v1.5.1 — 2026-05-12
 
 ### Fixed

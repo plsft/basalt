@@ -2,13 +2,13 @@
 
 > Runtime-agnostic engine for Basalt. Vault parser, link graph, embedding pipeline, five verbs, brief composition, calibration layer.
 
-This package is the source of truth for verb behavior. Every other surface — Obsidian plugin, CLI, MCP server, desktop app, cloud API — is a thin view over this engine. Per PRD §3.2, `basalted-core` has no Node APIs, no `fs`, no `process`. Everything filesystem- or environment-specific is behind an adapter interface.
+This package is the source of truth for verb behavior. Every other surface — Obsidian plugin, CLI ([`basalted`](https://www.npmjs.com/package/basalted)), MCP server ([`basalted-mcp`](https://www.npmjs.com/package/basalted-mcp)), desktop app, cloud API — is a thin view over this engine. `basalted-core` has no Node APIs, no `fs`, no `process`. Everything filesystem- or environment-specific is behind an adapter interface.
 
-## Status
+- Marketing: https://basalted.com
+- Docs: https://docs.basalted.com
+- Source: https://github.com/plsft/basalt
 
-**Phase 1, in progress.** The package surface is wired (TASK-1.1). The parser, graph, math, verbs, and brief composer ship in TASK-1.2 through TASK-1.11. Until then, calling any of the exported functions throws `not yet implemented`.
-
-See [`SPEC.md`](../../SPEC.md) for the algorithmic contract every implementation must satisfy.
+Parity-tested against the [Python reference](https://github.com/virtexvirtuoso/basalt) (frozen at v0.0.15). 292 parity assertions, ε=1e-5 on similarity scores, exact-match on finding set membership and ordering.
 
 ## Public surface
 
