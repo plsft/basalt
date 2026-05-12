@@ -17,11 +17,11 @@
         "verb": "implicit-thesis",
         "schema": 1,
         "version": "v0-cluster",
-        "score": 7.993122976131254,
+        "score": 7.99312419029253,
         "cluster_size": 3,
         "folder_diversity": 0,
         "span_days": 208,
-        "mean_similarity": 0.7847841382026672,
+        "mean_similarity": 0.7847842574119568,
         "centroid": {
           "rel_path": "04-Trading/Signals/OFI-Validation.md",
           "title": "OFI Walk-Forward Validation",

@@ -34,7 +34,10 @@ describe("composeBrief", () => {
         buried_insight: [],
       },
     });
-    expect(Object.keys(brief.findings)).toEqual(["buried_insight", "connection", "drift"]);
+    // Canonical order: implicit-thesis → buried-insight → drift →
+    // contradiction → connection. Of the three buckets provided, the
+    // resulting key order should be buried_insight, drift, connection.
+    expect(Object.keys(brief.findings)).toEqual(["buried_insight", "drift", "connection"]);
   });
 
   it("drops buckets that are absent from input (vs. present-but-empty)", () => {

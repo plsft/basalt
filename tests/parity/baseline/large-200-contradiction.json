@@ -61,9 +61,9 @@
         "verb": "contradiction",
         "schema": 1,
         "version": "v0-heuristic",
-        "topical_similarity": 0.8883109092712402,
+        "topical_similarity": 0.8883108496665955,
         "contradiction_score": 1.2,
-        "score": 1.0659730911254883,
+        "score": 1.0659730195999144,
         "signals": [
           "asymmetric reversal marker"
         ],

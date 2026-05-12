@@ -22,17 +22,18 @@
         "created": "2025-09-12",
         "updated": "2025-09-12",
         "word_count": 177,
-        "score": 14.781425230140652,
+        "score": 7.670450718944686,
         "hub_density": 1.1299435028248588,
         "hub_penalty": 0.38650102395815344,
-        "inbound_recent_count": 17,
+        "inbound_recent_count": 8,
         "quote": "The sustainable edge isn't speed alone — it's speed + intelligence.",
         "quote_provenance": "callout body",
-        "vault_age_days": 246,
+        "vault_age_days": 249,
         "thresholds": {
-          "min_age_days": 123,
+          "min_age_days": 124,
           "min_dormant_days": 41,
-          "recent_window_days": 123
+          "recent_window_days": 124,
+          "vault_age_days": 249
         },
         "validators": [
           {
@@ -106,17 +107,18 @@
         "created": "2025-09-20",
         "updated": "2025-09-20",
         "word_count": 102,
-        "score": 6.215155166384698,
+        "score": 6.014958307141068,
         "hub_density": 0.9803921568627451,
         "hub_penalty": 0.5199920031987205,
         "inbound_recent_count": 4,
         "quote": "Working notes on the microstructure literature relevant to HYPOTHESIS.",
         "quote_provenance": "blockquote summary",
-        "vault_age_days": 246,
+        "vault_age_days": 249,
         "thresholds": {
-          "min_age_days": 123,
+          "min_age_days": 124,
           "min_dormant_days": 41,
-          "recent_window_days": 123
+          "recent_window_days": 124,
+          "vault_age_days": 249
         },
         "validators": [
           {
@@ -152,7 +154,7 @@
             "title": "OFI Walk-Forward Validation",
             "updated": "2026-04-08",
             "explicit_link": false,
-            "similarity": 0.810024082660675
+            "similarity": 0.8100241422653198
           }
         ],
         "falsification": [
@@ -190,17 +192,18 @@
         "created": "2025-09-05",
         "updated": "2025-09-05",
         "word_count": 33,
-        "score": 4.920723514556885,
+        "score": 4.715723603963852,
         "hub_density": 1.0,
         "hub_penalty": 0.5,
         "inbound_recent_count": 3,
         "quote": "Pushed me toward microstructure when I was chasing trend-following dead ends.",
         "quote_provenance": "first prose sentence",
-        "vault_age_days": 246,
+        "vault_age_days": 249,
         "thresholds": {
-          "min_age_days": 123,
+          "min_age_days": 124,
           "min_dormant_days": 41,
-          "recent_window_days": 123
+          "recent_window_days": 124,
+          "vault_age_days": 249
         },
         "validators": [
           {
@@ -236,7 +239,7 @@
             "title": "2026-05-03",
             "updated": "2026-05-03",
             "explicit_link": false,
-            "similarity": 0.6933714151382446
+            "similarity": 0.6933715343475342
           }
         ],
         "falsification": [
@@ -272,9 +275,9 @@
         "verb": "contradiction",
         "schema": 1,
         "version": "v0-heuristic",
-        "topical_similarity": 0.819583535194397,
+        "topical_similarity": 0.8195835947990417,
         "contradiction_score": 1.2,
-        "score": 0.6952999071326511,
+        "score": 0.6952999576987035,
         "signals": [
           "asymmetric reversal marker"
         ],
@@ -315,9 +318,9 @@
         "verb": "contradiction",
         "schema": 1,
         "version": "v0-heuristic",
-        "topical_similarity": 0.7983609437942505,
+        "topical_similarity": 0.79836106300354,
         "contradiction_score": 1.0,
-        "score": 0.49633466393884995,
+        "score": 0.49633473805031936,
         "signals": [
           "asymmetric negation"
         ],
@@ -360,11 +363,11 @@
         "verb": "implicit-thesis",
         "schema": 1,
         "version": "v0-cluster",
-        "score": 7.993122976131254,
+        "score": 7.99312419029253,
         "cluster_size": 3,
         "folder_diversity": 0,
         "span_days": 208,
-        "mean_similarity": 0.7847841382026672,
+        "mean_similarity": 0.7847842574119568,
         "centroid": {
           "rel_path": "04-Trading/Signals/OFI-Validation.md",
           "title": "OFI Walk-Forward Validation",

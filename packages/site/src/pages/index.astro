@@ -2,6 +2,8 @@
 import Default from "../layouts/Default.astro";
 import ElementTile from "../components/ElementTile.astro";
 
+// Canonical brief section order — matches reference/src/basalt/brief.py:
+// implicit-thesis → buried-insight → drift → contradiction → connection.
 const verbs = [
   {
     symbol: "Na",
@@ -12,12 +14,12 @@ const verbs = [
     blurb: "The through-line you keep seasoning your work with — named, not just clustered.",
   },
   {
-    symbol: "Cl",
-    number: 17,
-    name: "Chlorine",
-    verb: "Contradiction",
-    accent: "cl" as const,
-    blurb: "Two notes that disagree with each other. Quietly. For months.",
+    symbol: "Au",
+    number: 79,
+    name: "Gold",
+    verb: "Buried Insight",
+    accent: "au" as const,
+    blurb: "The line you wrote in 2022 that your work this week keeps mining without knowing it.",
   },
   {
     symbol: "Hg",
@@ -28,20 +30,20 @@ const verbs = [
     blurb: "Projects whose meaning slid sideways while you were busy maintaining them.",
   },
   {
+    symbol: "Cl",
+    number: 17,
+    name: "Chlorine",
+    verb: "Contradiction",
+    accent: "cl" as const,
+    blurb: "Two notes that disagree with each other. Quietly. For months.",
+  },
+  {
     symbol: "C",
     number: 6,
     name: "Carbon",
     verb: "Connection",
     accent: "c" as const,
     blurb: "Two notes you wrote months apart that turn out to be the same idea.",
-  },
-  {
-    symbol: "Au",
-    number: 79,
-    name: "Gold",
-    verb: "Buried Insight",
-    accent: "au" as const,
-    blurb: "The line you wrote in 2022 that your work this week keeps mining without knowing it.",
   },
 ];
 
@@ -54,26 +56,26 @@ const briefSample = `# Basalt Brief — 2026-05-11
 
 confidence: 0.78 (3 of 5 falsification rules satisfied)
 
-## II. Contradiction
-- 2024-08-14 \`agents/loop-design.md\`: "tools must always be
-  idempotent — retries are the path of least surprise"
-- 2026-04-02 \`agents/scratch.md\`: "we now require side-effecting
-  tools for the planner to make progress"
+## II. Buried Insight
+- 2022-06-04 \`fragments.md\` line 41
+- referenced (without citation) in 3 notes from the last 60 days.
 
 ## III. Drift
 - \`projects/basalt-port/index.md\` (founded 2025-12-08) opened as a
   build log; the last 14 entries are reflections on what to leave
   behind. The artifact has become the journal.
 
-## IV. Connection
+## IV. Contradiction
+- 2024-08-14 \`agents/loop-design.md\`: "tools must always be
+  idempotent — retries are the path of least surprise"
+- 2026-04-02 \`agents/scratch.md\`: "we now require side-effecting
+  tools for the planner to make progress"
+
+## V. Connection
 - 2023-11-02 \`reading/sennett-craftsman.md\`
 - 2026-03-19 \`agents/operating-manual.md\`
 Both circle the same claim: that the rituals you build around
 the work are the work.
-
-## V. Buried Insight
-- 2022-06-04 \`fragments.md\` line 41
-- referenced (without citation) in 3 notes from the last 60 days.
 `;
 ---
 

@@ -12,12 +12,15 @@ export interface ComposeInput {
   trackRecord: TrackRecordSummary;
 }
 
+// Canonical render order — mirror of reference/src/basalt/brief.py and
+// packages/core/src/brief/render.ts:
+//   implicit-thesis → buried-insight → drift → contradiction → connection
 const RENDER_ORDER: FindingsBucket[] = [
-  "buried_insight",
-  "connection",
-  "contradiction",
   "implicit_thesis",
+  "buried_insight",
   "drift",
+  "contradiction",
+  "connection",
 ];
 
 export function bucketForVerb(verb: Verb): FindingsBucket {
@@ -36,7 +39,7 @@ export function bucketForVerb(verb: Verb): FindingsBucket {
 }
 
 /** Build a Brief object. Always preserves the canonical render order
- *  (buried-insight → connection → contradiction → implicit-thesis → drift)
+ *  (implicit-thesis → buried-insight → drift → contradiction → connection)
  *  per SPEC.md §3, regardless of the order findings were discovered in. */
 export function composeBrief(input: ComposeInput): Brief {
   const findings: Partial<Record<FindingsBucket, Finding[]>> = {};

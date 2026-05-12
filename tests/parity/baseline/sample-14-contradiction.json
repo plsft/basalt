@@ -17,9 +17,9 @@
         "verb": "contradiction",
         "schema": 1,
         "version": "v0-heuristic",
-        "topical_similarity": 0.819583535194397,
+        "topical_similarity": 0.8195835947990417,
         "contradiction_score": 1.2,
-        "score": 0.6952999071326511,
+        "score": 0.6952999576987035,
         "signals": [
           "asymmetric reversal marker"
         ],
@@ -60,9 +60,9 @@
         "verb": "contradiction",
         "schema": 1,
         "version": "v0-heuristic",
-        "topical_similarity": 0.7983609437942505,
+        "topical_similarity": 0.79836106300354,
         "contradiction_score": 1.0,
-        "score": 0.49633466393884995,
+        "score": 0.49633473805031936,
         "signals": [
           "asymmetric negation"
         ],

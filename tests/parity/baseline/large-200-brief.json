@@ -22,17 +22,18 @@
         "created": "2024-11-29",
         "updated": "2024-12-15",
         "word_count": 135,
-        "score": 13.282765901088714,
+        "score": 12.432765781879425,
         "hub_density": 0.0,
         "hub_penalty": 1.0,
         "inbound_recent_count": 4,
         "quote": "compounding only happens to people who don't optimize for the next quarter.",
         "quote_provenance": "callout body",
-        "vault_age_days": 719,
+        "vault_age_days": 722,
         "thresholds": {
-          "min_age_days": 359,
-          "min_dormant_days": 119,
-          "recent_window_days": 359
+          "min_age_days": 361,
+          "min_dormant_days": 120,
+          "recent_window_days": 361,
+          "vault_age_days": 722
         },
         "validators": [
           {
@@ -68,7 +69,7 @@
             "title": "HYPOTHESIS",
             "updated": "2026-02-02",
             "explicit_link": false,
-            "similarity": 0.9151391386985779
+            "similarity": 0.9151391983032227
           }
         ],
         "falsification": [
@@ -106,17 +107,18 @@
         "created": "2024-07-13",
         "updated": "2024-07-13",
         "word_count": 102,
-        "score": 9.664825960000357,
+        "score": 8.556493043899536,
         "hub_density": 0.0,
         "hub_penalty": 1.0,
         "inbound_recent_count": 2,
         "quote": "I keep being wrong about how long the patient version takes — usually longer than I think, and worth it.",
         "quote_provenance": "callout body",
-        "vault_age_days": 719,
+        "vault_age_days": 722,
         "thresholds": {
-          "min_age_days": 359,
-          "min_dormant_days": 119,
-          "recent_window_days": 359
+          "min_age_days": 361,
+          "min_dormant_days": 120,
+          "recent_window_days": 361,
+          "vault_age_days": 722
         },
         "validators": [
           {
@@ -138,21 +140,21 @@
             "title": "Knuth-1973",
             "updated": "2026-01-08",
             "explicit_link": false,
-            "similarity": 0.9410793781280518
+            "similarity": 0.9410794973373413
           },
           {
             "rel_path": "01-Daily/2026-03-14.md",
             "title": "2026-03-14",
             "updated": "2026-03-14",
             "explicit_link": false,
-            "similarity": 0.9174181818962097
+            "similarity": 0.9174182415008545
           },
           {
             "rel_path": "02-Projects/Beacon/Beacon-Note-03.md",
             "title": "Beacon Note 03",
             "updated": "2025-11-28",
             "explicit_link": false,
-            "similarity": 0.9093208312988281
+            "similarity": 0.9093209505081177
           }
         ],
         "falsification": [
@@ -190,17 +192,18 @@
         "created": "2025-03-15",
         "updated": "2025-04-28",
         "word_count": 80,
-        "score": 9.040104808012645,
+        "score": 8.413438558578491,
         "hub_density": 0.0,
         "hub_penalty": 1.0,
         "inbound_recent_count": 2,
         "quote": "you can't fix a culture problem with tooling, but the wrong tooling rots a healthy one.",
         "quote_provenance": "callout body",
-        "vault_age_days": 719,
+        "vault_age_days": 722,
         "thresholds": {
-          "min_age_days": 359,
-          "min_dormant_days": 119,
-          "recent_window_days": 359
+          "min_age_days": 361,
+          "min_dormant_days": 120,
+          "recent_window_days": 361,
+          "vault_age_days": 722
         },
         "validators": [
           {
@@ -222,14 +225,14 @@
             "title": "Insight 001",
             "updated": "2025-09-29",
             "explicit_link": false,
-            "similarity": 0.9071717858314514
+            "similarity": 0.9071718454360962
           },
           {
             "rel_path": "02-Projects/Beacon/Beacon-Note-02.md",
             "title": "Beacon Note 02",
             "updated": "2026-04-12",
             "explicit_link": false,
-            "similarity": 0.8885388374328613
+            "similarity": 0.8885389566421509
           },
           {
             "rel_path": "05-References/Backpressure-Notes.md",
@@ -316,9 +319,9 @@
         "verb": "contradiction",
         "schema": 1,
         "version": "v0-heuristic",
-        "topical_similarity": 0.8883109092712402,
+        "topical_similarity": 0.8883108496665955,
         "contradiction_score": 1.2,
-        "score": 1.0659730911254883,
+        "score": 1.0659730195999144,
         "signals": [
           "asymmetric reversal marker"
         ],
@@ -361,11 +364,11 @@
         "verb": "implicit-thesis",
         "schema": 1,
         "version": "v0-cluster",
-        "score": 86.76832752609583,
+        "score": 86.76833921201786,
         "cluster_size": 15,
         "folder_diversity": 0,
         "span_days": 688,
-        "mean_similarity": 0.8851326107978821,
+        "mean_similarity": 0.8851327300071716,
         "centroid": {
           "rel_path": "07-Insights/Insight-002.md",
           "title": "Insight 002",
@@ -721,11 +724,11 @@
         "verb": "implicit-thesis",
         "schema": 1,
         "version": "v0-cluster",
-        "score": 86.62258654944372,
+        "score": 86.62259823536576,
         "cluster_size": 15,
         "folder_diversity": 0,
         "span_days": 688,
-        "mean_similarity": 0.8836458921432495,
+        "mean_similarity": 0.8836460113525391,
         "centroid": {
           "rel_path": "07-Insights/Insight-037.md",
           "title": "Insight 037",

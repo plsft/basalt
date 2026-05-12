@@ -6,13 +6,18 @@ description: The five verbs Basalt runs over your vault.
 Basalt has five verbs. Each maps to a chemical element. Each answers one
 question about your own work.
 
-| Verb | Element | Question |
-| --- | --- | --- |
-| [Implicit Thesis](/verbs/thesis/) | **Na** (Sodium) | What's the through-line I keep returning to? |
-| [Contradiction](/verbs/contradiction/) | **Cl** (Chlorine) | Where am I disagreeing with myself? |
-| [Drift](/verbs/drift/) | **Hg** (Mercury) | Which projects have changed meaning while I wasn't looking? |
-| [Connection](/verbs/connection/) | **C** (Carbon) | Which notes are secretly the same idea? |
-| [Buried Insight](/verbs/buried/) | **Au** (Gold) | What line did I write months ago that my current work keeps mining? |
+The Brief renders them in this canonical order — Implicit Thesis → Buried
+Insight → Drift → Contradiction → Connection — matching the reference
+Python implementation in
+[`reference/src/basalt/brief.py`](https://github.com/virtexvirtuoso/basalt/blob/main/src/basalt/brief.py).
+
+| Order | Verb | Element | Question |
+| --- | --- | --- | --- |
+| I | [Implicit Thesis](/verbs/thesis/) | **Na** (Sodium) | What's the through-line I keep returning to? |
+| II | [Buried Insight](/verbs/buried/) | **Au** (Gold) | What line did I write months ago that my current work keeps mining? |
+| III | [Drift](/verbs/drift/) | **Hg** (Mercury) | Which projects have changed meaning while I wasn't looking? |
+| IV | [Contradiction](/verbs/contradiction/) | **Cl** (Chlorine) | Where am I disagreeing with myself? |
+| V | [Connection](/verbs/connection/) | **C** (Carbon) | Which notes are secretly the same idea? |
 
 Every verb is deterministic over an input vault — given the same notes, same
 config, same embeddings, you get the same findings. The algorithmic contract

@@ -38,6 +38,38 @@ basalt audit --drift-v1           # also re-evaluate Drift findings against curr
 basalt snapshot push              # upload local index to the API as a VaultSnapshot
 ```
 
+## Config + diagnostics
+
+```sh
+basalt config show                # print the resolved config (file + defaults)
+basalt doctor                     # pre-flight checks
+```
+
+`basalt config show` reads `~/.basalt/config.toml` (or
+`%APPDATA%/basalt/Config/config.toml` on Windows) merged with built-in defaults
+and prints every key — vault path, db path, embedding model, Ollama URL,
+promote-to folder, LLM provider/model, API URL, plus a `(set)` / `(unset)`
+indicator for the API token (never the raw value).
+
+`basalt doctor` is a one-shot health check:
+
+```text
+Basalt doctor — running pre-flight checks
+
+  ✓ vault path        /Users/you/notes
+  ✓ index db          /Users/you/.basalt/basalt.db
+  ✓ ollama reachable  http://localhost:11434
+  ✓ embedding model   nomic-embed-text
+  ✓ api credentials   none configured (Open tier — that's fine)
+
+All 5 checks passed.
+```
+
+It checks: vault path exists, index DB is built, Ollama is reachable, the
+configured embedding model is installed (via `/api/tags`), and — if you've
+set an API token — that `apiUrl` is also set. Exit code 1 if any check
+fails, so the command is CI-friendly.
+
 ## Troubleshooting
 
 - **Ollama not running.** Start it: `ollama serve` in another terminal. The CLI
